@@ -9,6 +9,60 @@ container.style.margin = "10px auto";
 container.style.position = "relative";
 container.style.background = "ivory";
 
+start_page.style.width = "300px";
+start_page.style.background = "rgb(247,247,247)";
+start_page.style.textAlign = "center";
+start_page.style.paddingTop = "20px";
+start_page.style.borderRadius = "10px";
+start_page.style.margin = "0 auto";
+start_page.style.boxShadow = "0px 0px 4px rgba(0,0,0,0.7),inset 0px 0px 10px rgba(0,0,0,0.4)";
+start_page.style.border = "0.5px solid rgba(0,0,0,0.2)";
+start_page.style.display = "none";
+
+playerName.style.paddingBottom = "12px";
+playerName.style.borderBottom = "0.5px solid black";
+
+footer.style.fontSize = "12px";
+footer.style.color = "#00e34c";
+footer.style.fontWeight = "bold";
+footer.style.fontFamily = "serif, Georgia, 'Times New Roman', Times";
+footer.style.padding = "6px 0px";
+footer.style.color = "rgba(0,0,0,0.9)";
+
+for (let i=0; i<input.length; i++){
+  input[i].style.borderRadius = "5px";
+  input[i].style.padding = "5px";
+  input[i].style.outline = "none";
+  input[i].style.width = "80%";
+  input[i].style.margin = "10px 0px";
+}
+
+
+red_input.style.background = "rgba(247, 22, 45,0.6)";
+red_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+red_input.style.boxShadow = "0px 0px 4px rgba(247, 22, 45,0.9),inset 0px 0px 10px rgba(247, 22, 45,0.7)";
+
+green_input.style.background = "rgba(0,227,76,0.6)";
+green_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+green_input.boxShadow = "0px 0px 4px rgba(0, 227, 76,0.9),inset 0px 0px 10px rgba(0, 227, 76,0.7)";
+
+yellow_input.style.background = "rgba(247, 187, 5,0.6)";
+yellow_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+yellow_input.style.boxShadow = "0px 0px 4px rgba(247, 187, 5,0.9),inset 0px 0px 10px rgba(247, 187, 5,0.7)";
+
+blue_input.style.background = "rgba(4, 195, 201, 0.6)";
+blue_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+blue_input.style.boxShadow = "0px 0px 4px rgba(4, 195, 201,0.9),inset 0px 0px 10px rgba(4, 195, 201,0.7)";
+
+
+playBtn.style.outline = "none";
+playBtn.style.border = "0.5px solid black";
+playBtn.style.fontSize = "18px";
+playBtn.style.padding = "5px 15px";
+playBtn.style.borderRadius = "5px";
+playBtn.style.background = "rgba(0,0,0,0)";
+playBtn.style.cursor = "pointer";
+
 top_part.style.width = "100%";
 top_part.style.height = "40%";
 top_part.style.display = "flex";

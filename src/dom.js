@@ -6,6 +6,17 @@
 const main_wrapper = document.getElementById("main-wrapper");
 const container = document.getElementById('container');
 
+const start_page = document.getElementById("start-page");
+const playerName = document.getElementById("playerName");
+const playBtn = document.getElementById("playBtn");
+const footer = document.getElementById("footer");
+const input = document.querySelectorAll("#playerName input");
+
+const red_input = document.getElementById("red-input");
+const green_input = document.getElementById("green-input");
+const yellow_input = document.getElementById("yellow-input");
+const blue_input = document.getElementById("blue-input");
+
 // 2. Top, middle and bottom container
 const top_part = document.getElementById('top-part');
 const middle_part = document.getElementById('middle-part');
@@ -71,3 +82,5 @@ const dice_5 = document.getElementById('dice-5');
 const dice_6 = document.getElementById('dice-6');
 
 const dice_title = document.querySelector('#dice-container span');
+
+const cube = document.querySelector('.ThreeD-dice');
