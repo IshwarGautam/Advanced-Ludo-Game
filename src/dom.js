@@ -3,6 +3,7 @@
 //=====================================
 
 // 1. Main wrapper
+const main_wrapper = document.getElementById("main-wrapper");
 const container = document.getElementById('container');
 
 // 2. Top, middle and bottom container
@@ -58,3 +59,15 @@ const yellow_final_area = document.getElementById("yellow-final-area");
 const home = document.getElementById("home");
 const text = document.getElementById("text");
 
+// For 3d dice
+const dice_container = document.getElementById("dice-container");
+
+const dice = document.getElementsByClassName('dice');
+const dice_1 = document.getElementById('dice-1');
+const dice_2 = document.getElementById('dice-2');
+const dice_3 = document.getElementById('dice-3');
+const dice_4 = document.getElementById('dice-4');
+const dice_5 = document.getElementById('dice-5');
+const dice_6 = document.getElementById('dice-6');
+
+const dice_title = document.querySelector('#dice-container span');

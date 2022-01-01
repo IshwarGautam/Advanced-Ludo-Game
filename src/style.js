@@ -1,9 +1,13 @@
 //==================================================
 // Styling the Main container that wrap all elements
 //==================================================
+main_wrapper.style.maxWidth = "1200px";
+main_wrapper.style.margin = "0 auto";
 container.style.width = "600px";
 container.style.height = "600px";
-container.style.margin = "10px auto"
+container.style.margin = "10px auto";
+container.style.position = "relative";
+container.style.background = "ivory";
 
 top_part.style.width = "100%";
 top_part.style.height = "40%";
@@ -191,3 +195,51 @@ text.style.height = "40%";
 text.style.margin = "20px 5px";
 text.style.fontSize = "8px";
 text.style.fontFamily = "Georgia, 'Times New Roman', Times, serif"
+
+// Styling 3d dice
+dice_container.style.width = "200px";
+dice_container.style.height = "100px";
+dice_container.style.marginTop = "-420px";
+dice_container.style.marginLeft = "40px";
+dice_container.style.perspective = "600px";
+
+for (let i=0; i<dice.length; i++){
+  dice[i].style.position = "absolute";
+  dice[i].style.width = "200px";
+  dice[i].style.height = "200px";
+  dice[i].style.border = "4px solid ivory";
+  dice[i].style.lineHeight = "200px";
+  dice[i].style.fontSize = "40px";
+  dice[i].style.fontWeight = "bold";
+  dice[i].style.color = "ivory";
+  dice[i].style.textAlign = "center";
+}
+
+dice_1.style.background = "#000";
+dice_1.style.opacity = "0.75";
+dice_1.style.transform = "rotateY(0deg) translateZ(100px)";
+
+dice_2.style.background = "#000";
+dice_2.style.opacity = "0.75";
+dice_2.style.transform = "rotateY(180deg) translateZ(100px)";
+
+dice_3.style.background = "#000";
+dice_3.style.opacity = "0.75";
+dice_3.style.transform = "rotateY(90deg) translateZ(100px)";
+
+dice_4.style.background = "#000";
+dice_4.style.opacity = "0.75";
+dice_4.style.transform = "rotateY(-90deg) translateZ(100px)";
+
+dice_5.style.background = "#000";
+dice_5.style.opacity = "0.75";
+dice_5.style.transform = "rotateX(90deg) translateZ(100px)";
+
+dice_6.style.background = "#000";
+dice_6.style.opacity = "0.75";
+dice_6.style.transform = "rotateX(-90deg) translateZ(100px)";
+
+dice_title.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+dice_title.style.fontSize = "30px";
+dice_title.style.textDecoration = "underline";
+dice_title.style.color = "#fc2";
