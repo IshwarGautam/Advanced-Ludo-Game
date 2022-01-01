@@ -1,45 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <title>Advanced Ludo Game</title>
 
+  <!-- Importing CSS file -->
+  <link rel="stylesheet" href="src/reset.css">
+  <link rel="stylesheet" href="src/style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 </head>
 <body>
 
   <div id = "container">
-    <!-- Header-->
-    <div id = "header"></div>
-
-    <!-- Message Box -->
-    <div id = "message-box"></div>
-
-    <!-- Playing area -->
-    <div id = "ludo">
-      <div id = "left-part">
-        <div id = "initial-green-region"></div>
-        <div id = "between-green-red"></div>
-        <div id = "initial-red-region"></div>
+    
+    <div id = "top-part">
+      <div id = "initial-green-region" class = "green">
+        <div id = "green-sub-region" class="white">
+          <div class="green-token-area green"></div>
+          <div class="green-token-area green"></div>
+          <div class="green-token-area green"></div>
+          <div class="green-token-area green"></div>
+        </div>
       </div>
 
-      <div id = "middle-part">
-        <div id = "between-green-yellow"></div>
-        <div id = "winner-region"></div>
-        <div id = "between-red-blue"></div>
+      <div id = "between-green-yellow">
+        <div class="green-yellow-path"></div>
+        <div class="green-yellow-path"></div>
+        <div class="green-yellow-path"></div>
+
+        <div class="green-yellow-path"></div>
+        <div class="green-yellow-path yellow"></div>
+        <div class="green-yellow-path yellow"></div>
+
+        <div class="green-yellow-path">
+          <div class="icon">
+            <i class = "fa-2x fa fa-star"></i>
+          </div>
+        </div>
+        <div class="green-yellow-path yellow"></div>
+        <div class="green-yellow-path"></div>
+
+        <div class="green-yellow-path"></div>
+        <div class="green-yellow-path yellow"></div>
+        <div class="green-yellow-path"></div>
+
+        <div class="green-yellow-path"></div>
+        <div class="green-yellow-path yellow"></div>
+        <div class="green-yellow-path"></div>
+
+        <div class="green-yellow-path"></div>
+        <div class="green-yellow-path yellow"></div>
+        <div class="green-yellow-path"></div>
       </div>
 
-      <div id = "right-part">
-        <div id = "initial-yellow-region"></div>
-        <div id = "between-yellow-blue"></div>
-        <div id = "initial-blue-region"></div>
+      <div id = "initial-yellow-region" class = "yellow">
+        <div id = "yellow-sub-region" class="white">
+          <div class="yellow-token-area yellow"></div>
+          <div class="yellow-token-area yellow"></div>
+          <div class="yellow-token-area yellow"></div>
+          <div class="yellow-token-area yellow"></div>
+        </div>
       </div>
+
+    </div>
+
+    <div id = "middle-part">
+      <div id = "between-green-red">
+        <div class="green-red-path"></div>
+        <div class="green-red-path green"></div>
+        <div class="green-red-path"></div>
+        <div class="green-red-path"></div>
+        <div class="green-red-path"></div>
+        <div class="green-red-path"></div>
+
+        <div class="green-red-path"></div>
+        <div class="green-red-path green"></div>
+        <div class="green-red-path green"></div>
+        <div class="green-red-path green"></div>
+        <div class="green-red-path green"></div>
+        <div class="green-red-path green"></div>
+
+        <div class="green-red-path"></div>
+        <div class="green-red-path"></div>
+        <div class="green-red-path">
+          <div class="icon">
+            <i class = "fa-2x fa fa-star"></i>
+          </div>
+        </div>
+        <div class="green-red-path"></div>
+        <div class="green-red-path"></div>
+        <div class="green-red-path"></div>
+      </div>
+
+      <div id = "winner-region">
+        <div id="triangle-container">
+          <div id="home">
+            <div id="text">
+              <h1>Home</h1>
+            </div>
+          </div>
+          <div id="green-final-area"></div>
+          <div id="red-final-area"></div>
+          <div id="blue-final-area"></div>
+          <div id="yellow-final-area"></div>
+        </div>
+      </div>
+
+      <div id = "between-yellow-blue">
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path">
+          <div class="icon">
+            <i class = "fa-2x fa fa-star"></i>
+          </div>
+        </div>
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path"></div>
+
+        <div class="yellow-blue-path blue"></div>
+        <div class="yellow-blue-path blue"></div>
+        <div class="yellow-blue-path blue"></div>
+        <div class="yellow-blue-path blue"></div>
+        <div class="yellow-blue-path blue"></div>
+        <div class="yellow-blue-path"></div>
+
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path"></div>
+        <div class="yellow-blue-path blue"></div>
+        <div class="yellow-blue-path"></div>
+      </div>
+    </div>
+
+    <div id = "bottom-part">
+
+      <div id = "initial-red-region" class = "red">
+        <div id = "red-sub-region" class="white">
+          <div class="red-token-area red"></div>
+          <div class="red-token-area red"></div>
+          <div class="red-token-area red"></div>
+          <div class="red-token-area red"></div>
+        </div>
+      </div>
+
+      <div id = "between-red-blue">
+        <div class="red-blue-path"></div>
+        <div class="red-blue-path red"></div>
+        <div class="red-blue-path"></div>
+
+        <div class="red-blue-path"></div>
+        <div class="red-blue-path red"></div>
+        <div class="red-blue-path"></div>
+
+        <div class="red-blue-path"></div>
+        <div class="red-blue-path red"></div>
+        <div class="red-blue-path"></div>
+
+        <div class="red-blue-path"></div>
+        <div class="red-blue-path red"></div>
+        <div class="red-blue-path">
+          <div class="icon">
+            <i class = "fa-2x fa fa-star"></i>
+          </div>
+        </div>
+
+        <div class="red-blue-path red"></div>
+        <div class="red-blue-path red"></div>
+        <div class="red-blue-path"></div>
+
+        <div class="red-blue-path"></div>
+        <div class="red-blue-path"></div>
+        <div class="red-blue-path"></div>
+        
+      </div>
+
+      <div id = "initial-blue-region" class = "blue">
+        <div id = "blue-sub-region" class="white">
+          <div class="blue-token-area blue"></div>
+          <div class="blue-token-area blue"></div>
+          <div class="blue-token-area blue"></div>
+          <div class="blue-token-area blue"></div>
+        </div>
+      </div>
+
     </div>     
   </div>
   
+  <!-- Importing JS files -->
   <script src="src/dom.js"></script>
   <script src="src/style.js"></script>
-  <script src="src/layout.js"></script>
 </body>
 </html>
