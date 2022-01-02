@@ -11,6 +11,12 @@ const playerName = document.getElementById("playerName");
 const playBtn = document.getElementById("playBtn");
 const footer = document.getElementById("footer");
 const input = document.querySelectorAll("#playerName input");
+const radioBtn = document.getElementsByName("play_with");
+const radio_section = document.getElementById("radio-section");
+const play_with = document.querySelectorAll(".radioBtn label");
+const note = document.getElementById("note");
+const message = document.getElementById("message");
+const loading = document.getElementById("loading");
 
 const red_input = document.getElementById("red-input");
 const green_input = document.getElementById("green-input");
@@ -84,3 +90,8 @@ const dice_6 = document.getElementById('dice-6');
 const dice_title = document.querySelector('#dice-container span');
 
 const cube = document.querySelector('.ThreeD-dice');
+
+const player1 = document.getElementById("player1");
+const player2 = document.getElementById("player2");
+const player3 = document.getElementById("player3");
+const player4 = document.getElementById("player4");

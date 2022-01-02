@@ -2,6 +2,8 @@ let random_num;
 let showClass;
 let currentClass = '';
 let turn = '';
+let PlayerName = [];
+let PlayerId = [0,1,2,3];
 
 // Get the random number between min and max provided
 function getRandomInt(min, max) {
@@ -84,25 +86,90 @@ const Yellow_leftPos = ['418', '502', '418', '502'];
 const Blue_bottomPos = ['58', '58', '142', '142'];
 const Blue_leftPos = ['418', '502', '418', '502'];
 
-for (let i=0; i<Red_bottomPos.length; i++){
-  const obj1 = new playGame('#800000', Red_bottomPos[i], Red_leftPos[i]);
-  obj1.createToken();
-  obj1.rollDice();
-  obj1.moveToken();
-
-  const obj2 = new playGame('#006400', Green_bottomPos[i], Green_leftPos[i]);
-  obj2.createToken();
-  obj2.rollDice();
-  obj2.moveToken();
-
-  const obj3 = new playGame('#FF8C00', Yellow_bottomPos[i], Yellow_leftPos[i]);
-  obj3.createToken();
-  obj3.rollDice();
-  obj3.moveToken();
-
-  const obj4 = new playGame('#800080', Blue_bottomPos[i], Blue_leftPos[i]);
-  obj4.createToken();
-  obj4.rollDice();
-  obj4.moveToken();
+function createGame(){
+  for (let i=0; i<Red_bottomPos.length; i++){
+    if (PlayerId.includes(0)){
+      const obj1 = new playGame('#800000', Red_bottomPos[i], Red_leftPos[i]);
+      obj1.createToken();
+      obj1.rollDice();
+      obj1.moveToken();
+    }
   
+    if (PlayerId.includes(1)){
+      const obj2 = new playGame('#006400', Green_bottomPos[i], Green_leftPos[i]);
+      obj2.createToken();
+      obj2.rollDice();
+      obj2.moveToken();
+    }
+    
+    if (PlayerId.includes(2)){
+      const obj3 = new playGame('#FF8C00', Yellow_bottomPos[i], Yellow_leftPos[i]);
+      obj3.createToken();
+      obj3.rollDice();
+      obj3.moveToken();
+    }
+   
+    if (PlayerId.includes(3)){
+      const obj4 = new playGame('#800080', Blue_bottomPos[i], Blue_leftPos[i]);
+      obj4.createToken();
+      obj4.rollDice();
+      obj4.moveToken();
+    } 
+  }  
 }
+
+createGame();
+
+function onSubmit(){
+  const redPlayerName = red_input.value;
+  const greenPlayerName = green_input.value;
+  const yellowPlayerName = yellow_input.value;
+  const bluePlayerName = blue_input.value;
+  const radioBtnChecked = (Array.from(radioBtn)).some(option => option.checked);
+
+  if (redPlayerName != '') {
+    player1.innerHTML = redPlayerName;
+    PlayerName.push(redPlayerName);
+    PlayerId.push(0);
+  }
+  if (greenPlayerName != '') {
+    player2.innerHTML = greenPlayerName;
+    PlayerName.push(greenPlayerName);
+    PlayerId.push(1);
+  }
+  if (yellowPlayerName != '') {
+    player3.innerHTML = yellowPlayerName; 
+    PlayerName.push(yellowPlayerName);
+    PlayerId.push(2);
+  }
+  if (bluePlayerName != '') {
+    player4.innerHTML = bluePlayerName;
+    PlayerName.push(bluePlayerName);
+    PlayerId.push(3);
+  }
+
+  if (PlayerName.length<2){
+    message.innerHTML = "Minimum two players required";
+    setTimeout(() => {
+      message.innerHTML = '';
+    }, 5000);
+  }
+  else if (!radioBtnChecked){
+    message.innerHTML = "Please select either human or computer";
+    radio_section.style.border = "3px solid red";
+    setTimeout(() => {
+      message.innerHTML = '';
+      radio_section.style.border = "none";
+    }, 5000);
+  }
+  else{
+    createGame();
+    loading.style.display = "block";
+    setTimeout(() => {
+      loading.style.display = "none";
+      start_page.style.display = "none";
+      main_wrapper.style.display = "block";
+    }, 2000);
+  }
+}
+

@@ -3,33 +3,45 @@
 //==================================================
 main_wrapper.style.maxWidth = "1200px";
 main_wrapper.style.margin = "0 auto";
+// main_wrapper.style.display = "none";
 container.style.width = "600px";
 container.style.height = "600px";
 container.style.margin = "10px auto";
 container.style.position = "relative";
 container.style.background = "ivory";
 
-start_page.style.width = "300px";
+start_page.style.display = "none";
+start_page.style.width = "400px";
 start_page.style.background = "rgb(247,247,247)";
 start_page.style.textAlign = "center";
 start_page.style.paddingTop = "20px";
 start_page.style.borderRadius = "10px";
-start_page.style.margin = "0 auto";
+start_page.style.margin = "50px auto";
 start_page.style.boxShadow = "0px 0px 4px rgba(0,0,0,0.7),inset 0px 0px 10px rgba(0,0,0,0.4)";
-start_page.style.border = "0.5px solid rgba(0,0,0,0.2)";
-start_page.style.display = "none";
+
+for (let i=0; i<play_with.length; i++){
+  play_with[i].style.fontSize = "20px";
+}
+note.style.color = "#186";
 
 playerName.style.paddingBottom = "12px";
-playerName.style.borderBottom = "0.5px solid black";
+
+loading.style.background = `url(./images/loading.gif)`;
+loading.style.width = "332px";
+loading.style.height = "150px";
+loading.style.backgroundSize = "150px";
+loading.style.position = "absolute";
+loading.style.backgroundRepeat = "no-repeat";
+loading.style.marginLeft = "130px";
+loading.style.display = "none";
 
 footer.style.fontSize = "12px";
-footer.style.color = "#00e34c";
 footer.style.fontWeight = "bold";
 footer.style.fontFamily = "serif, Georgia, 'Times New Roman', Times";
 footer.style.padding = "6px 0px";
-footer.style.color = "rgba(0,0,0,0.9)";
 
 for (let i=0; i<input.length; i++){
+  input[i].style.fontSize = "25px";
   input[i].style.borderRadius = "5px";
   input[i].style.padding = "5px";
   input[i].style.outline = "none";
@@ -54,14 +66,22 @@ blue_input.style.background = "rgba(4, 195, 201, 0.6)";
 blue_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
 blue_input.style.boxShadow = "0px 0px 4px rgba(4, 195, 201,0.9),inset 0px 0px 10px rgba(4, 195, 201,0.7)";
 
-
-playBtn.style.outline = "none";
 playBtn.style.border = "0.5px solid black";
-playBtn.style.fontSize = "18px";
+playBtn.style.fontSize = "25px";
 playBtn.style.padding = "5px 15px";
 playBtn.style.borderRadius = "5px";
-playBtn.style.background = "rgba(0,0,0,0)";
 playBtn.style.cursor = "pointer";
+
+playBtn.onmouseover = function(){
+  playBtn.style.background = "#fc2";
+}
+playBtn.onmouseout = function(){
+  playBtn.style.background = "transparent";
+}
+playBtn.onclick = function(){
+  onSubmit();
+  playBtn.style.background = "#0f0";
+}
 
 top_part.style.width = "100%";
 top_part.style.height = "40%";
@@ -297,3 +317,35 @@ dice_title.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 dice_title.style.fontSize = "30px";
 dice_title.style.textDecoration = "underline";
 dice_title.style.color = "#fc2";
+
+player1.style.color = "ivory";
+player1.style.width = "350px";
+player1.style.textAlign = "right";
+player1.style.fontSize = "40px";
+player1.style.position = "absolute";
+player1.style.marginRight = "600px";
+player1.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+
+player2.style.color = "ivory";
+player2.style.width = "350px";
+player2.style.textAlign = "right";
+player2.style.fontSize = "40px";
+player2.style.position = "absolute";
+player2.style.marginRight = "600px";
+player2.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+
+player3.style.color = "ivory";
+player3.style.width = "350px";
+player3.style.textAlign = "left";
+player3.style.fontSize = "40px";
+player3.style.position = "absolute";
+player3.style.marginLeft = "600px";
+player3.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+
+player4.style.color = "ivory";
+player4.style.width = "350px";
+player4.style.textAlign = "left";
+player4.style.fontSize = "40px";
+player4.style.position = "absolute";
+player4.style.marginLeft = "600px";
+player4.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";

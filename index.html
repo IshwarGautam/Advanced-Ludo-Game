@@ -13,31 +13,45 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 </head>
 <body>
+
+  <div id="start-page">
+    <div id="fill-details">
+      <div id="logo">
+        <img src="./images/dice.png" class="dice_image" alt="Dice Image">
+      </div>
+      <div class="radioBtn" id="radio-section">
+        <input type="radio" id="computer" name="play_with" value="computer">
+        <label for="computer">vs Computer</label>&emsp;
+        <input type="radio" id="human" name="play_with" value="human">
+        <label for="human">vs Human</label><br>
+      </div>
+      <div id="note">
+        (Minimum two players)
+      </div>
+      <div id="loading"></div>
+      <div id="playerName">
+        <input type="text" id="red-input" placeholder="Red player name...">
+        <input type="text" id="green-input" placeholder="Green player name...">
+        <input type="text" id="yellow-input" placeholder="Yellow player name...">
+        <input type="text" id="blue-input" placeholder="Blue player name...">
+        <br>
+        <button id="playBtn">Play</button><br>
+      </div>
+      <div id="message"></div>
+      <br>
+      <hr>
+      <div id="footer">
+        Made by Ishwar Gautam (using JavaScript)
+      </div>
+    </div>
+  </div>
+
   <div id="main-wrapper">
     <div id = "container">
 
-      <div id="start-page">
-        <div id="fill-details">
-          <div id="logo">
-            <img src="./images/dice.png" class="dice_image" alt="Dice Image">
-          </div>
-          <div id="playerName">
-            <input type="text" id="red-input" placeholder="Red player name...">
-            <input type="text" id="green-input" placeholder="Green player name...">
-            <input type="text" id="yellow-input" placeholder="Yellow player name...">
-            <input type="text" id="blue-input" placeholder="Blue player name...">
-            <br\>
-            <button id="playBtn">Play</button><br>
-          </div>
-          <div id="footer">
-            Made by Ishwar Gautam (using JavaScript)
-          </div>
-        </div>
-      </div>
-      
-
       <div id = "top-part">
         <div id = "initial-green-region" class = "green">
+          <div id="player2"></div>
           <div id = "green-sub-region" class="white">
             <div class="green-token-area green"></div>
             <div class="green-token-area green"></div>
@@ -81,6 +95,7 @@
         </div>
   
         <div id = "initial-yellow-region" class = "yellow">
+          <div id="player3"></div>
           <div id = "yellow-sub-region" class="white">
             <div class="yellow-token-area yellow"></div>
             <div class="yellow-token-area yellow"></div>
@@ -170,8 +185,8 @@
       </div>
   
       <div id = "bottom-part">
-  
         <div id = "initial-red-region" class = "red">
+          <div id="player1"></div>
           <div id = "red-sub-region" class="white">
             <div class="red-token-area red"></div>
             <div class="red-token-area red"></div>
@@ -216,6 +231,7 @@
         </div>
   
         <div id = "initial-blue-region" class = "blue">
+          <div id="player4"></div>
           <div id = "blue-sub-region" class="white">
             <div class="blue-token-area blue"></div>
             <div class="blue-token-area blue"></div>
@@ -237,13 +253,13 @@
        <div class="dice" id="dice-4">4</div>
        <div class="dice" id="dice-5">5</div>
        <div class="dice" id="dice-6">6</div>
-     </div>
-     
+     </div>  
     </div>
+
   </div>
   
   <!-- Importing JS files -->
-  <script src="src/dom.js"></script>
+  <script src="src/intermediator.js"></script>
   <script src="src/style.js"></script>
   <script src="src/ludo.js"></script>
 </body>
