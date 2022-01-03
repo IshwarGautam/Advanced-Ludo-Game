@@ -2,9 +2,11 @@ let random_num;
 let showClass;
 let currentClass = '';
 let PlayerName = [];
-let PlayerId = [0,2];
+let PlayerId = ["red", "green", "yellow", "blue"];
 let index = 0;
 let turn = PlayerId[index];
+let total_cell = 57;
+eval(turn+'_sub_region').style.background = "#556B2F";
 
 let total_player = PlayerId.length;
 
@@ -15,8 +17,11 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); 
 }
 
-// Get the sound during dice rolled
+// Get the sound during dice rolled, and when moving tokens
 let dice_sound = new Audio('./audio/dice.mp3');
+let step_sound = new Audio('./audio/step.mp3');
+let inout_sound = new Audio('./audio/inout.mp3');
+let winner_sound = new Audio('./audio/winner.mp3');
 
 // Let track the path of each token
 let redBottomPath = [40, 80, 120, 160, 200, 240, 240, 240, 240, 240, 240, 280, 320, 320, 320, 320, 320, 320, 360, 400, 440, 480, 520, 560, 560, 560, 520, 480, 440, 400, 360, 320, 320, 320, 320, 320, 320, 280, 240, 240, 240, 240, 240, 240, 200, 160, 120, 80, 40, 0, 0, 40, 80, 120, 160, 200, 240];
