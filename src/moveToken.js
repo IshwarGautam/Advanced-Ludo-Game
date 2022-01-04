@@ -3,10 +3,13 @@ let dx = 0;
 let score = 0;
 let next = 0;
 
-let redAll = 1;
-let greenAll = 1;
-let yellowAll = 1;
-let blueAll = 1;
+let redOutside = 0;
+let greenOutside = 0;
+let yellowOutside = 0;
+let blueOutside = 0;
+
+let toggle;
+let newValue=1;
 
 let isOutside = {
   'red0': 0, 'red1': 0, 'red2': 0, 'red3': 0,
@@ -24,83 +27,99 @@ let position = {
   'blue0': 0, 'blue1': 0, 'blue2': 0, 'blue3': 0
 }
 
+cube.addEventListener("click", ()=>{
 
-function moveToken(){
+  dice_sound.play();
+  toggle = 1;
 
-  cube.addEventListener("click", ()=>{
+  random_num = getRandomInt(1,7);
+ 
+  showClass = 'show-' + random_num;
 
-    dice_sound.play();
+  if (currentClass) {
+    cube.classList.remove(currentClass);
+  }
 
-    random_num = getRandomInt(1,7);
-    
-    showClass = 'show-' + random_num;
+  cube.classList.add(showClass);
+  currentClass = showClass;
+ 
+  for (let i=0; i<4; i++) getMove(turn, i);
+  
+  // next++;
+  // if (next > total_player-1) {
+  //   next = 0;
+  // }
+  // eval(turn+'_sub_region').style.background = "ivory";
+  // turn = PlayerId[next];
+  // eval(turn+'_sub_region').style.background = "#556B2F";
 
-    if (currentClass) {
-      cube.classList.remove(currentClass);
-    }
-
-    cube.classList.add(showClass);
-    currentClass = showClass;
-    
-
-    // for (let i=0; i<4; i++) getMove(turn, i);
-    // if (eval(turn + 'All') === 1) getMove(turn, 0);
-    getMove(turn, 0);
-    getMove(turn, 1);
-    getMove(turn, 2);
-    getMove(turn, 3);
-    next++;
-    if (next > total_player-1) {
-      next = 0;
-    }
-    eval(turn+'_sub_region').style.background = "ivory";
-    turn = PlayerId[next];
-    eval(turn+'_sub_region').style.background = "#556B2F";
-
-  })
-}
-
-moveToken();
+  
+  // setInterval(() => {
+  //   if (turn !== 'red') cube.click();
+  // }, 3000);
+  
+  // if (eval(turn + 'All') === 1){
+  //   eval(turn+'_sub_region').style.background = "#556B2F";
+  // }
+  // else{
+  //   setInterval(() => {
+  //     eval(turn+'_sub_region').style.background = "#556B2F";
+  //   }, 1000);
+  // }
+})
 
 function getMove(color, index){
-  if ((random_num === 1 || random_num === 6) && eval(color + 'All') === 1 && turn === color){ 
-    inout_sound.play();
-
-    eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
-    eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
-    eval(color + 'Token')[index].style.transition = '0.5s';
-
-    eval(color + 'All') === 0;
-    let newValue = 0;
-    eval(color + "All = " + newValue);
-    isOutside[color+index] = 1;
-    next--;
-    score++;
+  if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0){ 
+    if (toggle){
+      console.log("first");
+      inout_sound.play();
+      eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
+      eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
+      eval(color + 'Token')[index].style.transition = '0.5s';
+ 
+      eval(color + "Outside += " + 1);
+      isOutside[color+index] = 1;
+      score++;
+      toggle = 0;
+    }
   }
-  else if (random_num === 1 || random_num === 6 && isOutside[color+index] === 1){
+  else if (random_num === 1 || random_num === 6){ 
     eval(color + 'Token')[index].addEventListener("click", ()=>{
-      step_sound.play();
+      if (toggle){
+        console.log("second");
+        if (isOutside[color+index] === 0){
+          inout_sound.play();
+          eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
+          eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
+          eval(color + 'Token')[index].style.transition = '0.5s';
 
-      let interval = setInterval(() => {
-        dx ++;
-        position[color+index] ++;
-        path = position[color+index];
-        eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-        eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-        if (dx >= random_num){
-          clearInterval(interval);
-          dx = 0;
+          eval(color + "Outside += " + 1);
+          isOutside[color+index] = 1;
+          score++;
         }
-      }, 300);
-      next--;
-
-      score += random_num;
-      // turn  = playerId[next-1];
-    }, {once:true})
+        else{
+          let interval = setInterval(() => {
+            step_sound.play();
+            dx ++;
+            position[color+index] ++;
+            path = position[color+index];
+            eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
+            eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+            if (dx >= random_num){
+              clearInterval(interval);
+              dx = 0;
+            }
+            score++;
+          }, 300);
+        }
+      
+        toggle = 0;
+      }
+    }, {once:true});    
   }
-  else if (isOutside[color+index] === 1){
-
-    eval(color + 'Token')[index].addEventListener("click", ()=>{
+  else if (eval(color + 'Outside') < 2 && isOutside[color+index] === 1){
+    if (toggle){
+      console.log("third");
       let interval = setInterval(() => {
         step_sound.play();
         dx ++;
@@ -114,6 +133,52 @@ function getMove(color, index){
         }
       }, 300);
       score += random_num;
-    }, {once:true})
+      toggle = 0;
+      next++;
+      if (next > total_player-1) {
+        next = 0;
+      }
+      eval(turn+'_sub_region').style.background = "ivory";
+      turn = PlayerId[next];
+      eval(turn+'_sub_region').style.background = "#556B2F";
+    }
+  }
+  else if (eval(color + "Outside") >= 2 ){
+    eval(color + 'Token')[index].addEventListener("click", ()=>{
+      if (toggle){
+        console.log('forth');
+        let interval = setInterval(() => {
+          step_sound.play();
+          dx ++;
+          position[color+index] ++;
+          path = position[color+index];
+          eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
+          eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+          if (dx >= random_num){
+            clearInterval(interval);
+            dx = 0;
+          }
+        }, 300);
+        toggle = 0;
+        next++;
+        score+=random_num;
+        if (next > total_player-1) {
+          next = 0;
+        }
+        eval(turn+'_sub_region').style.background = "ivory";
+        turn = PlayerId[next];
+        eval(turn+'_sub_region').style.background = "#556B2F";
+      }
+    }, {once:true})  
+  }
+  else if (toggle){
+    next++;
+    if (next > total_player-1) {
+      next = 0;
+    }
+    eval(turn+'_sub_region').style.background = "ivory";
+    turn = PlayerId[next];
+    eval(turn+'_sub_region').style.background = "#556B2F";
+    toggle = 0;
   }
 }

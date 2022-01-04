@@ -43,10 +43,17 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
     else if (this.id === 'green') greenToken.push(this.token);
     else if (this.id === 'yellow') yellowToken.push(this.token);
     else if (this.id === 'blue') blueToken.push(this.token);
+   
+    // setInterval(() => {
+    //   this.token.addEventListener('click', ()=>{
+    //     if (this.token.click()) console.log("clicked");
+    //   })
+    // }, 1000);
 
     unique_id_collection.push(this.unique_id);
     container.appendChild(this.token);
   }
+
 }
 
 // Initial position for each color token
