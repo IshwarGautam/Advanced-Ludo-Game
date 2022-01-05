@@ -40,7 +40,6 @@ let blueLeftPath = [520, 480, 440, 400, 360, 320, 320, 320, 320, 320, 320, 280, 
 
 let safeCell = [0, 8, 13, 21, 26, 34, 39, 47]
 
-let coinPlace = [4, 12, 17, 25, 30, 38, 41]
 
 function getRandomFromArray(quantity, arr, max){
   let getRandom = []
@@ -136,3 +135,4 @@ function resetToken(color, index){
   }
   return (color, index);
 }
+
