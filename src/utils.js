@@ -5,10 +5,10 @@ let PlayerName = [];
 let PlayerId = ["red", "green", "yellow", "blue"];
 let index = 0;
 let turn = PlayerId[index];
-let total_cell = 57;
+let total_cell = 56;
 let total_color;
 eval(turn+'_sub_region').style.background = "#556B2F";
-
+let checkmate;
 let total_player = PlayerId.length;
 
 // Get the random number between min and max provided
@@ -40,6 +40,26 @@ let blueLeftPath = [520, 480, 440, 400, 360, 320, 320, 320, 320, 320, 320, 280, 
 
 let safeCell = [0, 8, 13, 21, 26, 34, 39, 47]
 
+let coinPlace = [4, 12, 17, 25, 30, 38, 41]
+
+function getRandomFromArray(quantity, arr, max){
+  let getRandom = []
+  let isRepeat;
+
+  for (let i = 0; i < quantity; i++) {
+    do {
+      let random_index = getRandomInt(0, max);
+      let random_value = arr[random_index];
+      isRepeat = getRandom.includes(random_value);
+      if(!isRepeat){
+        getRandom.push(random_value);
+      }
+    }
+    while(isRepeat);
+  }
+  return getRandom;
+}
+
 // Initial position for each color token
 const Red_bottomPos = ['58', '58', '142', '142'];
 const Red_leftPos = ['58', '142', '58', '142'];
@@ -68,6 +88,8 @@ let Cell_copy = {
 };
 
 function resetToken(color, index){
+  checkmate = 0;
+
   if (color !== 'red'){
     if (Cell[color + 'Cell' + index]>=52) Cell[color+ 'Cell' + index] = 0;
   }
@@ -80,32 +102,37 @@ function resetToken(color, index){
 
     for (let i=0; i<total_color.length; i++){
       for (let j=0; j<3; j++){
-        // console.log("1:" + Cell[color + 'Cell' + index]);
-        // console.log("2:" + Cell[total_color[i] + 'Cell' + j]);
+        
         if (Cell[color + 'Cell' + index] === Cell[total_color[i] + 'Cell' + j]){
-          let Interval = setInterval(() => {
-            console.log("killed..........");
-            killed_sound.play();
-            let interval1 = setInterval(() => {
-              dx --;
-              position[total_color[i]+j] --;
-              path = position[total_color[i]+j];
-              eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i] + 'BottomPath')[path] + "px";
-              eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i] + 'LeftPath')[path] + "px";
-              if (dx < 0){
-                clearInterval(interval1);
-                dx = 0;
-              }
-            }, 300);
-            clearInterval(Interval);
-          }, 2000);
-  
-          eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_bottomPos')[j];
-          eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_leftPos')[j];
-          Cell[total_color[i] + 'Cell' + j] = Cell_copy[total_color[i] + 'Cell' + index];
+        
+          killed_sound.play();
+          let dx = Cell[total_color[i] + 'Cell' + j];
+          let interval1 = setInterval(() => {
+            dx --;
+            position[total_color[i]+j] --;
+            path = position[total_color[i]+j];
+            eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i] + 'BottomPath')[path] + "px";
+            eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i] + 'LeftPath')[path] + "px";
+            if (dx < 0){
+              clearInterval(interval1);
+              checkmate = 1;
+              dx = 0;
+            }
+
+            if (checkmate){
+              eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_bottomPos')[j] + 'px';
+              eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_leftPos')[j] + 'px';
+              Cell[total_color[i] + 'Cell' + j] = Cell_copy[total_color[i] + 'Cell' + j];
+              isOutside[total_color[i]+j] = 0;
+              eval(total_color[i] + "Outside -= " + 1);
+
+              if (position[color + index] < total_cell && (random_num !== 1 || random_num !==6)) next--;
+            }
+            
+          }, 100);
         }
       }
     }
   }
+  return (color, index);
 }
-

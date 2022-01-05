@@ -13,7 +13,11 @@ const playBtn = document.getElementById("playBtn");
 const footer = document.getElementById("footer");
 const input = document.querySelectorAll("#playerName input");
 const radioBtn = document.getElementsByName("play_with");
+const radioBtn2 = document.getElementsByName("choose-color");
+const radioBtn3 = document.getElementsByName("game-mode");
 const radio_section = document.getElementById("radio-section");
+const radio_section2 = document.getElementById("radio-section2");
+const radio_section3 = document.getElementById("radio-section3");
 const play_with = document.querySelectorAll(".radioBtn label");
 const note = document.getElementById("note");
 const message = document.getElementById("message");
@@ -23,6 +27,9 @@ const red_input = document.getElementById("red-input");
 const green_input = document.getElementById("green-input");
 const yellow_input = document.getElementById("yellow-input");
 const blue_input = document.getElementById("blue-input");
+
+const which_color = document.getElementById('which-color');
+const game_modes = document.getElementById('game-modes');
 
 // 3. Top, middle and bottom container
 const top_part = document.getElementById('top-part');

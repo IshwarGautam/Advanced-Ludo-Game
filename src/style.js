@@ -35,6 +35,11 @@ loading.style.backgroundRepeat = "no-repeat";
 loading.style.marginLeft = "130px";
 loading.style.display = "none";
 
+which_color.style.fontSize = "20px";
+which_color.style.textDecoration = "underline";
+game_modes.style.fontSize = "22px";
+game_modes.style.color = "#91f";
+
 footer.style.fontSize = "12px";
 footer.style.fontWeight = "bold";
 footer.style.fontFamily = "serif, Georgia, 'Times New Roman', Times";

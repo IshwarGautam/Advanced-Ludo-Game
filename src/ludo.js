@@ -5,6 +5,7 @@ let blueToken = [];
 let yellowToken = [];
 let tokenId = [];
 let unique_id = '';
+let random_location;
 let unique_id_collection = [];
 // Create our main function
 function playGame(background, bottomPos, leftPos, id, unique_id){
@@ -44,12 +45,6 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
     else if (this.id === 'yellow') yellowToken.push(this.token);
     else if (this.id === 'blue') blueToken.push(this.token);
    
-    // setInterval(() => {
-    //   this.token.addEventListener('click', ()=>{
-    //     if (this.token.click()) console.log("clicked");
-    //   })
-    // }, 1000);
-
     unique_id_collection.push(this.unique_id);
     container.appendChild(this.token);
   }
@@ -83,6 +78,105 @@ function createGame(){
 
 createGame();
 
+
+function createCoin(mode){
+ 
+  if (mode === 'easy'){
+    random_location = getRandomFromArray(5, coinPlace, coinPlace.length);
+  }
+  else if(mode === 'medium'){
+    random_location = getRandomFromArray(3, coinPlace, coinPlace.length);
+  }
+  else if(mode === 'hard'){
+    random_location = getRandomFromArray(1, coinPlace, coinPlace.length);
+  }
+
+  for (let i=0; i<random_location.length; i++){
+    let coin = document.createElement('div');
+    coin.style.background = `url('./images/coin.png')`;
+    coin.style.bottom = redBottomPath[random_location[i]] + 'px';
+    coin.style.left = redLeftPath[random_location[i]] + 'px';
+    coin.style.width = "40px";
+    coin.style.height = "40px";
+    coin.style.position = "absolute";
+
+    container.appendChild(coin);
+  } 
+}
+
+let ladderBottomPos = [338, 325, 148, 88];
+let ladderLeftPos = [120, 300, 282, 132];
+let ladderRotate = [5, -50, 8, -52];
+let ladderHeight = [200, 160, 115, 165];
+
+let ladderPlace = [0, 1, 2, 3]
+
+function createLadder(mode){
+  if (mode === 'easy'){
+    random_location = getRandomFromArray(3, ladderPlace, ladderPlace.length);
+    console.log(random_location);
+  }
+  else if(mode === 'medium'){
+    random_location = getRandomFromArray(2, ladderPlace, ladderPlace.length);
+  }
+  else if(mode === 'hard'){
+    random_location = getRandomFromArray(1, ladderPlace, ladderPlace.length);
+  }
+
+  for (let i=0; i< random_location.length; i++){
+    let ladder = document.createElement('div');
+    ladder.style.background = `url('./images/ladder.png')`;
+    ladder.style.bottom = ladderBottomPos[random_location[i]] + 'px';
+    ladder.style.left = ladderLeftPos[random_location[i]] + 'px';
+    ladder.style.width = "150px";
+    ladder.style.height = ladderHeight[random_location[i]] + 'px';
+    ladder.style.position = "absolute";
+    ladder.style.transform = "rotate("+ ladderRotate[random_location[i]] + "deg)";
+
+    container.appendChild(ladder);
+  } 
+}
+
+let snakeBottomPos = [335, 390, 120, 85, 315];
+let snakeLeftPos = [50, 290, 0, 200, 470];
+let snakeRotate = [0, 65, -120, 120, 10];
+let snakeWidth = [240, 250, 290, 290, 120];
+
+let snakePlace = [0, 1, 2, 3, 4]
+
+function createSnake(mode){
+
+  if (mode === 'easy'){
+    random_location = getRandomFromArray(1, snakePlace, snakePlace.length);
+    console.log(random_location);
+  }
+  else if(mode === 'medium'){
+    random_location = getRandomFromArray(2, snakePlace, snakePlace.length);
+  }
+  else if(mode === 'hard'){
+    random_location = getRandomFromArray(4, snakePlace, snakePlace.length);
+  }
+
+  for (let i=0; i<random_location.length; i++){
+    const snake = document.createElement('div');
+    snake.style.background = `url('./images/snake.png')`;
+    snake.style.bottom = snakeBottomPos[random_location[i]] + 'px';
+    snake.style.left = snakeLeftPos[random_location[i]] + 'px';
+    snake.style.width = snakeWidth[random_location[i]] + 'px';
+    snake.style.height = "80px";
+    snake.style.backgroundSize = "90% 90%";
+    snake.style.backgroundRepeat = "no-repeat";
+    snake.style.position = "absolute";
+    snake.style.transform = "rotate(" + snakeRotate[random_location[i]] + "deg)";
+
+    container.appendChild(snake);
+  }
+}
+
+createCoin("medium");
+createLadder("medium");
+createSnake("medium");
+
 // validation of user input and the action after clicking play button
 function onSubmit(){
   const redPlayerName = red_input.value;
@@ -90,6 +184,11 @@ function onSubmit(){
   const yellowPlayerName = yellow_input.value;
   const bluePlayerName = blue_input.value;
   const radioBtnChecked = (Array.from(radioBtn)).some(option => option.checked);
+  const radioBtn2Checked = (Array.from(radioBtn2)).some(option => option.checked);
+  const radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
+
+  let gameMode = document.querySelector('input[name="game-mode"]:checked').value;
+  console.log(gameMode)
 
   if (redPlayerName != '') {
     player1.innerHTML = redPlayerName;
@@ -116,15 +215,31 @@ function onSubmit(){
     message.innerHTML = "Minimum two players required";
     setTimeout(() => {
       message.innerHTML = '';
-    }, 5000);
+    }, 3000);
   }
   else if (!radioBtnChecked){
     message.innerHTML = "Please select either human or computer";
-    radio_section.style.border = "3px solid red";
+    radio_section.style.boxShadow = '0px 0px 0px 4px #4f93df';
     setTimeout(() => {
       message.innerHTML = '';
-      radio_section.style.border = "none";
-    }, 5000);
+      radio_section.style.boxShadow = "none";
+    }, 3000);
+  }
+  else if (!radioBtn2Checked){
+    message.innerHTML = "Please choose your color..."
+    radio_section2.style.boxShadow = '0px 0px 0px 4px #4f93df';
+    setTimeout(() => {
+      message.innerHTML = '';
+      radio_section2.style.boxShadow = "none";
+    }, 3000);
+  }
+  else if (!radioBtn3Checked){
+    message.innerHTML = "Please choose game mode..."
+    radio_section3.style.boxShadow = '0px 0px 0px 4px #4f93df';
+    setTimeout(() => {
+      message.innerHTML = '';
+      radio_section3.style.boxShadow = "none";
+    }, 3000);
   }
   else{
     createGame();
