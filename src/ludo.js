@@ -56,19 +56,6 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
 
 }
 
-// Initial position for each color token
-const Red_bottomPos = ['58', '58', '142', '142'];
-const Red_leftPos = ['58', '142', '58', '142'];
-
-const Green_bottomPos = ['418', '418', '502', '502'];
-const Green_leftPos = ['58', '142', '58', '142'];
-
-const Yellow_bottomPos = ['418', '418', '502', '502'];
-const Yellow_leftPos = ['418', '502', '418', '502'];
-
-const Blue_bottomPos = ['58', '58', '142', '142'];
-const Blue_leftPos = ['418', '502', '418', '502'];
-
 // Create game based on the user input on the start page
 function createGame(){
   for (let i=0; i<Red_bottomPos.length; i++){

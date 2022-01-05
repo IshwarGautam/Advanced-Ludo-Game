@@ -349,3 +349,8 @@ player4.style.fontSize = "40px";
 player4.style.position = "absolute";
 player4.style.marginLeft = "600px";
 player4.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+
+isPlayed.style.fontSize = "20px";
+isPlayed.style.color = "#991";
+isPlayed.style.marginTop = "140px";
+isPlayed.style.display = "none";

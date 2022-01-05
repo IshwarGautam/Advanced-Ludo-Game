@@ -99,3 +99,5 @@ const player1 = document.getElementById("player1");
 const player2 = document.getElementById("player2");
 const player3 = document.getElementById("player3");
 const player4 = document.getElementById("player4");
+
+const isPlayed = document.getElementById('isPlayed');
