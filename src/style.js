@@ -79,14 +79,14 @@ playBtn.style.cursor = "pointer";
 
 playBtn.onmouseover = function(){
   playBtn.style.background = "#fc2";
-}
+};
 playBtn.onmouseout = function(){
   playBtn.style.background = "transparent";
-}
+};
 playBtn.onclick = function(){
   onSubmit();
   playBtn.style.background = "#0f0";
-}
+};
 
 top_part.style.width = "100%";
 top_part.style.height = "40%";
@@ -273,7 +273,7 @@ text.style.width = "80%";
 text.style.height = "40%";
 text.style.margin = "20px 5px";
 text.style.fontSize = "8px";
-text.style.fontFamily = "Georgia, 'Times New Roman', Times, serif"
+text.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 
 // Styling 3d dice
 dice_container.style.width = "200px";

@@ -37,13 +37,13 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
       this.token.style.opacity = "90%";
       this.token.style.width = "42px";
       this.token.style.height = "42px";
-    }
+    };
 
     this.token.onmouseout = () => {
       this.token.style.opacity = "100%";
       this.token.style.width = "40px";
       this.token.style.height = "40px";
-    }
+    };
     
     if (this.id === 'red') redToken.push(this.token);
     else if (this.id === 'green') greenToken.push(this.token);
@@ -52,7 +52,7 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
    
     unique_id_collection.push(this.unique_id);
     container.appendChild(this.token);
-  }
+  };
 
 }
 
@@ -83,7 +83,7 @@ function createGame(){
 
 createGame();
 
-let coinPlace = [4, 12, 17, 25, 30, 38, 41]
+let coinPlace = [4, 12, 17, 25, 30, 38, 41];
 
 function createCoin(mode){
  
@@ -115,7 +115,7 @@ let ladderLeftPos = [120, 300, 282, 132];
 let ladderRotate = [5, -50, 8, -52];
 let ladderHeight = [200, 160, 115, 165];
 
-let ladderPlace = [0, 1, 2, 3]
+let ladderPlace = [0, 1, 2, 3];
 
 function createLadder(mode){
   if (mode === 'easy'){
@@ -198,7 +198,7 @@ function withCoin(color, index){
           clearInterval(interval);
           dx = 0;
         }
-      }, 300)
+      }, 300);
       clearInterval(Interval);
     }, 500);
     
@@ -251,7 +251,6 @@ function onSubmit(){
   const radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
 
   let gameMode = document.querySelector('input[name="game-mode"]:checked').value;
-  console.log(gameMode)
 
   if (redPlayerName != '') {
     player1.innerHTML = redPlayerName;
@@ -289,7 +288,7 @@ function onSubmit(){
     }, 3000);
   }
   else if (!radioBtn2Checked){
-    message.innerHTML = "Please choose your color..."
+    message.innerHTML = "Please choose your color...";
     radio_section2.style.boxShadow = '0px 0px 0px 4px #4f93df';
     setTimeout(() => {
       message.innerHTML = '';
@@ -297,7 +296,7 @@ function onSubmit(){
     }, 3000);
   }
   else if (!radioBtn3Checked){
-    message.innerHTML = "Please choose game mode..."
+    message.innerHTML = "Please choose game mode...";
     radio_section3.style.boxShadow = '0px 0px 0px 4px #4f93df';
     setTimeout(() => {
       message.innerHTML = '';
