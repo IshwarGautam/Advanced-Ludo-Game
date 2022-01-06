@@ -23,6 +23,8 @@ let interval;
 
 let isIntervalCleared;
 let trigger;
+let createInterval;
+let triggerInterval;
 
 //======================================================================
 // This will encounter if a token is outside its initial position or not
@@ -55,7 +57,10 @@ cube.addEventListener("click", ()=>{
   if (!toggle){
     dice_sound.play();
     toggle = 1;
+
+    clearInterval(createInterval);
     trigger = 0;
+    triggerInterval = 0;
 
     color = turn;
     eval(color + "Toggle = " + 1);
@@ -92,23 +97,6 @@ cube.addEventListener("click", ()=>{
 //=========================================================================
 
 function getMove(color, index){
-
-  // don't move if their is no any required cell left
-  // mostly at the situation when token almost reach its home (final position)
-  if ((total_cell - position[color + index]) < random_num) {
-    if (eval(color + 'Toggle')){
-      if (!(random_num === 1 || random_num === 6)) {
-        eval(color+'_sub_region').style.background = "ivory";
-        next++;
-        if (next > total_player - 1) next = 0;
-        turn = PlayerId[next];
-        eval(turn+'_sub_region').style.background = "#556B2F";
-      }
-      toggle = 0;
-      eval(color + "Toggle = " + 0);
-      return;
-    }
-  }
 
   // otherwise, move the token based on the random number of dice rolled
   if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0 ){ 
@@ -151,6 +139,12 @@ function getMove(color, index){
             step_sound.play();
             dx ++;
             position[color+index] ++;
+
+            Cell[color + 'Cell' + index] ++;
+            if (color !== 'red'){
+              if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
+            }
+
             path = position[color+index];
             
             eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
@@ -165,7 +159,7 @@ function getMove(color, index){
             if (isIntervalCleared){
               trigger = 1;
               score += random_num;
-              Cell[color + 'Cell' + index] += random_num;
+
               if (position[color + index] >= total_cell){
                 winner_sound.play();
                 winner_token.push(eval(color + 'Token')[index]);
@@ -177,7 +171,7 @@ function getMove(color, index){
           toggle = 0;
           eval(color + "Toggle = " + 0);
 
-          let createInterval = setInterval(() => {
+          createInterval = setInterval(() => {
             if (trigger === 1){
               color, index = withCoin(color, index);
               color, index = withLadder(color, index);
@@ -197,6 +191,11 @@ function getMove(color, index){
         dx ++;
         position[color+index] ++;
         path = position[color+index];
+
+        Cell[color + 'Cell' + index] ++;
+        if (color !== 'red'){
+          if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
+        }
         
         eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
         eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
@@ -210,7 +209,6 @@ function getMove(color, index){
         if (isIntervalCleared){
           trigger = 1;
           eval(color+'_sub_region').style.background = "ivory";
-          Cell[color + 'Cell' + index] += random_num;
 
           next += 1;
           if (next > total_player-1) {
@@ -234,12 +232,12 @@ function getMove(color, index){
       toggle = 0;
       eval(color + "Toggle = " + 0);
 
-      let createInterval = setInterval(() => {
+      createInterval = setInterval(() => {
         if (trigger === 1){
           color, index = withCoin(color, index);
           color, index = withLadder(color, index);
           color, index = withSnake(color, index);
-          color, index  = resetToken(color,index);
+          color, index = resetToken(color, index);
           clearInterval(createInterval);
         } 
       });
@@ -256,8 +254,14 @@ function getMove(color, index){
             position[color+index] ++;
             path = position[color+index];
             
+            Cell[color + 'Cell' + index] ++;
+            if (color !== 'red'){
+              if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
+            }
+
             eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
             eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+            
             if (dx >= random_num){
               clearInterval(interval);
               isIntervalCleared = 1;
@@ -267,8 +271,7 @@ function getMove(color, index){
             if (isIntervalCleared){
               trigger = 1;
               eval(color+'_sub_region').style.background = "ivory";
-              
-              Cell[color + 'Cell' + index] += random_num;
+
               score+=random_num;
 
               next += 1;
@@ -285,14 +288,13 @@ function getMove(color, index){
                 next--;
                 turn = PlayerId[next];
               }
-
             }
 
           }, 300);
           toggle = 0;
           eval(color + "Toggle = " + 0);
 
-          let createInterval = setInterval(() => {
+          createInterval = setInterval(() => {
             if (trigger === 1){
               color, index = withCoin(color, index);
               color, index = withLadder(color, index);

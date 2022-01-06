@@ -10,6 +10,8 @@ let random_location1;
 let random_location2;
 let random_location3;
 
+let dy;
+let TOTAL_COMMON_CELL = 52;
 
 /**
  * Create our main function to create tokens
@@ -91,17 +93,13 @@ createGame();
 
 
 /**
- * When two tokens are in the same cell, one token returns back to its initial position
+ * When one token comes in the place of another color token, that token return back to its initial position
  *
  * @param {color} - can be red, green, yellow and blue
  * @param {index} - can be 0, 1, 2 and 3 (as each player has 4 tokens)
  */
 function resetToken(color, index){
   checkmate = 0;
-
-  if (color !== 'red'){
-    if (Cell[color + 'Cell' + index]>=52) Cell[color+ 'Cell' + index] = 0;
-  }
 
   if (!(safeCell.includes(Cell[color + 'Cell' + index]))){
 
@@ -110,23 +108,27 @@ function resetToken(color, index){
     });
 
     for (let i=0; i<other_color.length; i++){
-      for (let j=0; j<3; j++){
+      for (let j=0; j<4; j++){
         
         if (Cell[color + 'Cell' + index] === Cell[other_color[i] + 'Cell' + j]){
           
-          // let Interval1 = setInterval(() => {
+          let Interval1 = setInterval(() => {
             killed_sound.play();
-            let dy = Cell[other_color[i] + 'Cell' + j];
+
+            if (Cell[other_color[i] + 'Cell' + j] <= Cell_copy[other_color[i] + 'Cell' + j]){
+              dy = TOTAL_COMMON_CELL - Cell_copy[other_color[i] + 'Cell' + j] + Cell[other_color[i] + 'Cell' + j];
+            }
+            else dy = Cell[other_color[i] + 'Cell' + j];
+
             let interval1 = setInterval(() => {
               dy --;
               position[other_color[i]+j] --;
               path = position[other_color[i]+j];
               eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i] + 'BottomPath')[path] + "px";
               eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i] + 'LeftPath')[path] + "px";
-              if (dy <= 0){
+              if (dy <= Cell_copy[other_color[i] + 'Cell' + j]){
                 clearInterval(interval1);
                 checkmate = 1;
-                dy = 0;
               }
 
               if (checkmate){
@@ -137,14 +139,12 @@ function resetToken(color, index){
                 isOutside[other_color[i]+j] = 0;
                 eval(other_color[i] + "Outside -= " + 1);
 
-                if (!(random_num === 1 || random_num ===6)) {
-                  next--;
-                  if (next < 0) next = total_player - 1;
-                }
               } 
-            }, 300);
-            // clearInterval(Interval1);
-          // }, 1000);
+            }, 100);
+            clearInterval(Interval1);
+
+          }, 300);
+          break;
         }
       }
     }
@@ -192,30 +192,37 @@ function createCoin(mode){
 }
 
 /**
- * Increase token by 12 points if it is in the coin
+ * Increase token by 12 cell if it is in the coin
  *
  * @param {color} - can be red, green, blue, yellow
  * @param {index} - can be 0, 1, 2 and 3
  */
 function withCoin(color, index){
   if (random_location1.includes(Cell[color + 'Cell' + index])){
-    // let Interval2 = setInterval(() => {
+    let Interval2 = setInterval(() => {
       let dz = 0;
       let interval2 = setInterval(() => {
         step_sound.play();
         dz ++;
         position[color+index] ++;
         path = position[color+index];
-        
+
+        Cell[color + 'Cell' + index]++;
+        if (color !== 'red'){
+          if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
+        }
+
         eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
         eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
         if (dz >= 12){
+          triggerInterval = 1;
           clearInterval(interval2);
-          dz = 0;
         }
+
+        if (triggerInterval) color, index = resetToken(color, index);
       }, 300);
-      // clearInterval(Interval2);
-    // }, 1000);
+      clearInterval(Interval2);
+    }, 300);
   }
 
   return color, index;
@@ -278,7 +285,7 @@ function createLadder(mode){
 function withLadder(color, index){
   for (let i=0; i<random_location2.length; i++){
     if (Cell[color + 'Cell' + index] === ladderStartPos[random_location2[i]]){
-      // let Interval3 = setInterval(() => {
+      let Interval3 = setInterval(() => {
         inout_sound.play();
         eval(color + 'Token')[index].style.bottom = redBottomPath[ladderEndPos[random_location2[i]]] + 'px';
         eval(color + 'Token')[index].style.left = redLeftPath[ladderEndPos[random_location2[i]]] + 'px';
@@ -286,9 +293,19 @@ function withLadder(color, index){
 
         Cell[color + 'Cell' + index] = ladderEndPos[random_location2[i]];
         position[color + index] += ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]];
-        // clearInterval(Interval3);
-      // }, 1000);
-      
+
+        clearInterval(Interval3);
+
+        let interval4 = setInterval(() => {
+          color, index = resetToken(color, index);
+        
+          // reset the transition effect
+          eval(color + 'Token')[index].style.transition = "0.5s";
+          clearInterval(interval4);
+        }, 1100);
+
+      }, 300);
+      break;
     } 
   }
   return color, index;
@@ -356,16 +373,26 @@ function createSnake(mode){
 function withSnake(color, index){
   for (let i=0; i<random_location3.length; i++){
     if (Cell[color + 'Cell' + index] === snakeMouthPos[random_location3[i]]){
-      // let Interval4 = setInterval(() => {
+      let Interval4 = setInterval(() => {
         inout_sound.play();
         eval(color + 'Token')[index].style.bottom = redBottomPath[snakeTailPos[random_location3[i]]] + 'px';
         eval(color + 'Token')[index].style.left = redLeftPath[snakeTailPos[random_location3[i]]] + 'px';
-        eval(color + 'Token')[index].style.transition = "0.8s";
+        eval(color + 'Token')[index].style.transition = "1s";
 
         Cell[color + 'Cell' + index] = snakeTailPos[random_location2[i]];
-        position[color + index] -= snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]];
-        // clearInterval(Interval4);
-      // }, 1000);
+        position[color + index] -= (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]]);
+        clearInterval(Interval4);
+
+        let interval5 = setInterval(() => {
+          color, index = resetToken(color, index);
+        
+          // reset the transition effect
+          eval(color + 'Token')[index].style.transition = "0.5s";
+          clearInterval(interval5);
+        }, 1100);
+
+      }, 300);
+      break;
     } 
   }
 
@@ -374,10 +401,34 @@ function withSnake(color, index){
 
 
 // Calling above function to create coin, ladder and snake
-createCoin("easy");
-createLadder("easy");
-createSnake("easy");
+createCoin("medium");
+createLadder("medium");
+createSnake("medium");
 
+
+
+
+
+/**
+ * don't move if their is no any required cell left
+ * mostly at the situation when token almost reach its home (final position)
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
+function checkSpace(color, index){
+
+  if ((total_cell - position[color + index]) < random_num) {
+    if (!(random_num === 1 || random_num === 6)) {
+      eval(color+'_sub_region').style.background = "ivory";
+      next++;
+      if (next > total_player - 1) next = 0;
+      turn = PlayerId[next];
+      eval(turn+'_sub_region').style.background = "#556B2F";
+    }
+    return true;
+  }
+}
 
 
 
