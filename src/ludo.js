@@ -105,40 +105,46 @@ function resetToken(color, index){
 
   if (!(safeCell.includes(Cell[color + 'Cell' + index]))){
 
-    let total_color = PlayerId.filter(function(value){ 
+    let other_color = PlayerId.filter(function(value){ 
       return value != color;
     });
 
-    for (let i=0; i<total_color.length; i++){
+    for (let i=0; i<other_color.length; i++){
       for (let j=0; j<3; j++){
         
-        if (Cell[color + 'Cell' + index] === Cell[total_color[i] + 'Cell' + j]){
-        
-          killed_sound.play();
-          let dx = Cell[total_color[i] + 'Cell' + j];
-          let interval1 = setInterval(() => {
-            dx --;
-            position[total_color[i]+j] --;
-            path = position[total_color[i]+j];
-            eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i] + 'BottomPath')[path] + "px";
-            eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i] + 'LeftPath')[path] + "px";
-            if (dx < 0){
-              clearInterval(interval1);
-              checkmate = 1;
-              dx = 0;
-            }
+        if (Cell[color + 'Cell' + index] === Cell[other_color[i] + 'Cell' + j]){
+          
+          // let Interval1 = setInterval(() => {
+            killed_sound.play();
+            let dy = Cell[other_color[i] + 'Cell' + j];
+            let interval1 = setInterval(() => {
+              dy --;
+              position[other_color[i]+j] --;
+              path = position[other_color[i]+j];
+              eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i] + 'BottomPath')[path] + "px";
+              eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i] + 'LeftPath')[path] + "px";
+              if (dy <= 0){
+                clearInterval(interval1);
+                checkmate = 1;
+                dy = 0;
+              }
 
-            if (checkmate){
-              eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_bottomPos')[j] + 'px';
-              eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_leftPos')[j] + 'px';
-              Cell[total_color[i] + 'Cell' + j] = Cell_copy[total_color[i] + 'Cell' + j];
-              isOutside[total_color[i]+j] = 0;
-              eval(total_color[i] + "Outside -= " + 1);
+              if (checkmate){
+                eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_bottomPos')[j] + 'px';
+                eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_leftPos')[j] + 'px';
 
-              if (position[color + index] < total_cell && (random_num !== 1 || random_num !==6)) next--;
-            }
-            
-          }, 100);
+                Cell[other_color[i] + 'Cell' + j] = Cell_copy[other_color[i] + 'Cell' + j];
+                isOutside[other_color[i]+j] = 0;
+                eval(other_color[i] + "Outside -= " + 1);
+
+                if (!(random_num === 1 || random_num ===6)) {
+                  next--;
+                  if (next < 0) next = total_player - 1;
+                }
+              } 
+            }, 300);
+            // clearInterval(Interval1);
+          // }, 1000);
         }
       }
     }
@@ -152,7 +158,7 @@ function resetToken(color, index){
 //================================================
 
 // This is the cell where coin can be placed
-let coinPlace = [4, 12, 17, 25, 30, 38, 41];
+let coinPlace = [4, 12, 17, 25, 28, 38, 41];
 
 
 /**
@@ -193,23 +199,23 @@ function createCoin(mode){
  */
 function withCoin(color, index){
   if (random_location1.includes(Cell[color + 'Cell' + index])){
-    let Interval = setInterval(() => {
-      dx = 0;
-      let interval = setInterval(() => {
+    // let Interval2 = setInterval(() => {
+      let dz = 0;
+      let interval2 = setInterval(() => {
         step_sound.play();
-        dx ++;
+        dz ++;
         position[color+index] ++;
         path = position[color+index];
         
         eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
         eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-        if (dx >= 12){
-          clearInterval(interval);
-          dx = 0;
+        if (dz >= 12){
+          clearInterval(interval2);
+          dz = 0;
         }
       }, 300);
-      clearInterval(Interval);
-    }, 500);
+      // clearInterval(Interval2);
+    // }, 1000);
   }
 
   return color, index;
@@ -220,12 +226,12 @@ function withCoin(color, index){
 //====================================
 // Let's add ladder in the container
 //====================================
-let ladderBottomPos = [338, 325, 148, 88];
-let ladderLeftPos = [120, 300, 282, 132];
-let ladderRotate = [5, -50, 8, -52];
-let ladderHeight = [200, 160, 115, 165];
+let ladderBottomPos = [338, 330, 148, 112];
+let ladderLeftPos = [120, 300, 282, 135];
+let ladderRotate = [5, -50, 8, -62];
+let ladderHeight = [200, 160, 115, 140];
 
-let ladderStartPos = [15, 27, 42, 1];
+let ladderStartPos = [15, 27, 42, 2];
 let ladderEndPos = [22, 32, 46, 6];
 
 // This is the place where ladder can be placed (this is just index of above array)
@@ -272,13 +278,17 @@ function createLadder(mode){
 function withLadder(color, index){
   for (let i=0; i<random_location2.length; i++){
     if (Cell[color + 'Cell' + index] === ladderStartPos[random_location2[i]]){
-      inout_sound.play();
-      eval(color + 'Token')[index].style.bottom = redBottomPath[ladderEndPos[random_location2[i]]] + 'px';
-      eval(color + 'Token')[index].style.left = redLeftPath[ladderEndPos[random_location2[i]]] + 'px';
-      eval(color + 'Token')[index].style.transition = "0.8s";
+      // let Interval3 = setInterval(() => {
+        inout_sound.play();
+        eval(color + 'Token')[index].style.bottom = redBottomPath[ladderEndPos[random_location2[i]]] + 'px';
+        eval(color + 'Token')[index].style.left = redLeftPath[ladderEndPos[random_location2[i]]] + 'px';
+        eval(color + 'Token')[index].style.transition = "1s";
 
-      Cell[color + 'Cell' + index] = ladderEndPos[random_location2[i]];
-      position[color + index] += ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]];
+        Cell[color + 'Cell' + index] = ladderEndPos[random_location2[i]];
+        position[color + index] += ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]];
+        // clearInterval(Interval3);
+      // }, 1000);
+      
     } 
   }
   return color, index;
@@ -289,13 +299,13 @@ function withLadder(color, index){
 // Let's add snake in the container
 //==================================
 let snakeBottomPos = [335, 390, 120, 85, 315];
-let snakeLeftPos = [50, 290, 0, 200, 470];
-let snakeRotate = [0, 65, -120, 120, 10];
-let snakeWidth = [240, 250, 290, 290, 120];
+let snakeLeftPos = [50, 290, 0, 225, 500];
+let snakeRotate = [0, 65, -120, 110, 10];
+let snakeWidth = [240, 250, 290, 290, 100];
 
 
-let snakeMouthPos = [18, 33, 8, 50, 36];
-let snakeTailPos = [13, 26, 0, 43, 33];
+let snakeMouthPos = [18, 33, 8, 49, 36];
+let snakeTailPos = [13, 26, 0, 43, 34];
 
 // This is the place where snake can be placed (this is just index of above array)
 let snakePlace = [0, 1, 2, 3, 4];
@@ -346,13 +356,16 @@ function createSnake(mode){
 function withSnake(color, index){
   for (let i=0; i<random_location3.length; i++){
     if (Cell[color + 'Cell' + index] === snakeMouthPos[random_location3[i]]){
-      inout_sound.play();
-      eval(color + 'Token')[index].style.bottom = redBottomPath[snakeTailPos[random_location3[i]]] + 'px';
-      eval(color + 'Token')[index].style.left = redLeftPath[snakeTailPos[random_location3[i]]] + 'px';
-      eval(color + 'Token')[index].style.transition = "0.8s";
+      // let Interval4 = setInterval(() => {
+        inout_sound.play();
+        eval(color + 'Token')[index].style.bottom = redBottomPath[snakeTailPos[random_location3[i]]] + 'px';
+        eval(color + 'Token')[index].style.left = redLeftPath[snakeTailPos[random_location3[i]]] + 'px';
+        eval(color + 'Token')[index].style.transition = "0.8s";
 
-      Cell[color + 'Cell' + index] = snakeTailPos[random_location2[i]];
-      position[color + index] -= snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]];
+        Cell[color + 'Cell' + index] = snakeTailPos[random_location2[i]];
+        position[color + index] -= snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]];
+        // clearInterval(Interval4);
+      // }, 1000);
     } 
   }
 

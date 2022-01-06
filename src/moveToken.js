@@ -22,6 +22,7 @@ let winner_token = [];
 let interval;
 
 let isIntervalCleared;
+let trigger;
 
 //======================================================================
 // This will encounter if a token is outside its initial position or not
@@ -54,6 +55,7 @@ cube.addEventListener("click", ()=>{
   if (!toggle){
     dice_sound.play();
     toggle = 1;
+    trigger = 0;
 
     color = turn;
     eval(color + "Toggle = " + 1);
@@ -161,8 +163,9 @@ function getMove(color, index){
             }
 
             if (isIntervalCleared){
+              trigger = 1;
               score += random_num;
-
+              Cell[color + 'Cell' + index] += random_num;
               if (position[color + index] >= total_cell){
                 winner_sound.play();
                 winner_token.push(eval(color + 'Token')[index]);
@@ -174,12 +177,15 @@ function getMove(color, index){
           toggle = 0;
           eval(color + "Toggle = " + 0);
 
-          Cell[color + 'Cell' + index] += random_num;
-          color, index  = resetToken(color,index); 
-
-          color, index = withCoin(color, index);
-          color, index = withLadder(color, index);
-          color, index = withSnake(color, index); 
+          let createInterval = setInterval(() => {
+            if (trigger === 1){
+              color, index = withCoin(color, index);
+              color, index = withLadder(color, index);
+              color, index = withSnake(color, index);
+              color, index  = resetToken(color,index);
+              clearInterval(createInterval);
+            } 
+          });
         }
       }
     }, {once:true});    
@@ -202,7 +208,9 @@ function getMove(color, index){
         }
 
         if (isIntervalCleared){
+          trigger = 1;
           eval(color+'_sub_region').style.background = "ivory";
+          Cell[color + 'Cell' + index] += random_num;
 
           next += 1;
           if (next > total_player-1) {
@@ -226,12 +234,16 @@ function getMove(color, index){
       toggle = 0;
       eval(color + "Toggle = " + 0);
 
-      Cell[color + 'Cell' + index] += random_num;
-      color, index = resetToken(color,index);
+      let createInterval = setInterval(() => {
+        if (trigger === 1){
+          color, index = withCoin(color, index);
+          color, index = withLadder(color, index);
+          color, index = withSnake(color, index);
+          color, index  = resetToken(color,index);
+          clearInterval(createInterval);
+        } 
+      });
 
-      color, index = withCoin(color, index);
-      color, index = withLadder(color, index);
-      color, index = withSnake(color, index);
     }
   }
   else if (eval(color + "Outside") >= 2 ){
@@ -253,8 +265,10 @@ function getMove(color, index){
             }
 
             if (isIntervalCleared){
+              trigger = 1;
               eval(color+'_sub_region').style.background = "ivory";
-
+              
+              Cell[color + 'Cell' + index] += random_num;
               score+=random_num;
 
               next += 1;
@@ -278,12 +292,15 @@ function getMove(color, index){
           toggle = 0;
           eval(color + "Toggle = " + 0);
 
-          color, index = withCoin(color, index);
-          color, index = withLadder(color, index);
-          color, index = withSnake(color, index);
-
-          Cell[color + 'Cell' + index] += random_num;
-          color, index  = resetToken(color,index);
+          let createInterval = setInterval(() => {
+            if (trigger === 1){
+              color, index = withCoin(color, index);
+              color, index = withLadder(color, index);
+              color, index = withSnake(color, index);
+              color, index  = resetToken(color,index);
+              clearInterval(createInterval);
+            } 
+          });
         }
       }
     }, {once:true});  
