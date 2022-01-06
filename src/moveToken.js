@@ -162,24 +162,24 @@ function getMove(color, index){
 
             if (isIntervalCleared){
               score += random_num;
-              console.log(color + "=" + position[color+index]);
+
               if (position[color + index] >= total_cell){
                 winner_sound.play();
                 winner_token.push(eval(color + 'Token')[index]);
               }
               turn = PlayerId[next];
-
-              // color, index = withCoin(color, index);
-              // color, index = withLadder(color, index);
-              // color, index = withSnake(color, index);
-
-              // Cell[color + 'Cell' + index] += random_num;
-              // color, index  = resetToken(color,index);  
             }
           }, 300);
 
           toggle = 0;
           eval(color + "Toggle = " + 0);
+
+          Cell[color + 'Cell' + index] += random_num;
+          color, index  = resetToken(color,index); 
+
+          color, index = withCoin(color, index);
+          color, index = withLadder(color, index);
+          color, index = withSnake(color, index); 
         }
       }
     }, {once:true});    
@@ -203,7 +203,7 @@ function getMove(color, index){
 
         if (isIntervalCleared){
           eval(color+'_sub_region').style.background = "ivory";
-          console.log(color + "=" + position[color+index]);
+
           next += 1;
           if (next > total_player-1) {
             next = 0;
@@ -219,18 +219,19 @@ function getMove(color, index){
             next--;
             turn = PlayerId[next];
 
-            // color, index = withCoin(color, index);
-            // color, index = withLadder(color, index);
-            // color, index = withSnake(color, index);
-
-            // Cell[color + 'Cell' + index] += random_num;
-            // color, index  = resetToken(color,index);
           }
         }
 
       }, 300);
       toggle = 0;
       eval(color + "Toggle = " + 0);
+
+      Cell[color + 'Cell' + index] += random_num;
+      color, index = resetToken(color,index);
+
+      color, index = withCoin(color, index);
+      color, index = withLadder(color, index);
+      color, index = withSnake(color, index);
     }
   }
   else if (eval(color + "Outside") >= 2 ){
@@ -255,7 +256,7 @@ function getMove(color, index){
               eval(color+'_sub_region').style.background = "ivory";
 
               score+=random_num;
-              console.log(color + "=" + position[color+index]);
+
               next += 1;
               if (next > total_player-1) {
                 next = 0;
@@ -264,10 +265,6 @@ function getMove(color, index){
 
               eval(turn+'_sub_region').style.background = "#556B2F";
 
-              // color, index = withCoin(color, index);
-              // color, index = withLadder(color, index);
-              // color, index = withSnake(color, index);
-
               if (position[color + index] >= total_cell){
                 winner_sound.play();
                 winner_token.push(eval(color + 'Token')[index]);
@@ -275,13 +272,18 @@ function getMove(color, index){
                 turn = PlayerId[next];
               }
 
-              // Cell[color + 'Cell' + index] += random_num;
-              // color, index  = resetToken(color,index);
             }
 
           }, 300);
           toggle = 0;
           eval(color + "Toggle = " + 0);
+
+          color, index = withCoin(color, index);
+          color, index = withLadder(color, index);
+          color, index = withSnake(color, index);
+
+          Cell[color + 'Cell' + index] += random_num;
+          color, index  = resetToken(color,index);
         }
       }
     }, {once:true});  

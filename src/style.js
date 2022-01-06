@@ -1,6 +1,8 @@
 //==================================================
 // Styling the Main container that wrap all elements
 //==================================================
+
+// 1. styling main game playing container
 main_wrapper.style.maxWidth = "1200px";
 main_wrapper.style.margin = "0 auto";
 // main_wrapper.style.display = "none";
@@ -10,6 +12,7 @@ container.style.margin = "10px auto";
 container.style.position = "relative";
 container.style.background = "ivory";
 
+//2. styling start page where user input their details
 start_page.style.display = "none";
 start_page.style.width = "400px";
 start_page.style.background = "rgb(247,247,247)";
@@ -26,24 +29,10 @@ note.style.color = "#186";
 
 playerName.style.paddingBottom = "12px";
 
-loading.style.background = `url(./images/loading.gif)`;
-loading.style.width = "332px";
-loading.style.height = "150px";
-loading.style.backgroundSize = "150px";
-loading.style.position = "absolute";
-loading.style.backgroundRepeat = "no-repeat";
-loading.style.marginLeft = "130px";
-loading.style.display = "none";
-
 which_color.style.fontSize = "20px";
 which_color.style.textDecoration = "underline";
 game_modes.style.fontSize = "22px";
 game_modes.style.color = "#91f";
-
-footer.style.fontSize = "12px";
-footer.style.fontWeight = "bold";
-footer.style.fontFamily = "serif, Georgia, 'Times New Roman', Times";
-footer.style.padding = "6px 0px";
 
 for (let i=0; i<input.length; i++){
   input[i].style.fontSize = "25px";
@@ -54,22 +43,10 @@ for (let i=0; i<input.length; i++){
   input[i].style.margin = "10px 0px";
 }
 
-
-red_input.style.background = "rgba(247, 22, 45,0.6)";
-red_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
-red_input.style.boxShadow = "0px 0px 4px rgba(247, 22, 45,0.9),inset 0px 0px 10px rgba(247, 22, 45,0.7)";
-
-green_input.style.background = "rgba(0,227,76,0.6)";
-green_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
-green_input.boxShadow = "0px 0px 4px rgba(0, 227, 76,0.9),inset 0px 0px 10px rgba(0, 227, 76,0.7)";
-
-yellow_input.style.background = "rgba(247, 187, 5,0.6)";
-yellow_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
-yellow_input.style.boxShadow = "0px 0px 4px rgba(247, 187, 5,0.9),inset 0px 0px 10px rgba(247, 187, 5,0.7)";
-
-blue_input.style.background = "rgba(4, 195, 201, 0.6)";
-blue_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
-blue_input.style.boxShadow = "0px 0px 4px rgba(4, 195, 201,0.9),inset 0px 0px 10px rgba(4, 195, 201,0.7)";
+footer.style.fontSize = "12px";
+footer.style.fontWeight = "bold";
+footer.style.fontFamily = "serif, Georgia, 'Times New Roman', Times";
+footer.style.padding = "6px 0px";
 
 playBtn.style.border = "0.5px solid black";
 playBtn.style.fontSize = "25px";
@@ -88,36 +65,74 @@ playBtn.onclick = function(){
   playBtn.style.background = "#0f0";
 };
 
+// 3. Let create loading after user press play button
+loading.style.background = `url(./images/loading.gif)`;
+loading.style.width = "332px";
+loading.style.height = "150px";
+loading.style.backgroundSize = "150px";
+loading.style.position = "absolute";
+loading.style.backgroundRepeat = "no-repeat";
+loading.style.marginLeft = "130px";
+loading.style.display = "none";
+
+
+// 4. Styling red input field
+red_input.style.background = "rgba(247, 22, 45,0.6)";
+red_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+red_input.style.boxShadow = "0px 0px 4px rgba(247, 22, 45,0.9),inset 0px 0px 10px rgba(247, 22, 45,0.7)";
+
+// 5. Styling green input field
+green_input.style.background = "rgba(0,227,76,0.6)";
+green_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+green_input.boxShadow = "0px 0px 4px rgba(0, 227, 76,0.9),inset 0px 0px 10px rgba(0, 227, 76,0.7)";
+
+// 6. Styling yelow input field
+yellow_input.style.background = "rgba(247, 187, 5,0.6)";
+yellow_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+yellow_input.style.boxShadow = "0px 0px 4px rgba(247, 187, 5,0.9),inset 0px 0px 10px rgba(247, 187, 5,0.7)";
+
+// 7. Styling blue input field
+blue_input.style.background = "rgba(4, 195, 201, 0.6)";
+blue_input.style.border = "0.5px solid rgba(0,0,0,0.2)";
+blue_input.style.boxShadow = "0px 0px 4px rgba(4, 195, 201,0.9),inset 0px 0px 10px rgba(4, 195, 201,0.7)";
+
+// 8. Styling top part of container
 top_part.style.width = "100%";
 top_part.style.height = "40%";
 top_part.style.display = "flex";
 
+// 9. Styling middle part of container
 middle_part.style.width = "100%";
 middle_part.style.height = "20%";
 middle_part.style.display = "flex";
 
+// 10. Styling bottom part of container
 bottom_part.style.width = "100%";
 bottom_part.style.height = "40%";
 bottom_part.style.display = "flex";
 
+// 11. Styling container inside green region
 initial_green_region.style.width = "40%";
 initial_green_region.style.height = "100%";
 initial_green_region.style.alignItems = "center";
 initial_green_region.style.justifyContent = "center";
 initial_green_region.style.display = "flex";
 
+// 12. Styling container inside yellow region
 initial_yellow_region.style.width = "40%";
 initial_yellow_region.style.height = "100%";
 initial_yellow_region.style.alignItems = "center";
 initial_yellow_region.style.justifyContent = "center";
 initial_yellow_region.style.display = "flex";
 
+// 13. Styling container inside red region
 initial_red_region.style.width = "40%";
 initial_red_region.style.height = "100%";
 initial_red_region.style.alignItems = "center";
 initial_red_region.style.justifyContent = "center";
 initial_red_region.style.display = "flex";
 
+// 14. Styling container inside blue region
 initial_blue_region.style.width = "40%";
 initial_blue_region.style.height = "100%";
 initial_blue_region.style.alignItems = "center";
@@ -127,6 +142,7 @@ initial_blue_region.style.display = "flex";
 between_green_yellow.style.width = "20%";
 between_green_yellow.style.height = "100%";
 
+// 15. Styling cell that are in between two color initial region
 between_red_blue.style.width = "20%";
 between_red_blue.style.height = "100%";
 
@@ -139,7 +155,7 @@ between_yellow_blue.style.height = "100%";
 winner_region.style.width = "20%";
 winner_region.style.height = "100%";
 
-// Color boxes
+// 16. Styling Color boxes
 for (let i=0; i<green.length; i++){
   green[i].style.background = "#84c21f";
   yellow[i].style.background = "#f6c700";
@@ -151,6 +167,7 @@ for (let i=0; i<white.length; i++){
   white[i].style.background = "#ffffff";
 }
 
+// 17. Styling inner container of each region
 green_sub_region.style.width = "70%";
 green_sub_region.style.height = "70%";
 
@@ -220,6 +237,7 @@ for(let i=0;i<icon.length;i++){
   icon[i].style.margin = "3px";
 }
 
+// 18. Styling final region for each token
 triangle_container.style.width = "100%";
 triangle_container.style.height = "100%";
 triangle_container.style.position = "relative";
@@ -260,7 +278,7 @@ yellow_final_area.style.position = "absolute";
 yellow_final_area.style.right = "5px";
 yellow_final_area.style.top = "0";
 
-
+// 19. Styling text inside final region
 home.style.width = "50%";
 home.style.height = "50%";
 home.style.borderRadius = "50%";
@@ -275,7 +293,7 @@ text.style.margin = "20px 5px";
 text.style.fontSize = "8px";
 text.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 
-// Styling 3d dice
+// 20. Styling 3d dice
 dice_container.style.width = "200px";
 dice_container.style.height = "100px";
 dice_container.style.marginTop = "-420px";
@@ -323,6 +341,7 @@ dice_title.style.fontSize = "30px";
 dice_title.style.textDecoration = "underline";
 dice_title.style.color = "#fc2";
 
+// 21. Styling player name
 player1.style.color = "ivory";
 player1.style.width = "350px";
 player1.style.textAlign = "right";

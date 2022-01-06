@@ -1,23 +1,30 @@
+//Let's initialize and declare some variables
 let isRolled;
+
 let redToken = [];
 let greenToken = [];
 let blueToken = [];
 let yellowToken = [];
-let tokenId = [];
-let unique_id = '';
 
 let random_location1;
 let random_location2;
 let random_location3;
 
-let unique_id_collection = [];
-// Create our main function
-function playGame(background, bottomPos, leftPos, id, unique_id){
+
+/**
+ * Create our main function to create tokens
+ *
+ * @param {background} - can be red, green, yellow and blue
+ * @param {bottomPos} - bottom position for each token
+ * @param {leftPos} - left position for each token
+ * @param {id} - id's for each token 
+ */
+function playGame(background, bottomPos, leftPos, id){
+
   this.background = background;
   this.bottomPos = bottomPos;
   this.leftPos = leftPos;
   this.id = id;
-  this.unique_id = unique_id;
   
   // create each token
   this.createToken = function(){
@@ -50,7 +57,6 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
     else if (this.id === 'yellow') yellowToken.push(this.token);
     else if (this.id === 'blue') blueToken.push(this.token);
    
-    unique_id_collection.push(this.unique_id);
     container.appendChild(this.token);
   };
 
@@ -60,22 +66,22 @@ function playGame(background, bottomPos, leftPos, id, unique_id){
 function createGame(){
   for (let i=0; i<Red_bottomPos.length; i++){
     if (PlayerId.includes("red")){
-      const obj1 = new playGame('#800000', Red_bottomPos[i], Red_leftPos[i], "red", "red"+i);
+      const obj1 = new playGame('#800000', Red_bottomPos[i], Red_leftPos[i], "red");
       obj1.createToken();
     }
   
     if (PlayerId.includes("green")){
-      const obj2 = new playGame('#006400', Green_bottomPos[i], Green_leftPos[i], "green", "green"+i);
+      const obj2 = new playGame('#006400', Green_bottomPos[i], Green_leftPos[i], "green");
       obj2.createToken();
     }
     
     if (PlayerId.includes("yellow")){
-      const obj3 = new playGame('#FF8C00', Yellow_bottomPos[i], Yellow_leftPos[i], "yellow", "yellow"+i);
+      const obj3 = new playGame('#FF8C00', Yellow_bottomPos[i], Yellow_leftPos[i], "yellow");
       obj3.createToken();
     }
    
     if (PlayerId.includes("blue")){
-      const obj4 = new playGame('#800080', Blue_bottomPos[i], Blue_leftPos[i], "blue", "blue"+i);
+      const obj4 = new playGame('#800080', Blue_bottomPos[i], Blue_leftPos[i], "blue");
       obj4.createToken();
     } 
   }  
@@ -83,8 +89,77 @@ function createGame(){
 
 createGame();
 
+
+/**
+ * When two tokens are in the same cell, one token returns back to its initial position
+ *
+ * @param {color} - can be red, green, yellow and blue
+ * @param {index} - can be 0, 1, 2 and 3 (as each player has 4 tokens)
+ */
+function resetToken(color, index){
+  checkmate = 0;
+
+  if (color !== 'red'){
+    if (Cell[color + 'Cell' + index]>=52) Cell[color+ 'Cell' + index] = 0;
+  }
+
+  if (!(safeCell.includes(Cell[color + 'Cell' + index]))){
+
+    let total_color = PlayerId.filter(function(value){ 
+      return value != color;
+    });
+
+    for (let i=0; i<total_color.length; i++){
+      for (let j=0; j<3; j++){
+        
+        if (Cell[color + 'Cell' + index] === Cell[total_color[i] + 'Cell' + j]){
+        
+          killed_sound.play();
+          let dx = Cell[total_color[i] + 'Cell' + j];
+          let interval1 = setInterval(() => {
+            dx --;
+            position[total_color[i]+j] --;
+            path = position[total_color[i]+j];
+            eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i] + 'BottomPath')[path] + "px";
+            eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i] + 'LeftPath')[path] + "px";
+            if (dx < 0){
+              clearInterval(interval1);
+              checkmate = 1;
+              dx = 0;
+            }
+
+            if (checkmate){
+              eval(total_color[i] + 'Token')[j].style.bottom = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_bottomPos')[j] + 'px';
+              eval(total_color[i] + 'Token')[j].style.left = eval(total_color[i].charAt(0).toUpperCase() + total_color[i].slice(1) + '_leftPos')[j] + 'px';
+              Cell[total_color[i] + 'Cell' + j] = Cell_copy[total_color[i] + 'Cell' + j];
+              isOutside[total_color[i]+j] = 0;
+              eval(total_color[i] + "Outside -= " + 1);
+
+              if (position[color + index] < total_cell && (random_num !== 1 || random_num !==6)) next--;
+            }
+            
+          }, 100);
+        }
+      }
+    }
+  }
+  return color, index;
+}
+
+
+//===============================================
+// Let's add coin in the game and implement it
+//================================================
+
+// This is the cell where coin can be placed
 let coinPlace = [4, 12, 17, 25, 30, 38, 41];
 
+
+/**
+ * Add coins in the container
+ *
+ * @param {mode} - can be easy, medium and hard
+ */
 function createCoin(mode){
  
   if (mode === 'easy'){
@@ -110,13 +185,58 @@ function createCoin(mode){
   } 
 }
 
+/**
+ * Increase token by 12 points if it is in the coin
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
+function withCoin(color, index){
+  if (random_location1.includes(Cell[color + 'Cell' + index])){
+    let Interval = setInterval(() => {
+      dx = 0;
+      let interval = setInterval(() => {
+        step_sound.play();
+        dx ++;
+        position[color+index] ++;
+        path = position[color+index];
+        
+        eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
+        eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+        if (dx >= 12){
+          clearInterval(interval);
+          dx = 0;
+        }
+      }, 300);
+      clearInterval(Interval);
+    }, 500);
+  }
+
+  return color, index;
+}
+
+
+
+//====================================
+// Let's add ladder in the container
+//====================================
 let ladderBottomPos = [338, 325, 148, 88];
 let ladderLeftPos = [120, 300, 282, 132];
 let ladderRotate = [5, -50, 8, -52];
 let ladderHeight = [200, 160, 115, 165];
 
+let ladderStartPos = [15, 27, 42, 1];
+let ladderEndPos = [22, 32, 46, 6];
+
+// This is the place where ladder can be placed (this is just index of above array)
 let ladderPlace = [0, 1, 2, 3];
 
+
+/**
+ * Add ladders in the container
+ *
+ * @param {mode} - can be easy, medium and hard
+ */
 function createLadder(mode){
   if (mode === 'easy'){
     random_location2 = getRandomFromArray(3, ladderPlace, ladderPlace.length);
@@ -142,13 +262,50 @@ function createLadder(mode){
   } 
 }
 
+
+/**
+ * Increase token position with ladder
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
+function withLadder(color, index){
+  for (let i=0; i<random_location2.length; i++){
+    if (Cell[color + 'Cell' + index] === ladderStartPos[random_location2[i]]){
+      inout_sound.play();
+      eval(color + 'Token')[index].style.bottom = redBottomPath[ladderEndPos[random_location2[i]]] + 'px';
+      eval(color + 'Token')[index].style.left = redLeftPath[ladderEndPos[random_location2[i]]] + 'px';
+      eval(color + 'Token')[index].style.transition = "0.8s";
+
+      Cell[color + 'Cell' + index] = ladderEndPos[random_location2[i]];
+      position[color + index] += ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]];
+    } 
+  }
+  return color, index;
+}
+
+
+//==================================
+// Let's add snake in the container
+//==================================
 let snakeBottomPos = [335, 390, 120, 85, 315];
 let snakeLeftPos = [50, 290, 0, 200, 470];
 let snakeRotate = [0, 65, -120, 120, 10];
 let snakeWidth = [240, 250, 290, 290, 120];
 
+
+let snakeMouthPos = [18, 33, 8, 50, 36];
+let snakeTailPos = [13, 26, 0, 43, 33];
+
+// This is the place where snake can be placed (this is just index of above array)
 let snakePlace = [0, 1, 2, 3, 4];
 
+
+/**
+ * Add snakes in the container
+ *
+ * @param {mode} - can be easy, medium and hard
+ */
 function createSnake(mode){
 
   if (mode === 'easy'){
@@ -177,70 +334,45 @@ function createSnake(mode){
   }
 }
 
-// createCoin("easy");
-// createLadder("easy");
-// createSnake("easy");
 
 
-function withCoin(color, index){
-  if (random_location1.includes(position[color + index])){
-    let Interval = setInterval(() => {
-      dx = 0;
-      let interval = setInterval(() => {
-        step_sound.play();
-        dx ++;
-        position[color+index] ++;
-        path = position[color+index];
-        
-        eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-        eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-        if (dx >= 12){
-          clearInterval(interval);
-          dx = 0;
-        }
-      }, 300);
-      clearInterval(Interval);
-    }, 500);
-    
-  }
-  return (color, index);
-}
 
-let snakeMouthPos = [18, 33, 8, 50, 36];
-let snakeTailPos = [13, 26, 0, 43, 33];
-let ladderStartPos = [15, 27, 42, 1];
-let ladderEndPos = [22, 32, 46, 6];
-
+/**
+ * Decrease token position with snake
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
 function withSnake(color, index){
   for (let i=0; i<random_location3.length; i++){
-    if (position[color + index] === snakeMouthPos[random_location3[i]]){
+    if (Cell[color + 'Cell' + index] === snakeMouthPos[random_location3[i]]){
       inout_sound.play();
       eval(color + 'Token')[index].style.bottom = redBottomPath[snakeTailPos[random_location3[i]]] + 'px';
       eval(color + 'Token')[index].style.left = redLeftPath[snakeTailPos[random_location3[i]]] + 'px';
       eval(color + 'Token')[index].style.transition = "0.8s";
 
-      position[color + index] = snakeTailPos[random_location3[i]];
+      Cell[color + 'Cell' + index] = snakeTailPos[random_location2[i]];
+      position[color + index] -= snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]];
     } 
   }
-  return (color, index);
-}
 
-function withLadder(color, index){
-  for (let i=0; i<random_location2.length; i++){
-    if (position[color + index] === ladderStartPos[random_location2[i]]){
-      inout_sound.play();
-      eval(color + 'Token')[index].style.bottom = redBottomPath[ladderEndPos[random_location2[i]]] + 'px';
-      eval(color + 'Token')[index].style.left = redLeftPath[ladderEndPos[random_location2[i]]] + 'px';
-      eval(color + 'Token')[index].style.transition = "0.8s";
-
-      position[color + index] = ladderEndPos[random_location2[i]];
-    } 
-  }
-  return (color, index);
+  return color, index;
 }
 
 
+// Calling above function to create coin, ladder and snake
+createCoin("easy");
+createLadder("easy");
+createSnake("easy");
+
+
+
+
+
+
+//=====================================================================
 // validation of user input and the action after clicking play button
+//=====================================================================
 function onSubmit(){
   const redPlayerName = red_input.value;
   const greenPlayerName = green_input.value;
