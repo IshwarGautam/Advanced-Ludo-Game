@@ -421,3 +421,57 @@ high_score_info.style.textAlign = "left";
 high_score_info.style.color = "ivory";
 high_score_info.style.fontSize = "20px";
 high_score_info.style.fontFamily = "'Times New Roman', Times, serif, Georgia";
+
+
+// 24. For styling end screen
+end_screen.style.width = "400px";
+end_screen.style.height = "340px";
+end_screen.style.background = "#E6E6FA";
+end_screen.style.position = "absolute";
+end_screen.style.marginLeft = "400px";
+end_screen.style.marginTop = "-200px";
+end_screen.style.zIndex = "9999";
+end_screen.style.borderRadius = "15px";
+end_screen.style.display = "none";
+
+crown_image.style.background = `url('./images/crown.png')`;
+crown_image.style.width = "240px";
+crown_image.style.height = "240px";
+crown_image.style.marginTop = "-50px";
+crown_image.style.marginLeft = "70px";
+
+winner_color.style.fontSize = "35px";
+winner_color.style.fontWeight = "bold";
+winner_color.style.width = "310px";
+winner_color.style.fontFamily = "Times, 'Times New Roman', serif, Georgia";
+winner_color.style.marginLeft = "43px";
+winner_color.style.marginTop = "-20px";
+winner_color.style.textAlign = "center";
+winner_color.style.boxShadow = "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)";
+
+restart_button.style.border = "0.5px solid black";
+restart_button.style.fontSize = "25px";
+restart_button.style.padding = "5px 15px";
+restart_button.style.borderRadius = "5px";
+restart_button.style.cursor = "pointer";
+restart_button.style.marginLeft = "140px";
+restart_button.style.background = "green";
+restart_button.style.color = "ivory";
+restart_button.style.textDecoration = "none";
+
+restart_button.onmouseover = function(){
+  restart_button.style.background = "#fc2";
+  restart_button.style.color = "black";
+};
+restart_button.onmouseout = function(){
+  restart_button.style.background = "green";
+  restart_button.style.color = "ivory";
+};
+restart_button.onclick = function(){
+  restart_button.style.background = "#111";
+  restart_button.style.color = "ivory";
+};
+
+
+final_message.style.fontSize = "20px";
+final_message.style.marginLeft = "65px";

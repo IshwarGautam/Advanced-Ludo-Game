@@ -13,6 +13,16 @@ let random_location3;
 let dy;
 let TOTAL_COMMON_CELL = 52;
 
+let redPointPerTurn = [0, 0, 0, 0];
+let greenPointPerTurn = [0, 0, 0, 0];
+let bluePointPerTurn = [0, 0, 0, 0];
+let yellowPointPerTurn = [0, 0, 0, 0];
+
+let numberPerTurn = 0;
+let firstTurn = 0;
+let level = "medium";
+let isAgain = 1;
+let index2;
 /**
  * Create our main function to create tokens
  *
@@ -154,6 +164,11 @@ function resetToken(color, index){
                   localStorage.setItem("highScore", highScore);
                   high_score_value.innerHTML = highScore;
                 }
+
+                if (random_num === 1 || random_num === 6){
+                  eval(color + 'PointPerTurn')[index] = 0;
+                }
+                
               } 
             }, 100);
             clearInterval(Interval1);
@@ -243,7 +258,13 @@ function withCoin(color, index){
           }
         }
 
-        if (triggerInterval) color, index = resetToken(color, index);
+        if (triggerInterval) {
+          color, index = resetToken(color, index);
+
+          if (random_num === 1 || random_num === 6){
+            eval(color + 'PointPerTurn')[index] += 12;
+          }
+        }
       }, 300);
       clearInterval(Interval2);
     }, 300);
@@ -335,6 +356,10 @@ function withLadder(color, index){
           // reset the transition effect
           eval(color + 'Token')[index].style.transition = "0.5s";
           clearInterval(interval4);
+
+          if (random_num === 1 || random_num === 6){
+            eval(color + 'PointPerTurn')[index] += (ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]]);
+          }
         }, 1100);
 
       }, 300);
@@ -432,6 +457,10 @@ function withSnake(color, index){
           // reset the transition effect
           eval(color + 'Token')[index].style.transition = "0.5s";
           clearInterval(interval5);
+
+          if (random_num === 1 || random_num === 6){
+            eval(color + 'PointPerTurn')[index] -= (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]]);
+          }
         }, 1100);
 
       }, 300);
@@ -449,31 +478,117 @@ createLadder("medium");
 createSnake("medium");
 
 
-
-
-
 /**
- * don't move if their is no any required cell left
- * mostly at the situation when token almost reach its home (final position)
+ * The changes/position for token get reset if he/she get 1 or 6 continuously for 3 times
  *
- * @param {color} - can be red, green, blue, yellow
- * @param {index} - can be 0, 1, 2 and 3
+ * @param {color} - can be red, green, yellow and blue
  */
-function checkSpace(color, index){
+function mediumLevel(color){
 
-  if ((total_cell - position[color + index]) < random_num) {
-    if (!(random_num === 1 || random_num === 6)) {
-      eval(color+'_sub_region').style.background = "ivory";
-      next++;
-      if (next > total_player - 1) next = 0;
-      turn = PlayerId[next];
-      eval(turn+'_sub_region').style.background = "#556B2F";
-    }
-    return true;
+  for (let i=0; i<4; i++){
+  
+    if (eval(color + 'PointPerTurn')[i] > 0){
+      
+      let interval6 = setInterval(() => {
+      
+        eval(color + 'PointPerTurn')[i]--;
+        step_sound.play();
+        position[color+i] --;
+        Cell[color + 'Cell' + i]--;
+        if (Cell[color + 'Cell' + i] < 0){
+          Cell[color + 'Cell' + i] = TOTAL_COMMON_CELL - 1;
+        }
+
+        path = position[color+i];
+    
+        eval(color + 'Token')[i].style.bottom = eval(color + 'BottomPath')[path] + "px";
+        eval(color + 'Token')[i].style.left = eval(color + 'LeftPath')[path] + "px";
+    
+        eval(color + 'Score -=' + 1);
+        eval(color + "_score").innerHTML = eval(color + 'Score');
+    
+        if (eval(color + 'PointPerTurn')[i] <= 0){
+          clearInterval(interval6);
+        }
+      }, 300);
+    }  
   }
+
+  for (let j=0; j<firstTurn; j++){
+    do{
+      if (position[color+index2] === 0 && isOutside[color+index2]  === 1){
+        inout_sound.play();
+        eval(color + 'Token')[index2].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[index2] + 'px';
+        eval(color + 'Token')[index2].style.left = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_leftPos')[index2] + 'px';
+        isAgain = 0;
+
+        Cell[color + 'Cell' + index2] = Cell_copy[color + 'Cell' + index2];
+        isOutside[color+index2] = 0;
+        eval(color + "Outside -= " + 1);
+
+        eval(color + 'Score -=' + 5);
+        eval(color + "_score").innerHTML = eval(color + 'Score');
+
+        index2++;
+
+        if (index2 === 4) break;
+      }
+    }while(isAgain);
+  }
+
+  next += 1;
+  if (next > total_player-1) {
+    next = 0;
+  }
+  eval(color+'_sub_region').style.background = "ivory";
+  turn = PlayerId[next];
+  eval(turn+'_sub_region').style.background = "#556B2F";
+  toggle = 0;
+  eval(color + "Toggle = " + 0);
+
+  numberPerTurn = 0;
+  firstTurn = 0;
+
+  return turn;
 }
 
 
+/**
+ * All tokens that have not reached their home come back to initial position if he/she get 1 or 6 continuously for 3 times
+ *
+ * @param {color} - can be red, green, yellow and blue
+ */
+function hardLevel(color){
+  for (let i=0; i<4; i++){
+    if (position[color + i] < total_cell){
+      inout_sound.play();
+      eval(color + 'Token')[i].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[i] + 'px';
+      eval(color + 'Token')[i].style.left = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_leftPos')[i] + 'px';
+
+      position[color + i] = 0;
+      Cell[color + 'Cell' + i] = Cell_copy[color + 'Cell' + i];
+      isOutside[color + i] = 0;
+      eval(color + "Outside -= " + 1);
+    }
+  }
+  eval(color + 'Score +=' + (total_cell * winner_token[color]));
+  eval(color + "_score").innerHTML = eval(color + 'Score');
+
+  next += 1;
+  if (next > total_player-1) {
+    next = 0;
+  }
+  eval(color+'_sub_region').style.background = "ivory";
+  turn = PlayerId[next];
+  eval(turn+'_sub_region').style.background = "#556B2F";
+  toggle = 0;
+  eval(color + "Toggle = " + 0);
+
+  numberPerTurn = 0;
+  firstTurn = 0;
+
+  return turn;
+}
 
 
 

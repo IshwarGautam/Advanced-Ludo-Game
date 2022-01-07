@@ -17,9 +17,7 @@ let greenToggle = 0;
 let yellowToggle = 0;
 let blueToggle = 0;
 
-let winner_token = [];
 let interval;
-
 let isIntervalCleared;
 let trigger;
 let createInterval;
@@ -29,6 +27,10 @@ let redScore = 0;
 let greenScore = 0;
 let blueScore = 0;
 let yellowScore = 0;
+
+let winner_token = {
+  'red':0, 'green':0, 'yellow':0, 'blue':0
+}
 
 //======================================================================
 // This will encounter if a token is outside its initial position or not
@@ -67,6 +69,8 @@ cube.addEventListener("click", ()=>{
     dice_sound.play();
     toggle = 1;
 
+    index2 = 0;
+
     clearInterval(createInterval);
     trigger = 0;
     triggerInterval = 0;
@@ -92,8 +96,16 @@ cube.addEventListener("click", ()=>{
     cube.classList.add(showClass);
     currentClass = showClass;
     
-    for (let i=0; i<4; i++) getMove(color, i);
-    // getMove(color, 0);
+    if (random_num === 1 || random_num === 6) numberPerTurn++;
+
+    if (numberPerTurn === 3 && level !== 'easy'){
+      if (level === 'medium') turn = mediumLevel(color);
+      else if (level === 'hard') turn = hardLevel(color);
+    }
+    else{
+     for (let i=0; i<4; i++) getMove(color, i);
+    }
+
   }
   else{
     isPlayed.style.display = "block";
@@ -108,7 +120,7 @@ cube.addEventListener("click", ()=>{
 function getMove(color, index){
 
   // otherwise, move the token based on the random number of dice rolled
-  if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0 ){ 
+  if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0){ 
     if (eval(color + 'Toggle')){
       color, index = moveAtOnce(color, index);
       toggle = 0;
@@ -167,6 +179,8 @@ function getMove(color, index){
     eval(turn+'_sub_region').style.background = "#556B2F";
     toggle = 0;
     eval(color + "Toggle = " + 0);
+
+    numberPerTurn = 0;
   }
 }
 
@@ -178,34 +192,41 @@ function getMove(color, index){
  */
 function moveStepByStep(color, index){
   interval = setInterval(() => {
-    step_sound.play();
-    dx ++;
-    position[color+index] ++;
-    path = position[color+index];
 
-    eval(color + 'Score +=' + 1);
-    eval(color + "_score").innerHTML = eval(color + 'Score');
-
-    Cell[color + 'Cell' + index] ++;
-    if (color !== 'red'){
-      if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
-    }
-    
-    eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-    eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-    
-    if (dx >= random_num){
+    if ((total_cell - position[color + index]) < random_num){
       clearInterval(interval);
       isIntervalCleared = 1;
-      dx = 0;
+    }
+    else{
+      step_sound.play();
+      dx ++;
+      position[color+index] ++;
+      path = position[color+index];
 
-      if (eval(color + 'Score')>highScore) {
-        highScore = eval(color + 'Score');
-        localStorage.setItem("highScore", highScore);
-        high_score_value.innerHTML = highScore; 
+      eval(color + 'Score +=' + 1);
+      eval(color + "_score").innerHTML = eval(color + 'Score');
+
+      Cell[color + 'Cell' + index] ++;
+      if (color !== 'red'){
+        if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
+      }
+      
+      eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
+      eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+      
+      if (dx >= random_num){
+        clearInterval(interval);
+        isIntervalCleared = 1;
+        dx = 0;
+
+        if (eval(color + 'Score')>highScore) {
+          highScore = eval(color + 'Score');
+          localStorage.setItem("highScore", highScore);
+          high_score_value.innerHTML = highScore; 
+        }
       }
     }
-
+    
     if (isIntervalCleared){
       trigger = 1;
 
@@ -217,14 +238,33 @@ function moveStepByStep(color, index){
         }
         turn = PlayerId[next];
         eval(turn+'_sub_region').style.background = "#556B2F";
+
+        turn = PlayerId[next];
+
+        numberPerTurn = 0;
+        firstTurn = 0;
+
+        redPointPerTurn = [0,0,0,0];
+        greenPointPerTurn = [0,0,0,0];
+        bluePointPerTurn = [0,0,0,0];
+        yellowPointPerTurn = [0,0,0,0];
       }
-      else turn = PlayerId[next];
+      else {
+        turn = PlayerId[next];
+        eval(color + 'PointPerTurn')[index] += random_num;
+      }
 
       if (position[color + index] >= total_cell){
         winner_sound.play();
-        winner_token.push(eval(color + 'Token')[index]);
-        next--;
-        turn = PlayerId[next];
+        winner_token[color]++;
+
+        if (winner_token[color] === 4){
+          winner_sound.play(); //again, play it
+          winner_color.innerHTML = color.charAt(0).toUpperCase() + color.slice(1) + ' Color Wins';
+          container.style.opacity = "0.4";
+          dice_container.style.visibility = "hidden";
+          end_screen.style.display = "block";
+        }
       }
     }
   }, 300);
@@ -259,6 +299,7 @@ function moveAtOnce(color, index){
   isOutside[color+index] = 1;
   
   turn = PlayerId[next];
+  firstTurn++;
 
   return (color, index);
 }
