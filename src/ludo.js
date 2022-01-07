@@ -124,6 +124,13 @@ function resetToken(color, index){
               dy --;
               position[other_color[i]+j] --;
               path = position[other_color[i]+j];
+
+              eval(color + 'Score +=' + 1);
+              eval(color + "_score").innerHTML = eval(color + 'Score');
+
+              eval(other_color[i] + 'Score -=' + 1);
+              eval(other_color[i] + "_score").innerHTML = eval(other_color[i] + 'Score');
+
               eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i] + 'BottomPath')[path] + "px";
               eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i] + 'LeftPath')[path] + "px";
               if (dy <= Cell_copy[other_color[i] + 'Cell' + j]){
@@ -139,6 +146,14 @@ function resetToken(color, index){
                 isOutside[other_color[i]+j] = 0;
                 eval(other_color[i] + "Outside -= " + 1);
 
+                eval(other_color[i] + 'Score -=' + 5);
+                eval(other_color[i] + "_score").innerHTML = eval(other_color[i] + 'Score');
+
+                if (eval(color + 'Score')>highScore) {
+                  highScore = eval(color + 'Score');
+                  localStorage.setItem("highScore", highScore);
+                  high_score_value.innerHTML = highScore;
+                }
               } 
             }, 100);
             clearInterval(Interval1);
@@ -207,6 +222,9 @@ function withCoin(color, index){
         position[color+index] ++;
         path = position[color+index];
 
+        eval(color + 'Score +=' + 2);
+        eval(color + "_score").innerHTML = eval(color + 'Score');
+
         Cell[color + 'Cell' + index]++;
         if (color !== 'red'){
           if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
@@ -217,6 +235,12 @@ function withCoin(color, index){
         if (dz >= 12){
           triggerInterval = 1;
           clearInterval(interval2);
+
+          if (eval(color + 'Score')>highScore) {
+            highScore = eval(color + 'Score');
+            localStorage.setItem("highScore", highScore);
+            high_score_value.innerHTML = highScore;
+          }
         }
 
         if (triggerInterval) color, index = resetToken(color, index);
@@ -293,6 +317,15 @@ function withLadder(color, index){
 
         Cell[color + 'Cell' + index] = ladderEndPos[random_location2[i]];
         position[color + index] += ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]];
+
+        eval(color + 'Score +=' + (ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]]) * 2);
+        eval(color + "_score").innerHTML = eval(color + 'Score');
+
+        if (eval(color + 'Score')>highScore) {
+          highScore = eval(color + 'Score');
+          localStorage.setItem("highScore", highScore);
+          high_score_value.innerHTML = highScore;
+        }
 
         clearInterval(Interval3);
 
@@ -381,6 +414,16 @@ function withSnake(color, index){
 
         Cell[color + 'Cell' + index] = snakeTailPos[random_location2[i]];
         position[color + index] -= (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]]);
+
+        eval(color + 'Score -=' + (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]])*2);
+        eval(color + "_score").innerHTML = eval(color + 'Score');
+
+        if (eval(color + 'Score')>highScore) {
+          highScore = eval(color + 'Score');
+          localStorage.setItem("highScore", highScore);
+          high_score_value.innerHTML = highScore;
+        }
+
         clearInterval(Interval4);
 
         let interval5 = setInterval(() => {

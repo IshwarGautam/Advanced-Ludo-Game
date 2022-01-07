@@ -378,3 +378,46 @@ isPlayed.style.fontSize = "20px";
 isPlayed.style.color = "#991";
 isPlayed.style.marginTop = "140px";
 isPlayed.style.display = "none";
+
+
+// 22. Styling score of each player
+red_score.style.fontSize = "25px";
+red_score.style.position = "absolute";
+red_score.style.marginTop = "200px";
+red_score.style.color = "maroon";
+
+green_score.style.fontSize = "25px";
+green_score.style.position = "absolute";
+green_score.style.marginTop = "-200px";
+green_score.style.color = "green";
+
+yellow_score.style.fontSize = "25px";
+yellow_score.style.position = "absolute";
+yellow_score.style.marginTop = "-200px";
+yellow_score.style.color = "yellow";
+
+blue_score.style.fontSize = "25px";
+blue_score.style.position = "absolute";
+blue_score.style.marginTop = "200px";
+blue_score.style.color = "blue";
+
+
+// 23. For styling and placing high score of player
+high_score.style.position = "absolute";
+high_score.style.right = "0";
+high_score.style.top = "0";
+high_score.style.width = "250px";
+high_score.style.textAlign = "center";
+high_score.style.color = "ivory";
+high_score.style.fontSize = "30px";
+high_score.style.textDecoration = "underline";
+high_score.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+
+high_score_info.style.position = "absolute";
+high_score_info.style.right = "0";
+high_score_info.style.top = "40px";
+high_score_info.style.width = "250px";
+high_score_info.style.textAlign = "left";
+high_score_info.style.color = "ivory";
+high_score_info.style.fontSize = "20px";
+high_score_info.style.fontFamily = "'Times New Roman', Times, serif, Georgia";

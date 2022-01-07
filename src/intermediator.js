@@ -108,3 +108,17 @@ const player3 = document.getElementById("player3");
 const player4 = document.getElementById("player4");
 
 const isPlayed = document.getElementById('isPlayed');
+
+
+// 13. To maintain score of each player
+const red_score = document.getElementById("red-score");
+const green_score = document.getElementById("green-score");
+const blue_score = document.getElementById("blue-score");
+const yellow_score = document.getElementById("yellow-score");
+
+
+// 14. To maintain high score
+const high_score = document.getElementById("high-score");
+const high_score_name = document.getElementById("high-score-name");
+const high_score_value = document.getElementById("high-score-value");
+const high_score_info = document.getElementById("high-score-info");

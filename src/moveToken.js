@@ -1,7 +1,6 @@
 // Initialize required variable
 let path = 0;
 let dx = 0;
-let score = 0;
 let next = 0;
 
 let redOutside = 0;
@@ -26,6 +25,11 @@ let trigger;
 let createInterval;
 let triggerInterval;
 
+let redScore = 0;
+let greenScore = 0;
+let blueScore = 0;
+let yellowScore = 0;
+
 //======================================================================
 // This will encounter if a token is outside its initial position or not
 // 0 refers --> a token is inside and 1 refers --> a token is outside
@@ -46,6 +50,11 @@ let position = {
   'blue0': 0, 'blue1': 0, 'blue2': 0, 'blue3': 0,
   'yellow0': 0, 'yellow1': 0, 'yellow2': 0, 'yellow3':0
 };
+
+
+// get highscore from our local storage
+let highScore = localStorage.getItem("highScore") || 0;
+high_score_value.innerHTML = highScore; 
 
 
 //================================
@@ -101,208 +110,49 @@ function getMove(color, index){
   // otherwise, move the token based on the random number of dice rolled
   if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0 ){ 
     if (eval(color + 'Toggle')){
-      inout_sound.play();
-      
-      eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
-      eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
-      eval(color + 'Token')[index].style.transition = '0.5s';
- 
-      eval(color + "Outside += " + 1);
-      isOutside[color+index] = 1;
-      score++;
-      turn = PlayerId[next];
+      color, index = moveAtOnce(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
     }
   }
+
   else if (random_num === 1 || random_num === 6 ){ 
-    
     eval(color + 'Token')[index].addEventListener("click", function(){
       if (eval(color + 'Toggle')){
+        
         if ((random_num === 1 || random_num === 6) && isOutside[color+index] === 0){
-          inout_sound.play();
-          
-          eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
-          eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
-          eval(color + 'Token')[index].style.transition = '0.5s';
-
-          eval(color + "Outside += " + 1);
-          isOutside[color+index] = 1;
-          score++;
-          turn = PlayerId[next];
+          color, index = moveAtOnce(color, index);  
           toggle = 0;
           eval(color + "Toggle = " + 0);
-
         }
         else if (random_num === 1 || random_num === 6){
-          interval = setInterval(() => {
-            step_sound.play();
-            dx ++;
-            position[color+index] ++;
-
-            Cell[color + 'Cell' + index] ++;
-            if (color !== 'red'){
-              if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
-            }
-
-            path = position[color+index];
-            
-            eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-            eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-            
-            if (dx >= random_num){
-              clearInterval(interval);
-              isIntervalCleared = 1;
-              dx = 0;
-            }
-
-            if (isIntervalCleared){
-              trigger = 1;
-              score += random_num;
-
-              if (position[color + index] >= total_cell){
-                winner_sound.play();
-                winner_token.push(eval(color + 'Token')[index]);
-              }
-              turn = PlayerId[next];
-            }
-          }, 300);
-
+          color, index = moveStepByStep(color, index);
           toggle = 0;
           eval(color + "Toggle = " + 0);
 
-          createInterval = setInterval(() => {
-            if (trigger === 1){
-              color, index = withCoin(color, index);
-              color, index = withLadder(color, index);
-              color, index = withSnake(color, index);
-              color, index  = resetToken(color,index);
-              clearInterval(createInterval);
-            } 
-          });
+          color, index = checkCollision(color, index);
         }
       }
     }, {once:true});    
   }
   else if (eval(color + 'Outside') === 1 ){
     if (eval(color + 'Toggle')){
-      interval = setInterval(() => {
-        step_sound.play();
-        dx ++;
-        position[color+index] ++;
-        path = position[color+index];
-
-        Cell[color + 'Cell' + index] ++;
-        if (color !== 'red'){
-          if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
-        }
-        
-        eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-        eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-        
-        if (dx >= random_num){
-          clearInterval(interval);
-          isIntervalCleared = 1;
-          dx = 0;
-        }
-
-        if (isIntervalCleared){
-          trigger = 1;
-          eval(color+'_sub_region').style.background = "ivory";
-
-          next += 1;
-          if (next > total_player-1) {
-            next = 0;
-          }
-          turn = PlayerId[next];
-          eval(turn+'_sub_region').style.background = "#556B2F";
-  
-          score += random_num;
-
-          if (position[color + index] >= total_cell){
-            winner_sound.play();
-            winner_token.push(eval(color + 'Token')[index]);
-            next--;
-            turn = PlayerId[next];
-
-          }
-        }
-
-      }, 300);
+      color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
 
-      createInterval = setInterval(() => {
-        if (trigger === 1){
-          color, index = withCoin(color, index);
-          color, index = withLadder(color, index);
-          color, index = withSnake(color, index);
-          color, index = resetToken(color, index);
-          clearInterval(createInterval);
-        } 
-      });
-
+      color, index = checkCollision(color, index);
     }
   }
   else if (eval(color + "Outside") >= 2 ){
     eval(color + 'Token')[index].addEventListener("click", function(){
       if (eval(color + 'Toggle')){
         if (isOutside[color+index] === 1){
-          interval = setInterval(() => {
-            step_sound.play();
-            dx ++;
-            position[color+index] ++;
-            path = position[color+index];
-            
-            Cell[color + 'Cell' + index] ++;
-            if (color !== 'red'){
-              if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
-            }
-
-            eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-            eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-            
-            if (dx >= random_num){
-              clearInterval(interval);
-              isIntervalCleared = 1;
-              dx = 0;
-            }
-
-            if (isIntervalCleared){
-              trigger = 1;
-              eval(color+'_sub_region').style.background = "ivory";
-
-              score+=random_num;
-
-              next += 1;
-              if (next > total_player-1) {
-                next = 0;
-              }
-              turn = PlayerId[next];
-
-              eval(turn+'_sub_region').style.background = "#556B2F";
-
-              if (position[color + index] >= total_cell){
-                winner_sound.play();
-                winner_token.push(eval(color + 'Token')[index]);
-                next--;
-                turn = PlayerId[next];
-              }
-            }
-
-          }, 300);
+          color, index = moveStepByStep(color, index);
           toggle = 0;
           eval(color + "Toggle = " + 0);
 
-          createInterval = setInterval(() => {
-            if (trigger === 1){
-              color, index = withCoin(color, index);
-              color, index = withLadder(color, index);
-              color, index = withSnake(color, index);
-              color, index  = resetToken(color,index);
-              clearInterval(createInterval);
-            } 
-          });
+          color, index = checkCollision(color, index);
         }
       }
     }, {once:true});  
@@ -318,4 +168,118 @@ function getMove(color, index){
     toggle = 0;
     eval(color + "Toggle = " + 0);
   }
+}
+
+/**
+ * Move token step by step (not at once)
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
+function moveStepByStep(color, index){
+  interval = setInterval(() => {
+    step_sound.play();
+    dx ++;
+    position[color+index] ++;
+    path = position[color+index];
+
+    eval(color + 'Score +=' + 1);
+    eval(color + "_score").innerHTML = eval(color + 'Score');
+
+    Cell[color + 'Cell' + index] ++;
+    if (color !== 'red'){
+      if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
+    }
+    
+    eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
+    eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+    
+    if (dx >= random_num){
+      clearInterval(interval);
+      isIntervalCleared = 1;
+      dx = 0;
+
+      if (eval(color + 'Score')>highScore) {
+        highScore = eval(color + 'Score');
+        localStorage.setItem("highScore", highScore);
+        high_score_value.innerHTML = highScore; 
+      }
+    }
+
+    if (isIntervalCleared){
+      trigger = 1;
+
+      if (!(random_num === 1 || random_num === 6)){
+        eval(color+'_sub_region').style.background = "ivory";
+        next += 1;
+        if (next > total_player-1) {
+          next = 0;
+        }
+        turn = PlayerId[next];
+        eval(turn+'_sub_region').style.background = "#556B2F";
+      }
+      else turn = PlayerId[next];
+
+      if (position[color + index] >= total_cell){
+        winner_sound.play();
+        winner_token.push(eval(color + 'Token')[index]);
+        next--;
+        turn = PlayerId[next];
+      }
+    }
+  }, 300);
+
+  return (color, index);
+}
+
+
+/**
+ * Move token at once (possible when token comes outside of its initial region)
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
+function moveAtOnce(color, index){
+  inout_sound.play();
+  
+  eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
+  eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
+  eval(color + 'Token')[index].style.transition = '0.5s';
+
+  eval(color + 'Score +=' + 5);
+  eval(color + "_score").innerHTML = eval(color + 'Score');
+
+  if (eval(color + 'Score')>highScore) {
+    highScore = eval(color + 'Score');
+    localStorage.setItem("highScore", highScore);
+    high_score_value.innerHTML = highScore; 
+  }
+
+  eval(color + "Outside += " + 1);
+  isOutside[color+index] = 1;
+  
+  turn = PlayerId[next];
+
+  return (color, index);
+}
+
+
+/**
+ * Check for other token, coin, ladder and snake while moving
+ *
+ * @param {color} - can be red, green, blue, yellow
+ * @param {index} - can be 0, 1, 2 and 3
+ */
+function checkCollision(color, index){
+  createInterval = setInterval(() => {
+    if (trigger === 1){
+      color, index = withCoin(color, index);
+      color, index = withLadder(color, index);
+      color, index = withSnake(color, index);
+      color, index = resetToken(color, index);
+      clearInterval(createInterval);
+    } 
+  });
+
+  return (color, index);
 }
