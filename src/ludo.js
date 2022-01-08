@@ -21,8 +21,11 @@ let yellowPointPerTurn = [0, 0, 0, 0];
 let numberPerTurn = 0;
 let firstTurn = 0;
 let level = "medium";
-let isAgain = 1;
+let isAgain;
 let index2;
+
+let intervalOver;
+let intervalCleared;
 /**
  * Create our main function to create tokens
  *
@@ -126,7 +129,7 @@ function resetToken(color, index){
             killed_sound.play();
 
             if (Cell[other_color[i] + 'Cell' + j] <= Cell_copy[other_color[i] + 'Cell' + j]){
-              dy = TOTAL_COMMON_CELL - Cell_copy[other_color[i] + 'Cell' + j] + Cell[other_color[i] + 'Cell' + j];
+              dy = TOTAL_COMMON_CELL + Cell[other_color[i] + 'Cell' + j];
             }
             else dy = Cell[other_color[i] + 'Cell' + j];
 
@@ -147,39 +150,39 @@ function resetToken(color, index){
                 clearInterval(interval1);
                 checkmate = 1;
               }
-
-              if (checkmate){
-                eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_bottomPos')[j] + 'px';
-                eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_leftPos')[j] + 'px';
-
-                Cell[other_color[i] + 'Cell' + j] = Cell_copy[other_color[i] + 'Cell' + j];
-                isOutside[other_color[i]+j] = 0;
-                eval(other_color[i] + "Outside -= " + 1);
-
-                eval(other_color[i] + 'Score -=' + 5);
-                eval(other_color[i] + "_score").innerHTML = eval(other_color[i] + 'Score');
-
-                if (eval(color + 'Score')>highScore) {
-                  highScore = eval(color + 'Score');
-                  localStorage.setItem("highScore", highScore);
-                  high_score_value.innerHTML = highScore;
-                }
-
-                if (random_num === 1 || random_num === 6){
-                  eval(color + 'PointPerTurn')[index] = 0;
-                }
-                
-              } 
             }, 100);
             clearInterval(Interval1);
-
           }, 300);
-          break;
+
+          let interval7 = setInterval(() => {
+            if (checkmate){
+              eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_bottomPos')[j] + 'px';
+              eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_leftPos')[j] + 'px';
+
+              Cell[other_color[i] + 'Cell' + j] = Cell_copy[other_color[i] + 'Cell' + j];
+              isOutside[other_color[i]+j] = 0;
+              eval(other_color[i] + "Outside -= " + 1);
+
+              eval(other_color[i] + 'Score -=' + 5);
+              eval(other_color[i] + "_score").innerHTML = eval(other_color[i] + 'Score');
+
+              if (eval(color + 'Score')>highScore) {
+                highScore = eval(color + 'Score');
+                localStorage.setItem("highScore", highScore);
+                high_score_value.innerHTML = highScore;
+              }
+
+              if (random_num === 1 || random_num === 6){
+                eval(other_color[i] + 'PointPerTurn')[j] = 0;
+              }
+              clearInterval(interval7);
+            } 
+          });
         }
       }
     }
   }
-  return color, index;
+  return (color, index);
 }
 
 
@@ -251,7 +254,7 @@ function withCoin(color, index){
           triggerInterval = 1;
           clearInterval(interval2);
 
-          if (eval(color + 'Score')>highScore) {
+          if (eval(color + 'Score') > highScore) {
             highScore = eval(color + 'Score');
             localStorage.setItem("highScore", highScore);
             high_score_value.innerHTML = highScore;
@@ -270,7 +273,7 @@ function withCoin(color, index){
     }, 300);
   }
 
-  return color, index;
+  return (color, index);
 }
 
 
@@ -337,36 +340,38 @@ function withLadder(color, index){
         eval(color + 'Token')[index].style.transition = "1s";
 
         Cell[color + 'Cell' + index] = ladderEndPos[random_location2[i]];
-        position[color + index] += ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]];
+        position[color + index] += (ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]]);
 
         eval(color + 'Score +=' + (ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]]) * 2);
         eval(color + "_score").innerHTML = eval(color + 'Score');
 
-        if (eval(color + 'Score')>highScore) {
+        if (eval(color + 'Score') > highScore) {
           highScore = eval(color + 'Score');
           localStorage.setItem("highScore", highScore);
           high_score_value.innerHTML = highScore;
         }
 
         clearInterval(Interval3);
+        intervalOver = 1;
+      }, 300);
 
-        let interval4 = setInterval(() => {
+      let interval4 = setInterval(() => {
+        if (intervalOver){
           color, index = resetToken(color, index);
         
           // reset the transition effect
           eval(color + 'Token')[index].style.transition = "0.5s";
-          clearInterval(interval4);
-
+      
           if (random_num === 1 || random_num === 6){
             eval(color + 'PointPerTurn')[index] += (ladderEndPos[random_location2[i]] - ladderStartPos[random_location2[i]]);
           }
-        }, 1100);
 
-      }, 300);
-      break;
+          clearInterval(interval4);
+        }
+      });
     } 
   }
-  return color, index;
+  return (color, index);
 }
 
 
@@ -437,21 +442,19 @@ function withSnake(color, index){
         eval(color + 'Token')[index].style.left = redLeftPath[snakeTailPos[random_location3[i]]] + 'px';
         eval(color + 'Token')[index].style.transition = "1s";
 
-        Cell[color + 'Cell' + index] = snakeTailPos[random_location2[i]];
-        position[color + index] -= (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]]);
+        Cell[color + 'Cell' + index] = snakeTailPos[random_location3[i]];
+        position[color + index] -= (snakeMouthPos[random_location3[i]] - snakeTailPos[random_location3[i]]);
 
-        eval(color + 'Score -=' + (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]])*2);
+        eval(color + 'Score -=' + (snakeMouthPos[random_location3[i]] - snakeTailPos[random_location3[i]])*2);
         eval(color + "_score").innerHTML = eval(color + 'Score');
-
-        if (eval(color + 'Score')>highScore) {
-          highScore = eval(color + 'Score');
-          localStorage.setItem("highScore", highScore);
-          high_score_value.innerHTML = highScore;
-        }
 
         clearInterval(Interval4);
 
-        let interval5 = setInterval(() => {
+        intervalOver = 1;
+      }, 300);
+
+      let interval5 = setInterval(() => {
+        if (intervalOver){
           color, index = resetToken(color, index);
         
           // reset the transition effect
@@ -459,23 +462,22 @@ function withSnake(color, index){
           clearInterval(interval5);
 
           if (random_num === 1 || random_num === 6){
-            eval(color + 'PointPerTurn')[index] -= (snakeMouthPos[random_location2[i]] - snakeTailPos[random_location2[i]]);
+            eval(color + 'PointPerTurn')[index] -= (snakeMouthPos[random_location3[i]] - snakeTailPos[random_location3[i]]);
           }
-        }, 1100);
-
-      }, 300);
-      break;
+        }
+      });
     } 
   }
 
-  return color, index;
+  return (color, index);
 }
 
 
 // Calling above function to create coin, ladder and snake
-createCoin("medium");
-createLadder("medium");
-createSnake("medium");
+createCoin(level);
+createLadder(level);
+createSnake(level);
+
 
 
 /**
@@ -509,32 +511,43 @@ function mediumLevel(color){
     
         if (eval(color + 'PointPerTurn')[i] <= 0){
           clearInterval(interval6);
+
+          if (i === 3) intervalCleared = 1;
         }
       }, 300);
-    }  
+    }
+    else if(i === 3) intervalCleared = 1;  
   }
 
-  for (let j=0; j<firstTurn; j++){
-    do{
-      if (position[color+index2] === 0 && isOutside[color+index2]  === 1){
-        inout_sound.play();
-        eval(color + 'Token')[index2].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[index2] + 'px';
-        eval(color + 'Token')[index2].style.left = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_leftPos')[index2] + 'px';
-        isAgain = 0;
+  let interval8 = setInterval(() => {
+    if (intervalCleared){
+      index2 = 0;
 
-        Cell[color + 'Cell' + index2] = Cell_copy[color + 'Cell' + index2];
-        isOutside[color+index2] = 0;
-        eval(color + "Outside -= " + 1);
+      for (let j=0; j<firstTurn; j++){
+        isAgain = 1;
+        do{
+          if (position[color+index2] === 0 && isOutside[color+index2]  === 1){
+            inout_sound.play();
+            eval(color + 'Token')[index2].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[index2] + 'px';
+            eval(color + 'Token')[index2].style.left = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_leftPos')[index2] + 'px';
+            isAgain = 0;
 
-        eval(color + 'Score -=' + 5);
-        eval(color + "_score").innerHTML = eval(color + 'Score');
+            Cell[color + 'Cell' + index2] = Cell_copy[color + 'Cell' + index2];
+            isOutside[color+index2] = 0;
+            eval(color + "Outside -= " + 1);
 
-        index2++;
+            eval(color + 'Score -=' + 5);
+            eval(color + "_score").innerHTML = eval(color + 'Score');
 
-        if (index2 === 4) break;
+            index2++;
+            if (index2 === 4) break;
+          }
+        }while(isAgain);
       }
-    }while(isAgain);
-  }
+      clearInterval(interval8);
+      firstTurn = 0;
+    }
+  });
 
   next += 1;
   if (next > total_player-1) {
@@ -547,7 +560,6 @@ function mediumLevel(color){
   eval(color + "Toggle = " + 0);
 
   numberPerTurn = 0;
-  firstTurn = 0;
 
   return turn;
 }
@@ -604,7 +616,7 @@ function onSubmit(){
   const radioBtn2Checked = (Array.from(radioBtn2)).some(option => option.checked);
   const radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
 
-  let gameMode = document.querySelector('input[name="game-mode"]:checked').value;
+  level = document.querySelector('input[name="game-mode"]:checked').value;
 
   if (redPlayerName != '') {
     player1.innerHTML = redPlayerName;

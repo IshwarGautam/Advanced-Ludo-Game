@@ -69,11 +69,12 @@ cube.addEventListener("click", ()=>{
     dice_sound.play();
     toggle = 1;
 
-    index2 = 0;
-
+    // clear the interval (named createInterval) if any
     clearInterval(createInterval);
+
     trigger = 0;
     triggerInterval = 0;
+    intervalOver = 0;
 
     color = turn;
     eval(color + "Toggle = " + 1);
@@ -82,6 +83,7 @@ cube.addEventListener("click", ()=>{
     for (let i=0; i<4; i++) eval(color + 'Token')[i].style.zIndex = String(z_index);
 
     isIntervalCleared = 0;
+    intervalCleared = 0;
 
     isPlayed.style.display = "none";
 
@@ -98,7 +100,7 @@ cube.addEventListener("click", ()=>{
     
     if (random_num === 1 || random_num === 6) numberPerTurn++;
 
-    if (numberPerTurn === 3 && level !== 'easy'){
+    if (numberPerTurn === 2 && level !== 'easy'){
       if (level === 'medium') turn = mediumLevel(color);
       else if (level === 'hard') turn = hardLevel(color);
     }
@@ -119,7 +121,7 @@ cube.addEventListener("click", ()=>{
 
 function getMove(color, index){
 
-  // otherwise, move the token based on the random number of dice rolled
+  // move the token based on the random number of dice rolled
   if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0){ 
     if (eval(color + 'Toggle')){
       color, index = moveAtOnce(color, index);
@@ -130,8 +132,8 @@ function getMove(color, index){
 
   else if (random_num === 1 || random_num === 6 ){ 
     eval(color + 'Token')[index].addEventListener("click", function(){
-      if (eval(color + 'Toggle')){
-        
+      
+      if (eval(color + 'Toggle')){  
         if ((random_num === 1 || random_num === 6) && isOutside[color+index] === 0){
           color, index = moveAtOnce(color, index);  
           toggle = 0;
@@ -149,11 +151,13 @@ function getMove(color, index){
   }
   else if (eval(color + 'Outside') === 1 ){
     if (eval(color + 'Toggle')){
-      color, index = moveStepByStep(color, index);
-      toggle = 0;
-      eval(color + "Toggle = " + 0);
+      if (isOutside[color+index] === 1){
+        color, index = moveStepByStep(color, index);
+        toggle = 0;
+        eval(color + "Toggle = " + 0);
 
-      color, index = checkCollision(color, index);
+        color, index = checkCollision(color, index);
+      }
     }
   }
   else if (eval(color + "Outside") >= 2 ){
@@ -181,6 +185,7 @@ function getMove(color, index){
     eval(color + "Toggle = " + 0);
 
     numberPerTurn = 0;
+    firstTurn = 0;
   }
 }
 
@@ -239,8 +244,6 @@ function moveStepByStep(color, index){
         turn = PlayerId[next];
         eval(turn+'_sub_region').style.background = "#556B2F";
 
-        turn = PlayerId[next];
-
         numberPerTurn = 0;
         firstTurn = 0;
 
@@ -259,7 +262,7 @@ function moveStepByStep(color, index){
         winner_token[color]++;
 
         if (winner_token[color] === 4){
-          winner_sound.play(); //again, play it
+          winner_sound.play(); //play it again
           winner_color.innerHTML = color.charAt(0).toUpperCase() + color.slice(1) + ' Color Wins';
           container.style.opacity = "0.4";
           dice_container.style.visibility = "hidden";
@@ -274,7 +277,7 @@ function moveStepByStep(color, index){
 
 
 /**
- * Move token at once (possible when token comes outside of its initial region)
+ * Move token at once (possibly when player gets 1 or 6)
  *
  * @param {color} - can be red, green, blue, yellow
  * @param {index} - can be 0, 1, 2 and 3
@@ -306,7 +309,7 @@ function moveAtOnce(color, index){
 
 
 /**
- * Check for other token, coin, ladder and snake while moving
+ * Check for coin, tokens, ladder and snake while moving
  *
  * @param {color} - can be red, green, blue, yellow
  * @param {index} - can be 0, 1, 2 and 3
