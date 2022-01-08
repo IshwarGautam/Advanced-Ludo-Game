@@ -28,8 +28,6 @@ let greenScore = 0;
 let blueScore = 0;
 let yellowScore = 0;
 
-let timeInterval;
-
 let winner_token = {
   'red':0, 'green':0, 'yellow':0, 'blue':0
 }
@@ -64,7 +62,6 @@ high_score_value.innerHTML = highScore;
 //================================
 // when the dice is rolled
 //================================
-
 function rollDice(){
   // roll the dice only when previous moves is completed
   if (!toggle){
@@ -77,8 +74,6 @@ function rollDice(){
     trigger = 0;
     triggerInterval = 0;
     intervalOver = 0;
-
-    response = 0;
 
     color = turn;
     eval(color + "Toggle = " + 1);
@@ -122,19 +117,15 @@ function rollDice(){
 // =========================================
 // Implementing AI (roll dice automatically)
 // =========================================
-if (opponent === 'computer') timeInterval = 2000;
-else timeInterval = 1;
 setInterval(() => {
-  if (turn !== user && opponent === 'computer' && response === 1){
+  if (turn !== user && opponent === 'computer'){
     cube.click();
-    cube.addEventListener("click", rollDice, {once:true});
+    cube.addEventListener("click", rollDice);
   }
   else{
-    cube.addEventListener("click", rollDice, {once:true});
+    cube.addEventListener("click", rollDice);
   }
-}, timeInterval);
-
-
+}, 3000);
 
 
 // =========================================
@@ -148,6 +139,7 @@ function callAI(color, index){
   let isMoved = 1;
   let nowMoved = 1;
 
+  // console.log(color, index);
 
   let other_color = PlayerId.filter(function(value){ 
     return value != color;
@@ -156,34 +148,31 @@ function callAI(color, index){
   for (let i=0; i<other_color.length; i++){
     for (j=0; j<4; j++){
       if (isOutside[color + index] === 1 && Cell[color + 'Cell' + index] + random_num === Cell[other_color[i] + 'Cell' + j]){
-        eval(color + 'Token')[index].click();
+        eval(color + 'Token')[j].click();
         return (color, index);
       }
     }
-    if (i === 2) isMoved = 0;
+    if (i === 3 && j === 4) isMoved = 0;
   }
   
   if (!isMoved){
-    for (j=0; j<4; j++){
-      if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6)){
-        eval(color + 'Token')[j].click();
-        return (color, j);
+    for (let i=0; i<other_color.length; i++){
+      for (j=0; j<4; j++){
+        if (isOutside[color + j] === 1){
+          eval(color + 'Token')[j].click();
+          // console.log("here ismoved: " + (color, j));
+          return (color, j);
+        }
       }
-      if (j === 3) nowMoved = 0;
+      if (i === 3 && j === 4) nowMoved = 0;
     }
   }
 
   if (!nowMoved) {
-    for (j=0; j<4; j++){
-      if (isOutside[color + j] === 1){
-        eval(color + 'Token')[j].click();
-        return (color, j);
-      }
-    }  
+    // console.log("return as it is: "+ (color, index));
+    return (color, index);
   }
 }
-
-
 
 
 //=========================================================================
@@ -197,22 +186,17 @@ function getMove(color, index){
     if (eval(color + 'Toggle')){
       color, index = moveAtOnce(color, index);
       toggle = 0;
-      response = 1;
-      firstTurn++;
       eval(color + "Toggle = " + 0);
     }
   }
 
-  else if (random_num === 1 || random_num === 6 ){ 
+  else if (random_num === 1 || random_num === 6 ){
     if (turn !== user && opponent === 'computer') {
       color, index = callAI(color, index);
+      // console.log("Call16: " + (color, index));
       call_16(color, index);
     } 
-    else {
-      eval(color + 'Token')[index].addEventListener("click", function(){
-        call_16(color, index);
-      }, {once:true}); 
-    }       
+    else eval(color + 'Token')[index].addEventListener("click", call_16, {once:true});    
   }
   else if (eval(color + 'Outside') === 1 ){
     if (eval(color + 'Toggle')){
@@ -228,13 +212,10 @@ function getMove(color, index){
   else if (eval(color + "Outside") >= 2 ){
     if (turn !== user && opponent === 'computer') {
       color, index = callAI(color, index);
+      // console.log("call 2345" + (color, index));
       call_2345(color, index);
-    } 
-    else {
-      eval(color + 'Token')[index].addEventListener("click", function(){
-        call_2345(color, index);
-      }, {once:true}); 
     }
+    else eval(color + 'Token')[index].addEventListener("click", call_2345, {once:true});  
   }
   else if (eval(color + 'Toggle')){
     next += 1;
@@ -249,33 +230,28 @@ function getMove(color, index){
 
     numberPerTurn = 0;
     firstTurn = 0;
-    response = 1;
   }
 }
 
 
-
-function call_16(color, index){
+function call_16(){
   if (eval(color + 'Toggle')){  
     if ((random_num === 1 || random_num === 6) && isOutside[color+index] === 0){
       color, index = moveAtOnce(color, index);  
       toggle = 0;
-      firstTurn++;
-      response = 1;
       eval(color + "Toggle = " + 0);
     }
     else if (random_num === 1 || random_num === 6){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
-      firstTurn++;
-      response = 1;
+
       color, index = checkCollision(color, index);
     }
   }
 }
 
-function call_2345(color, index){
+function call_2345(){
   if (eval(color + 'Toggle')){
     if (isOutside[color+index] === 1){
       color, index = moveStepByStep(color, index);
@@ -286,8 +262,6 @@ function call_2345(color, index){
     }
   }
 }
-
-
 /**
  * Move token step by step (not at once)
  *
@@ -401,6 +375,7 @@ function moveAtOnce(color, index){
   isOutside[color+index] = 1;
   
   turn = PlayerId[next];
+  firstTurn++;
 
   return (color, index);
 }
@@ -424,4 +399,85 @@ function checkCollision(color, index){
   });
 
   return (color, index);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (opponent === 'computer') timeInterval = 3000;
+else timeInterval = 1;
+setInterval(() => {
+  if (turn !== user && opponent === 'computer'){
+    cube.click();
+    cube.addEventListener("click", rollDice, {once:true});
+  }
+  else{
+    cube.addEventListener("click", rollDice, {once:true});
+  }
+}, timeInterval);
+
+
+
+function callAI(color, index){
+
+  let isMoved = 1;
+  let nowMoved = 1;
+
+  console.log("call Ai: "+ (color, index));
+
+  let other_color = PlayerId.filter(function(value){ 
+    return value != color;
+  });
+  
+  for (let i=0; i<other_color.length; i++){
+    for (j=0; j<4; j++){
+      if (isOutside[color + index] === 1 && Cell[color + 'Cell' + index] + random_num === Cell[other_color[i] + 'Cell' + j]){
+        eval(color + 'Token')[index].click();
+        console.log("1st loop: "+ (color, index));
+        return (color, index);
+      }
+    }
+    if (i === 3 && j === 4) isMoved = 0;
+  }
+  
+  if (!isMoved){
+    for (let i=0; i<other_color.length; i++){
+      for (j=0; j<4; j++){
+        if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6)){
+          eval(color + 'Token')[j].click();
+          console.log("2nd loop: " + (color, j));
+          return (color, j);
+        }
+      }
+      if (i === 3 && j === 4) nowMoved = 0;
+    }
+  }
+
+  if (!nowMoved) {
+    for (let i=0; i<other_color.length; i++){
+      for (j=0; j<4; j++){
+        if (isOutside[color + j] === 1){
+          eval(color + 'Token')[j].click();
+          // console.log("return as it is: "+ (color, index));
+          return (color, j);
+        }
+      }
+    }
+  }
 }

@@ -20,9 +20,14 @@ let yellowPointPerTurn = [0, 0, 0, 0];
 
 let numberPerTurn = 0;
 let firstTurn = 0;
+
 let level = "medium";
+let opponent = "computer";
+let user = "red";
+
 let isAgain;
 let index2;
+let response = 1;
 
 let intervalOver;
 let intervalCleared;
@@ -262,6 +267,7 @@ function withCoin(color, index){
         }
 
         if (triggerInterval) {
+          response = 1;
           color, index = resetToken(color, index);
 
           if (random_num === 1 || random_num === 6){
@@ -272,6 +278,7 @@ function withCoin(color, index){
       clearInterval(Interval2);
     }, 300);
   }
+  else response = 1;
 
   return (color, index);
 }
@@ -525,7 +532,10 @@ function mediumLevel(color){
 
       for (let j=0; j<firstTurn; j++){
         isAgain = 1;
+        console.log("First Turn: "+firstTurn);
         do{
+          console.log("I am inside do while loop");
+          console.log("Index2: "+ index2);
           if (position[color+index2] === 0 && isOutside[color+index2]  === 1){
             inout_sound.play();
             eval(color + 'Token')[index2].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[index2] + 'px';
@@ -538,13 +548,12 @@ function mediumLevel(color){
 
             eval(color + 'Score -=' + 5);
             eval(color + "_score").innerHTML = eval(color + 'Score');
-
-            index2++;
-            if (index2 === 4) break;
           }
+          index2++;
+          if (index2 >= 4) break;
         }while(isAgain);
+        clearInterval(interval8);
       }
-      clearInterval(interval8);
       firstTurn = 0;
     }
   });
@@ -617,6 +626,8 @@ function onSubmit(){
   const radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
 
   level = document.querySelector('input[name="game-mode"]:checked').value;
+  opponent = document.querySelector('input[name="play_with"]:checked').value;
+  user = document.querySelector('input[name="choose-color"]:checked').value;
 
   if (redPlayerName != '') {
     player1.innerHTML = redPlayerName;
