@@ -5,7 +5,7 @@
 // 1. styling main game playing container
 main_wrapper.style.maxWidth = "1200px";
 main_wrapper.style.margin = "0 auto";
-// main_wrapper.style.display = "none";
+main_wrapper.style.display = "none";
 container.style.width = "600px";
 container.style.height = "600px";
 container.style.margin = "10px auto";
@@ -13,7 +13,7 @@ container.style.position = "relative";
 container.style.background = "ivory";
 
 //2. styling start page where user input their details
-start_page.style.display = "none";
+start_page.style.display = "block";
 start_page.style.width = "400px";
 start_page.style.background = "rgb(247,247,247)";
 start_page.style.textAlign = "center";

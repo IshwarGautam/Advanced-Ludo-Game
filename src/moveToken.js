@@ -30,6 +30,7 @@ let yellowScore = 0;
 
 let timeInterval;
 
+
 let winner_token = {
   'red':0, 'green':0, 'yellow':0, 'blue':0
 }
@@ -203,7 +204,7 @@ function getMove(color, index){
     }
   }
 
-  else if (random_num === 1 || random_num === 6 ){ 
+  else if (random_num === 1 || random_num === 6){ 
     if (turn !== user && opponent === 'computer') {
       color, index = callAI(color, index);
       call_16(color, index);
@@ -214,7 +215,7 @@ function getMove(color, index){
       }, {once:true}); 
     }       
   }
-  else if (eval(color + 'Outside') === 1 ){
+  else if (eval(color + 'Outside') === 1){
     if (eval(color + 'Toggle')){
       if (isOutside[color+index] === 1){
         color, index = moveStepByStep(color, index);
@@ -225,7 +226,7 @@ function getMove(color, index){
       }
     }
   }
-  else if (eval(color + "Outside") >= 2 ){
+  else if (eval(color + "Outside") >= 2){
     if (turn !== user && opponent === 'computer') {
       color, index = callAI(color, index);
       call_2345(color, index);
@@ -236,23 +237,26 @@ function getMove(color, index){
       }, {once:true}); 
     }
   }
-  else if (eval(color + 'Toggle')){
-    next += 1;
-    if (next > total_player-1) {
-      next = 0;
-    }
-    eval(color+'_sub_region').style.background = "ivory";
-    turn = PlayerId[next];
-    eval(turn+'_sub_region').style.background = "#556B2F";
-    toggle = 0;
-    eval(color + "Toggle = " + 0);
-
-    numberPerTurn = 0;
-    firstTurn = 0;
-    response = 1;
-  }
+  else if (eval(color + 'Toggle')) changeTheTurn(color);
 }
 
+
+
+function changeTheTurn(color){
+  next += 1;
+  if (next > total_player-1) {
+    next = 0;
+  }
+  eval(color+'_sub_region').style.background = "ivory";
+  turn = PlayerId[next];
+  eval(turn+'_sub_region').style.background = "#556B2F";
+  toggle = 0;
+  eval(color + "Toggle = " + 0);
+
+  numberPerTurn = 0;
+  firstTurn = 0;
+  response = 1;
+}
 
 
 function call_16(color, index){
@@ -264,7 +268,7 @@ function call_16(color, index){
       response = 1;
       eval(color + "Toggle = " + 0);
     }
-    else if (random_num === 1 || random_num === 6){
+    else if (random_num === 1 || random_num === 6 ){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
@@ -277,7 +281,7 @@ function call_16(color, index){
 
 function call_2345(color, index){
   if (eval(color + 'Toggle')){
-    if (isOutside[color+index] === 1){
+    if (isOutside[color+index] === 1 && ((total_cell - position[color + index]) >= random_num)){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
@@ -296,41 +300,37 @@ function call_2345(color, index){
  */
 function moveStepByStep(color, index){
   interval = setInterval(() => {
+    step_sound.play();
+    dx ++;
+    position[color+index] ++;
 
-    if ((total_cell - position[color + index]) < random_num){
-      clearInterval(interval);
-      isIntervalCleared = 1;
-    }
-    else{
-      step_sound.play();
-      dx ++;
-      position[color+index] ++;
-      path = position[color+index];
+    if (position[color+index] >= TOTAL_COMMON_CELL - 1) Cell[color + 'Cell' + index] = -TOTAL_COMMON_CELL;
 
-      eval(color + 'Score +=' + 1);
-      eval(color + "_score").innerHTML = eval(color + 'Score');
+    path = position[color+index];
 
-      Cell[color + 'Cell' + index] ++;
-      if (color !== 'red'){
-        if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
-      }
-      
-      eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
-      eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
-      
-      if (dx >= random_num){
-        clearInterval(interval);
-        isIntervalCleared = 1;
-        dx = 0;
+    eval(color + 'Score +=' + 1);
+    eval(color + "_score").innerHTML = eval(color + 'Score');
 
-        if (eval(color + 'Score')>highScore) {
-          highScore = eval(color + 'Score');
-          localStorage.setItem("highScore", highScore);
-          high_score_value.innerHTML = highScore; 
-        }
-      }
+    Cell[color + 'Cell' + index] ++;
+    if (color !== 'red'){
+      if (Cell[color + 'Cell' + index] >= TOTAL_COMMON_CELL) Cell[color+ 'Cell' + index] = 0;
     }
     
+    eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[path] + "px";
+    eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[path] + "px";
+    
+    if (dx >= random_num){
+      clearInterval(interval);
+      isIntervalCleared = 1;
+      dx = 0;
+
+      if (eval(color + 'Score')>highScore) {
+        highScore = eval(color + 'Score');
+        localStorage.setItem("highScore", highScore);
+        high_score_value.innerHTML = highScore; 
+      }
+    }
+  
     if (isIntervalCleared){
       trigger = 1;
 

@@ -5,18 +5,15 @@ let showClass;
 let currentClass = '';
 
 let PlayerName = [];
-let PlayerId = ["red", "green", "yellow", "blue"];
+let PlayerId = [];
 
 let total_cell = 56;
 let total_color;
-let total_player = PlayerId.length;
+let total_player;
 
 let checkmate;
 let index = 0;
-let turn = PlayerId[index];
 
-// Initial colored region (Active region)
-eval(turn+'_sub_region').style.background = "#556B2F";
 
 // Get the random number between min and max provided
 function getRandomInt(min, max) {

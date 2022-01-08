@@ -1,14 +1,15 @@
 //Let's initialize and declare some variables
 let isRolled;
+let turn;
 
 let redToken = [];
 let greenToken = [];
 let blueToken = [];
 let yellowToken = [];
 
-let random_location1;
-let random_location2;
-let random_location3;
+let random_location1 = [];
+let random_location2 = [];
+let random_location3 = [];
 
 let dy;
 let TOTAL_COMMON_CELL = 52;
@@ -21,9 +22,9 @@ let yellowPointPerTurn = [0, 0, 0, 0];
 let numberPerTurn = 0;
 let firstTurn = 0;
 
-let level = "medium";
-let opponent = "computer";
-let user = "red";
+let level;
+let opponent;
+let user;
 
 let isAgain;
 let index2;
@@ -31,6 +32,8 @@ let response = 1;
 
 let intervalOver;
 let intervalCleared;
+
+
 /**
  * Create our main function to create tokens
  *
@@ -105,10 +108,20 @@ function createGame(){
       obj4.createToken();
     } 
   }  
+
+  turn = PlayerId[index];
+  
+
+  total_player = PlayerId.length;
+
+  // Initial colored region (Active region)
+  eval(turn+'_sub_region').style.background = "#556B2F";
+
+  // create coin, ladder and snake based on level chosen (easy, medium and hard)
+  createCoin(level);
+  createLadder(level);
+  createSnake(level);
 }
-
-createGame();
-
 
 /**
  * When one token comes in the place of another color token, that token return back to its initial position
@@ -119,7 +132,7 @@ createGame();
 function resetToken(color, index){
   checkmate = 0;
 
-  if (!(safeCell.includes(Cell[color + 'Cell' + index]))){
+  if ((!(safeCell.includes(Cell[color + 'Cell' + index]))) && Cell[color + 'Cell' + index] >= 0){
 
     let other_color = PlayerId.filter(function(value){ 
       return value != color;
@@ -243,6 +256,8 @@ function withCoin(color, index){
         step_sound.play();
         dz ++;
         position[color+index] ++;
+
+        if (position[color+index] > TOTAL_COMMON_CELL - 1) Cell[color + 'Cell' + index] = -TOTAL_COMMON_CELL;
         path = position[color+index];
 
         eval(color + 'Score +=' + 2);
@@ -433,7 +448,6 @@ function createSnake(mode){
 
 
 
-
 /**
  * Decrease token position with snake
  *
@@ -478,12 +492,6 @@ function withSnake(color, index){
 
   return (color, index);
 }
-
-
-// Calling above function to create coin, ladder and snake
-createCoin(level);
-createLadder(level);
-createSnake(level);
 
 
 
@@ -625,9 +633,15 @@ function onSubmit(){
   const radioBtn2Checked = (Array.from(radioBtn2)).some(option => option.checked);
   const radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
 
-  level = document.querySelector('input[name="game-mode"]:checked').value;
-  opponent = document.querySelector('input[name="play_with"]:checked').value;
-  user = document.querySelector('input[name="choose-color"]:checked').value;
+  if (radioBtnChecked) {
+    opponent = document.querySelector('input[name="play_with"]:checked').value;
+  }
+  if (radioBtn2Checked) {
+    user = document.querySelector('input[name="choose-color"]:checked').value;
+  }
+  if (radioBtn3Checked) {
+    level = document.querySelector('input[name="game-mode"]:checked').value;
+  }
 
   if (redPlayerName != '') {
     player1.innerHTML = redPlayerName;
