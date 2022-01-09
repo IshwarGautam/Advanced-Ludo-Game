@@ -33,6 +33,13 @@ let response = 1;
 let intervalOver;
 let intervalCleared;
 
+let redPlayerName;
+let greenPlayerName;
+let yellowPlayerName;
+let bluePlayerName;
+let radioBtnChecked;
+let radioBtn2Checked;
+let radioBtn3Checked;
 
 /**
  * Create our main function to create tokens
@@ -188,6 +195,10 @@ function resetToken(color, index){
                 highScore = eval(color + 'Score');
                 localStorage.setItem("highScore", highScore);
                 high_score_value.innerHTML = highScore;
+
+                highScore_player = eval(color + 'PlayerName');
+                localStorage.setItem("player-name", highScore_player);
+                high_score_name.innerHTML = highScore_player;
               }
 
               if (random_num === 1 || random_num === 6){
@@ -278,6 +289,10 @@ function withCoin(color, index){
             highScore = eval(color + 'Score');
             localStorage.setItem("highScore", highScore);
             high_score_value.innerHTML = highScore;
+
+            highScore_player = eval(color + 'PlayerName');
+            localStorage.setItem("player-name", highScore_player);
+            high_score_name.innerHTML = highScore_player;
           }
         }
 
@@ -371,6 +386,10 @@ function withLadder(color, index){
           highScore = eval(color + 'Score');
           localStorage.setItem("highScore", highScore);
           high_score_value.innerHTML = highScore;
+
+          highScore_player = eval(color + 'PlayerName');
+          localStorage.setItem("player-name", highScore_player);
+          high_score_name.innerHTML = highScore_player;
         }
 
         clearInterval(Interval3);
@@ -625,13 +644,13 @@ function hardLevel(color){
 // validation of user input and the action after clicking play button
 //=====================================================================
 function onSubmit(){
-  const redPlayerName = red_input.value;
-  const greenPlayerName = green_input.value;
-  const yellowPlayerName = yellow_input.value;
-  const bluePlayerName = blue_input.value;
-  const radioBtnChecked = (Array.from(radioBtn)).some(option => option.checked);
-  const radioBtn2Checked = (Array.from(radioBtn2)).some(option => option.checked);
-  const radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
+  redPlayerName = red_input.value;
+  greenPlayerName = green_input.value;
+  yellowPlayerName = yellow_input.value;
+  bluePlayerName = blue_input.value;
+  radioBtnChecked = (Array.from(radioBtn)).some(option => option.checked);
+  radioBtn2Checked = (Array.from(radioBtn2)).some(option => option.checked);
+  radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
 
   if (radioBtnChecked) {
     opponent = document.querySelector('input[name="play_with"]:checked').value;

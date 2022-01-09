@@ -61,6 +61,9 @@ let position = {
 let highScore = localStorage.getItem("highScore") || 0;
 high_score_value.innerHTML = highScore; 
 
+let highScore_player = localStorage.getItem("highScore-player") || '';
+high_score_name.innerHTML = highScore_player;
+
 
 //================================
 // when the dice is rolled
@@ -328,6 +331,10 @@ function moveStepByStep(color, index){
         highScore = eval(color + 'Score');
         localStorage.setItem("highScore", highScore);
         high_score_value.innerHTML = highScore; 
+
+        highScore_player = eval(color + 'PlayerName');
+        localStorage.setItem("player-name", highScore_player);
+        high_score_name.innerHTML = highScore_player;
       }
     }
   
@@ -395,6 +402,10 @@ function moveAtOnce(color, index){
     highScore = eval(color + 'Score');
     localStorage.setItem("highScore", highScore);
     high_score_value.innerHTML = highScore; 
+
+    highScore_player = eval(color + 'PlayerName');
+    localStorage.setItem("player-name", highScore_player);
+    high_score_name.innerHTML = highScore_player;
   }
 
   eval(color + "Outside += " + 1);
