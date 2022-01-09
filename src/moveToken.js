@@ -30,10 +30,14 @@ let yellowScore = 0;
 
 let timeInterval;
 
+let red_winner_token = [];
+let blue_winner_token = [];
+let yellow_winner_token = [];
+let green_winner_token = [];
 
-let winner_token = {
-  'red':0, 'green':0, 'yellow':0, 'blue':0
-}
+// let winner_token = {
+//   'red':0, 'green':0, 'yellow':0, 'blue':0
+// };
 
 //======================================================================
 // This will encounter if a token is outside its initial position or not
@@ -61,7 +65,7 @@ let position = {
 let highScore = localStorage.getItem("highScore") || 0;
 high_score_value.innerHTML = highScore; 
 
-let highScore_player = localStorage.getItem("highScore-player") || '';
+let highScore_player = localStorage.getItem("player-name");
 high_score_name.innerHTML = highScore_player;
 
 
@@ -220,13 +224,14 @@ function getMove(color, index){
   }
   else if (eval(color + 'Outside') === 1){
     if (eval(color + 'Toggle')){
-      if (isOutside[color+index] === 1){
+      if (isOutside[color+index] === 1 && (total_cell - position[color+index]) >= random_num ){
         color, index = moveStepByStep(color, index);
         toggle = 0;
         eval(color + "Toggle = " + 0);
 
         color, index = checkCollision(color, index);
       }
+      else changeTheTurn(color);
     }
   }
   else if (eval(color + "Outside") >= 2){
@@ -236,8 +241,11 @@ function getMove(color, index){
     } 
     else {
       eval(color + 'Token')[index].addEventListener("click", function(){
-        call_2345(color, index);
-      }, {once:true}); 
+        if ((total_cell - position[color+index]) >= random_num){
+          call_2345(color, index); 
+        }
+        else changeTheTurn(color);
+      }, {once:true});  
     }
   }
   else if (eval(color + 'Toggle')) changeTheTurn(color);
@@ -271,7 +279,7 @@ function call_16(color, index){
       response = 1;
       eval(color + "Toggle = " + 0);
     }
-    else if (random_num === 1 || random_num === 6 ){
+    else if (random_num === 1 || random_num === 6 && (total_cell - position[color+index]) >= random_num){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
@@ -365,11 +373,15 @@ function moveStepByStep(color, index){
 
       if (position[color + index] >= total_cell){
         winner_sound.play();
-        winner_token[color]++;
-
-        if (winner_token[color] === 4){
+        eval(color + '_winner_token').push(color+index);
+        eval(color + 'Token')[index].style.opacity = "0.25";
+        if (eval(color + '_winner_token').length === 4){
           winner_sound.play(); //play it again
           winner_color.innerHTML = color.charAt(0).toUpperCase() + color.slice(1) + ' Color Wins';
+          
+          eval(color + "Outside -= " + 1);
+          isOutside[color+index] = 0;
+
           container.style.opacity = "0.4";
           dice_container.style.visibility = "hidden";
           end_screen.style.display = "block";
@@ -391,25 +403,31 @@ function moveStepByStep(color, index){
 function moveAtOnce(color, index){
   inout_sound.play();
   
-  eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
-  eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
-  eval(color + 'Token')[index].style.transition = '0.5s';
+  
+  if (isOutside[color + index] === 0 && !(eval(color + '_winner_token').includes(color+index))){
 
-  eval(color + 'Score +=' + 5);
-  eval(color + "_score").innerHTML = eval(color + 'Score');
+    eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
+    eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
+    eval(color + 'Token')[index].style.transition = '0.5s';
 
-  if (eval(color + 'Score')>highScore) {
-    highScore = eval(color + 'Score');
-    localStorage.setItem("highScore", highScore);
-    high_score_value.innerHTML = highScore; 
+    eval(color + 'Score +=' + 5);
+    eval(color + "_score").innerHTML = eval(color + 'Score');
 
-    highScore_player = eval(color + 'PlayerName');
-    localStorage.setItem("player-name", highScore_player);
-    high_score_name.innerHTML = highScore_player;
+    if (eval(color + 'Score')>highScore) {
+      highScore = eval(color + 'Score');
+      localStorage.setItem("highScore", highScore);
+      high_score_value.innerHTML = highScore; 
+
+      highScore_player = eval(color + 'PlayerName');
+      localStorage.setItem("player-name", highScore_player);
+      high_score_name.innerHTML = highScore_player;
+    }
+
+    eval(color + "Outside += " + 1);
+    isOutside[color+index] = 1;
+
+    index = 3;
   }
-
-  eval(color + "Outside += " + 1);
-  isOutside[color+index] = 1;
   
   turn = PlayerId[next];
 
