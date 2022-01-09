@@ -85,8 +85,9 @@ function rollDice(){
     trigger = 0;
     triggerInterval = 0;
     intervalOver = 0;
-
-    response = 0;
+    
+    response1 = 0;
+    response2 = 0;
 
     color = turn;
     eval(color + "Toggle = " + 1);
@@ -127,71 +128,6 @@ function rollDice(){
 }
 
 
-// =========================================
-// Implementing AI (roll dice automatically)
-// =========================================
-if (opponent === 'computer') timeInterval = 2000;
-else timeInterval = 1;
-setInterval(() => {
-  if (turn !== user && opponent === 'computer' && response === 1){
-    cube.click();
-    cube.addEventListener("click", rollDice, {once:true});
-  }
-  else{
-    cube.addEventListener("click", rollDice, {once:true});
-  }
-}, timeInterval);
-
-
-
-
-// =========================================
-// Implementing AI (move token automatically)
-// =========================================
-
-let j;
-
-function callAI(color, index){
-
-  let isMoved = 1;
-  let nowMoved = 1;
-
-
-  let other_color = PlayerId.filter(function(value){ 
-    return value != color;
-  });
-  
-  for (let i=0; i<other_color.length; i++){
-    for (j=0; j<4; j++){
-      if (isOutside[color + index] === 1 && Cell[color + 'Cell' + index] + random_num === Cell[other_color[i] + 'Cell' + j]){
-        eval(color + 'Token')[index].click();
-        return (color, index);
-      }
-    }
-    if (i === 2) isMoved = 0;
-  }
-  
-  if (!isMoved){
-    for (j=0; j<4; j++){
-      if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6)){
-        eval(color + 'Token')[j].click();
-        return (color, j);
-      }
-      if (j === 3) nowMoved = 0;
-    }
-  }
-
-  if (!nowMoved) {
-    for (j=0; j<4; j++){
-      if (isOutside[color + j] === 1){
-        eval(color + 'Token')[j].click();
-        return (color, j);
-      }
-    }  
-  }
-}
-
-
 
 
 //=========================================================================
@@ -205,7 +141,8 @@ function getMove(color, index){
     if (eval(color + 'Toggle')){
       color, index = moveAtOnce(color, index);
       toggle = 0;
-      response = 1;
+      response1 = 1;
+      response2 = 1;
       firstTurn++;
       eval(color + "Toggle = " + 0);
     }
@@ -252,7 +189,11 @@ function getMove(color, index){
 }
 
 
-
+/**
+ * Change the turn if one player turns over
+ *
+ * @param {color} - can be red, green, yellow and blue
+ */
 function changeTheTurn(color){
   next += 1;
   if (next > total_player-1) {
@@ -266,17 +207,25 @@ function changeTheTurn(color){
 
   numberPerTurn = 0;
   firstTurn = 0;
-  response = 1;
+  response1 = 1;
+  response2 = 1;
 }
 
 
+/**
+ * when the random number (dice rolled) is 1 and 6
+ *
+ * @param {color} - can be red, green, yellow and blue
+ * @param {index} - can be 0, 1, 2 and 3
+ */
 function call_16(color, index){
   if (eval(color + 'Toggle')){  
     if ((random_num === 1 || random_num === 6) && isOutside[color+index] === 0){
       color, index = moveAtOnce(color, index);  
       toggle = 0;
       firstTurn++;
-      response = 1;
+      response1 = 1;
+      response2 = 1;
       eval(color + "Toggle = " + 0);
     }
     else if (random_num === 1 || random_num === 6 && (total_cell - position[color+index]) >= random_num){
@@ -284,12 +233,19 @@ function call_16(color, index){
       toggle = 0;
       eval(color + "Toggle = " + 0);
       firstTurn++;
-      response = 1;
+      response1 = 1;
+      response2 = 1;
       color, index = checkCollision(color, index);
     }
   }
 }
 
+/**
+ * when the random number (dice rolled) is other than 1 and 6
+ *
+ * @param {color} - can be red, green, yellow and blue
+ * @param {index} - can be 0, 1, 2 and 3
+ */
 function call_2345(color, index){
   if (eval(color + 'Toggle')){
     if (isOutside[color+index] === 1 && ((total_cell - position[color + index]) >= random_num)){

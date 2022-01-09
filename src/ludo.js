@@ -22,13 +22,14 @@ let yellowPointPerTurn = [0, 0, 0, 0];
 let numberPerTurn = 0;
 let firstTurn = 0;
 
-let level;
-let opponent;
-let user;
+let level = "easy";
+let opponent = "computer";
+let user = "red";
 
 let isAgain;
 let index2;
-let response = 1;
+let response1 = 1;
+let response2 = 1;
 
 let intervalOver;
 let intervalCleared;
@@ -40,6 +41,8 @@ let bluePlayerName;
 let radioBtnChecked;
 let radioBtn2Checked;
 let radioBtn3Checked;
+
+let start = 0;
 
 /**
  * Create our main function to create tokens
@@ -118,8 +121,9 @@ function createGame(){
 
   turn = PlayerId[index];
   
-
   total_player = PlayerId.length;
+
+  if (!PlayerId.includes(user)) user = PlayerId[index];
 
   // Initial colored region (Active region)
   eval(turn+'_sub_region').style.background = "#556B2F";
@@ -128,6 +132,11 @@ function createGame(){
   createCoin(level);
   createLadder(level);
   createSnake(level);
+
+  let firstInterval = setInterval(() => {
+    start = 1;
+    clearInterval(firstInterval);
+  }, 3000);
 }
 
 /**
@@ -181,6 +190,8 @@ function resetToken(color, index){
 
           let interval7 = setInterval(() => {
             if (checkmate){
+              response2 = 1;
+
               eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_bottomPos')[j] + 'px';
               eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_leftPos')[j] + 'px';
 
@@ -208,6 +219,7 @@ function resetToken(color, index){
             } 
           });
         }
+        else response2 = 1;
       }
     }
   }
@@ -297,7 +309,7 @@ function withCoin(color, index){
         }
 
         if (triggerInterval) {
-          response = 1;
+          response1 = 1;
           color, index = resetToken(color, index);
 
           if (random_num === 1 || random_num === 6){
@@ -308,7 +320,7 @@ function withCoin(color, index){
       clearInterval(Interval2);
     }, 300);
   }
-  else response = 1;
+  else response1 = 1;
 
   return (color, index);
 }
@@ -513,6 +525,7 @@ function withSnake(color, index){
 }
 
 
+createGame();
 
 /**
  * The changes/position for token get reset if he/she get 1 or 6 continuously for 3 times
@@ -559,10 +572,7 @@ function mediumLevel(color){
 
       for (let j=0; j<firstTurn; j++){
         isAgain = 1;
-        console.log("First Turn: "+firstTurn);
         do{
-          console.log("I am inside do while loop");
-          console.log("Index2: "+ index2);
           if (position[color+index2] === 0 && isOutside[color+index2]  === 1){
             inout_sound.play();
             eval(color + 'Token')[index2].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[index2] + 'px';
@@ -644,10 +654,13 @@ function hardLevel(color){
 // validation of user input and the action after clicking play button
 //=====================================================================
 function onSubmit(){
+  let playerCount = 0;
+
   redPlayerName = red_input.value;
   greenPlayerName = green_input.value;
   yellowPlayerName = yellow_input.value;
   bluePlayerName = blue_input.value;
+
   radioBtnChecked = (Array.from(radioBtn)).some(option => option.checked);
   radioBtn2Checked = (Array.from(radioBtn2)).some(option => option.checked);
   radioBtn3Checked = (Array.from(radioBtn3)).some(option => option.checked);
@@ -662,28 +675,13 @@ function onSubmit(){
     level = document.querySelector('input[name="game-mode"]:checked').value;
   }
 
-  if (redPlayerName != '') {
-    player1.innerHTML = redPlayerName;
-    PlayerName.push(redPlayerName);
-    PlayerId.push("red");
-  }
-  if (greenPlayerName != '') {
-    player2.innerHTML = greenPlayerName;
-    PlayerName.push(greenPlayerName);
-    PlayerId.push("green");
-  }
-  if (yellowPlayerName != '') {
-    player3.innerHTML = yellowPlayerName; 
-    PlayerName.push(yellowPlayerName);
-    PlayerId.push("yellow");
-  }
-  if (bluePlayerName != '') {
-    player4.innerHTML = bluePlayerName;
-    PlayerName.push(bluePlayerName);
-    PlayerId.push("blue");
-  }
+  if (redPlayerName !== '') playerCount++;
+  if (greenPlayerName !== '') playerCount++;
+  if (yellowPlayerName !== '') playerCount++;
+  if (bluePlayerName !== '') playerCount++;
+   
 
-  if (PlayerName.length<2){
+  if (playerCount<2){
     message.innerHTML = "Minimum two players required";
     setTimeout(() => {
       message.innerHTML = '';
@@ -714,12 +712,34 @@ function onSubmit(){
     }, 3000);
   }
   else{
-    createGame();
+    if (redPlayerName !== '') {
+      player1.innerHTML = redPlayerName;
+      PlayerName.push(redPlayerName);
+      PlayerId.push("red");
+    }
+    if (greenPlayerName !== '') {
+      player2.innerHTML = greenPlayerName;
+      PlayerName.push(greenPlayerName);
+      PlayerId.push("green");
+    }
+    if (yellowPlayerName !== '') {
+      player3.innerHTML = yellowPlayerName;
+      PlayerName.push(yellowPlayerName);
+      PlayerId.push("yellow");
+    }
+    if (bluePlayerName !== '') {
+      player4.innerHTML = bluePlayerName;
+      PlayerName.push(bluePlayerName);
+      PlayerId.push("blue");
+    }
+
     loading.style.display = "block";
-    setTimeout(() => {
+    let initial_interval = setInterval(() => {
+      createGame();
       loading.style.display = "none";
       start_page.style.display = "none";
       main_wrapper.style.display = "block";
+      clearInterval(initial_interval);
     }, 2000);
   }
 }

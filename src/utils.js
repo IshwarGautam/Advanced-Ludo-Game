@@ -4,8 +4,8 @@ let random_num;
 let showClass;
 let currentClass = '';
 
-let PlayerName = [];
-let PlayerId = [];
+let PlayerName = ['Ishwar', 'Computer'];
+let PlayerId = ['red', 'yellow'];
 
 let total_cell = 56;
 let total_color;
