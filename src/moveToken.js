@@ -34,10 +34,6 @@ let greenScore = 0;
 let blueScore = 0;
 let yellowScore = 0;
 
-let timeInterval;
-
-let spaceAvailable;
-
 // token get pushed after they reached their home
 let red_winner_token = [];
 let blue_winner_token = [];
@@ -92,8 +88,6 @@ function rollDice(){
     trigger = 0;
     triggerInterval = 0;
     intervalOver = 0;
-
-    spaceAvailable = 0;
     
     response1 = 0;
     response2 = 0;
@@ -207,6 +201,10 @@ function changeTheTurn(color){
   }
   eval(color+'_sub_region').style.background = "ivory";
   turn = PlayerId[next];
+
+  active_turn.innerHTML = turn.charAt(0).toUpperCase() + turn.slice(1);
+  active_turn.style.color = turn;
+
   eval(turn+'_sub_region').style.background = "#556B2F";
   toggle = 0;
   eval(color + "Toggle = " + 0);
@@ -319,6 +317,9 @@ function moveStepByStep(color, index){
         }
         turn = PlayerId[next];
         eval(turn+'_sub_region').style.background = "#556B2F";
+
+        active_turn.innerHTML = turn.charAt(0).toUpperCase() + turn.slice(1);
+        active_turn.style.color = turn;
 
         numberPerTurn = 0;
         firstTurn = 0;

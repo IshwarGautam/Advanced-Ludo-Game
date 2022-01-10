@@ -5,7 +5,7 @@ let showClass;
 let currentClass = '';
 
 let PlayerName = [];
-let PlayerId = ['red', 'yellow'];
+let PlayerId = [];
 
 let total_cell = 56;
 let total_color;

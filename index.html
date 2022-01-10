@@ -288,7 +288,7 @@
   
     <!-- For creating 3d Dice -->
     <div id = "dice-container">
-      <span>Roll the dice</span>
+      <span id="dice-text">3D Dice</span>
       <div class="ThreeD-dice">
        <div class="dice" id="dice-1">1</div>
        <div class="dice" id="dice-2">2</div>
@@ -310,6 +310,15 @@
 
     <!-- For displaying what new in hard level -->
     <div class="instant-msg">Your all tokens that have not reached its home come back to initial position on getting 1 or 6 continuosly for three times in hard level</div>
+
+    <!-- When it's AI turn, no need to roll the dice by us -->
+    <div id="ai-msg">Tips: No need to roll the dice if it is not your turn</div>  
+
+    <!-- To display message about Who's turn -->
+    <span id = "turn-msg">It's <span id="active-turn"></span> Turn</span>
+
+    <!-- To display the user choosed color -->
+    <span id = "color-msg">Your Color: <span id = "your-color"></span></span>
 
 
     <!-- For maintaining highscore -->

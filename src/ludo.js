@@ -3,6 +3,10 @@
 let isRolled;
 let turn;
 
+let ai_msg_interval;
+let timeInterval;
+let interval_for_msg;
+
 //put all the token in their respective color
 let redToken = [];
 let greenToken = [];
@@ -28,9 +32,9 @@ let numberPerTurn = 0;
 let firstTurn = 0;
 
 // Get level, opponent and user from the initial form
-let level = "easy";
-let opponent = "human";
-let user = "red";
+let level = '';
+let opponent = '';
+let user = '';
 
 let isAgain;
 let index2;
@@ -43,9 +47,9 @@ let intervalOver;
 let intervalCleared;
 
 // Get the player name
-let redPlayerName = 'Ishwar';
+let redPlayerName;
 let greenPlayerName;
-let yellowPlayerName = 'Computer';
+let yellowPlayerName;
 let bluePlayerName;
 
 // Get the boolean value if the radio button has been checked or not
@@ -138,8 +142,13 @@ function createGame(){
 
   if (!PlayerId.includes(user)) user = PlayerId[index];
 
+  your_color.innerHTML = user.charAt(0).toUpperCase() + user.slice(1);;
+  your_color.style.color = user;
+
   // Initial colored region (Active region)
   eval(turn+'_sub_region').style.background = "#556B2F";
+  active_turn.innerHTML = turn.charAt(0).toUpperCase() + turn.slice(1);
+  active_turn.style.color = turn;
 
   // create coin, ladder and snake based on level chosen (easy, medium and hard)
   createCoin(level);
@@ -152,6 +161,8 @@ function createGame(){
     start = 1;
     clearInterval(firstInterval);
   }, 3000);
+
+  invokeAI(); //Calling AI function if played with computer else it will invoke in normal mode
 }
 
 
@@ -174,7 +185,7 @@ function resetToken(color, index){
 
     // iterate on that player
     for (let i=0; i<other_color.length; i++){
-      for (let j=0; j<4; j++){
+      for (let j=0; j<total_token; j++){
         
         //check for their position and reset if the condition met
         if (Cell[color + 'Cell' + index] === Cell[other_color[i] + 'Cell' + j]){
@@ -239,10 +250,12 @@ function resetToken(color, index){
             } 
           });
         }
-        else response2 = 1;
       }
+      if ( i === other_color.length - 1) response2 = 1;
     }
   }
+  else response2 = 1;
+
   return (color, index);
 }
 
@@ -298,7 +311,7 @@ function withCoin(color, index){
 
     instant_msg[0].style.display = "block";
 
-    let interval_for_msg = setInterval(() => {
+    interval_for_msg = setInterval(() => {
       instant_msg[0].style.display = "none";
       clearInterval(interval_for_msg);
     }, 5000);
@@ -555,7 +568,6 @@ function withSnake(color, index){
 }
 
 
-createGame();
 
 /**
  * The changes/position for token get reset if he/she get 1 or 6 continuously for 3 times
@@ -564,16 +576,16 @@ createGame();
  */
 function mediumLevel(color){
 
+  instant_msg[1].style.display = "block";
+
+  interval_for_msg = setInterval(() => {
+    instant_msg[1].style.display = "none";
+    clearInterval(interval_for_msg);
+  }, 8000);
+
   for (let i=0; i<4; i++){
   
     if (eval(color + 'PointPerTurn')[i] > 0){
-      
-      instant_msg[1].style.display = "block";
-
-      let interval_for_msg = setInterval(() => {
-        instant_msg[1].style.display = "none";
-        clearInterval(interval_for_msg);
-      }, 8000);
 
       let interval6 = setInterval(() => {
       
@@ -638,6 +650,10 @@ function mediumLevel(color){
   }
   eval(color+'_sub_region').style.background = "ivory";
   turn = PlayerId[next];
+
+  active_turn.innerHTML = turn.charAt(0).toUpperCase() + turn.slice(1);
+  active_turn.style.color = turn;
+
   eval(turn+'_sub_region').style.background = "#556B2F";
   toggle = 0;
   eval(color + "Toggle = " + 0);
@@ -654,15 +670,16 @@ function mediumLevel(color){
  * @param {color} - can be red, green, yellow and blue
  */
 function hardLevel(color){
+
+  instant_msg[2].style.display = "block";
+
+  interval_for_msg = setInterval(() => {
+    instant_msg[2].style.display = "none";
+    clearInterval(interval_for_msg);
+  }, 8000);
+
   for (let i=0; i<4; i++){
     if (position[color + i] < total_cell){
-
-      instant_msg[2].style.display = "block";
-
-      let interval_for_msg = setInterval(() => {
-        instant_msg[2].style.display = "none";
-        clearInterval(interval_for_msg);
-      }, 8000);
 
       inout_sound.play();
       eval(color + 'Token')[i].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[i] + 'px';
@@ -683,6 +700,10 @@ function hardLevel(color){
   }
   eval(color+'_sub_region').style.background = "ivory";
   turn = PlayerId[next];
+  
+  active_turn.innerHTML = turn.charAt(0).toUpperCase() + turn.slice(1);
+  active_turn.style.color = turn;
+
   eval(turn+'_sub_region').style.background = "#556B2F";
   toggle = 0;
   eval(color + "Toggle = " + 0);
@@ -779,11 +800,27 @@ function onSubmit(){
     }
 
     loading.style.display = "block";
+    
     let initial_interval = setInterval(() => {
+
       createGame();
+
       loading.style.display = "none";
       start_page.style.display = "none";
       main_wrapper.style.display = "block";
+
+      //Displaying message
+      if (opponent === 'computer'){
+        ai_msg.style.display = "block";
+
+        ai_msg_interval = setInterval(() => {
+          ai_msg.style.display = "none";
+
+          clearInterval(ai_msg_interval);
+        }, 5000);
+      }
+      
+
       clearInterval(initial_interval);
     }, 2000);
   }

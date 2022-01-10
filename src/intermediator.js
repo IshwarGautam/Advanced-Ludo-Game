@@ -101,6 +101,8 @@ const dice_6 = document.getElementById('dice-6');
 const dice_title = document.querySelector('#dice-container span');
 const cube = document.querySelector('.ThreeD-dice');
 
+const dice_text = document.getElementById("dice-text");
+
 // 12. To display player name while playing
 const player1 = document.getElementById("player1");
 const player2 = document.getElementById("player2");
@@ -127,6 +129,13 @@ const high_score_info = document.getElementById("high-score-info");
 
 // 15. To display message at required time
 const instant_msg = document.getElementsByClassName("instant-msg");
+const ai_msg = document.getElementById("ai-msg");
+const turn_msg = document.getElementById("turn-msg");
+
+const color_msg = document.getElementById("color-msg");
+const your_color = document.getElementById("your-color");
+
+const active_turn = document.getElementById("active-turn");
 
 // 16. To display end screen after game over
 const end_screen = document.getElementById("end-screen");

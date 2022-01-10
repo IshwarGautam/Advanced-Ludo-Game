@@ -5,7 +5,7 @@
 // 1. styling main game playing container
 main_wrapper.style.maxWidth = "1200px";
 main_wrapper.style.margin = "0 auto";
-// main_wrapper.style.display = "none";
+main_wrapper.style.display = "none";
 container.style.width = "600px";
 container.style.height = "600px";
 container.style.margin = "10px auto";
@@ -13,7 +13,7 @@ container.style.position = "relative";
 container.style.background = "ivory";
 
 //2. styling start page where user input their details
-start_page.style.display = "none";
+start_page.style.display = "block";
 start_page.style.width = "400px";
 start_page.style.background = "rgb(247,247,247)";
 start_page.style.textAlign = "center";
@@ -300,6 +300,8 @@ dice_container.style.marginTop = "-420px";
 dice_container.style.marginLeft = "40px";
 dice_container.style.perspective = "600px";
 
+dice_text.style.marginLeft = "50px";
+
 for (let i=0; i<dice.length; i++){
   dice[i].style.position = "absolute";
   dice[i].style.width = "200px";
@@ -438,6 +440,29 @@ for (let i=0; i<instant_msg.length; i++){
   instant_msg[i].style.display = "none";
 }
 
+ai_msg.style.color = "#fc2";
+ai_msg.style.fontFamily = "'Times New Roman', Times, Serif";
+ai_msg.style.position = "absolute";
+ai_msg.style.fontSize = "30px";
+ai_msg.style.marginTop = "35px";
+ai_msg.style.marginLeft = "305px";
+ai_msg.style.background = "#212329";
+ai_msg.style.display = "none";
+
+turn_msg.style.position = "absolute";
+turn_msg.style.marginTop = "-240px";
+turn_msg.style.marginLeft = "150px";
+turn_msg.style.fontSize = "20px";
+turn_msg.style.fontWeight = "bold";
+turn_msg.style.color = "#fff";
+turn_msg.style.background = "black";
+
+color_msg.style.position = "absolute";
+color_msg.style.marginTop = "-180px";
+color_msg.style.fontSize = "20px";
+color_msg.style.fontWeight = "bold";
+color_msg.style.color = "#fff";
+color_msg.style.background = "black";
 
 // 25. For styling end screen
 end_screen.style.width = "400px";
