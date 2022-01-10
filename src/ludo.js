@@ -1,12 +1,15 @@
 //Let's initialize and declare some variables
+
 let isRolled;
 let turn;
 
+//put all the token in their respective color
 let redToken = [];
 let greenToken = [];
 let blueToken = [];
 let yellowToken = [];
 
+//To get coin, ladder and snake in random position
 let random_location1 = [];
 let random_location2 = [];
 let random_location3 = [];
@@ -14,6 +17,8 @@ let random_location3 = [];
 let dy;
 let TOTAL_COMMON_CELL = 52;
 
+//checking the point obtained per turn. 
+//Use in medium level to reset the token if he/she get 1 or 6 continuously for three times
 let redPointPerTurn = [0, 0, 0, 0];
 let greenPointPerTurn = [0, 0, 0, 0];
 let bluePointPerTurn = [0, 0, 0, 0];
@@ -22,27 +27,34 @@ let yellowPointPerTurn = [0, 0, 0, 0];
 let numberPerTurn = 0;
 let firstTurn = 0;
 
+// Get level, opponent and user from the initial form
 let level = "easy";
-let opponent = "computer";
+let opponent = "human";
 let user = "red";
 
 let isAgain;
 let index2;
+
+// check for the response obtained after reseting the token and after coin moves completed
 let response1 = 1;
 let response2 = 1;
 
 let intervalOver;
 let intervalCleared;
 
-let redPlayerName;
+// Get the player name
+let redPlayerName = 'Ishwar';
 let greenPlayerName;
-let yellowPlayerName;
+let yellowPlayerName = 'Computer';
 let bluePlayerName;
+
+// Get the boolean value if the radio button has been checked or not
 let radioBtnChecked;
 let radioBtn2Checked;
 let radioBtn3Checked;
 
 let start = 0;
+
 
 /**
  * Create our main function to create tokens
@@ -119,6 +131,7 @@ function createGame(){
     } 
   }  
 
+  // Initial player's turn
   turn = PlayerId[index];
   
   total_player = PlayerId.length;
@@ -133,14 +146,18 @@ function createGame(){
   createLadder(level);
   createSnake(level);
 
+  // Start the game after 3 second
+  // can be useful mostly when we play with AI/computer
   let firstInterval = setInterval(() => {
     start = 1;
     clearInterval(firstInterval);
   }, 3000);
 }
 
+
+
 /**
- * When one token comes in the place of another color token, that token return back to its initial position
+ * When one token comes in the place of another color token, that token must return back to its initial position
  *
  * @param {color} - can be red, green, yellow and blue
  * @param {index} - can be 0, 1, 2 and 3 (as each player has 4 tokens)
@@ -150,13 +167,16 @@ function resetToken(color, index){
 
   if ((!(safeCell.includes(Cell[color + 'Cell' + index]))) && Cell[color + 'Cell' + index] >= 0){
 
+    // get the other player
     let other_color = PlayerId.filter(function(value){ 
       return value != color;
     });
 
+    // iterate on that player
     for (let i=0; i<other_color.length; i++){
       for (let j=0; j<4; j++){
         
+        //check for their position and reset if the condition met
         if (Cell[color + 'Cell' + index] === Cell[other_color[i] + 'Cell' + j]){
           
           let Interval1 = setInterval(() => {
@@ -227,6 +247,8 @@ function resetToken(color, index){
 }
 
 
+
+
 //===============================================
 // Let's add coin in the game and implement it
 //================================================
@@ -266,13 +288,21 @@ function createCoin(mode){
 }
 
 /**
- * Increase token by 12 cell if it is in the coin
+ * Increase token by 12 cell/point if it is in the coin
  *
  * @param {color} - can be red, green, blue, yellow
  * @param {index} - can be 0, 1, 2 and 3
  */
 function withCoin(color, index){
   if (random_location1.includes(Cell[color + 'Cell' + index])){
+
+    instant_msg[0].style.display = "block";
+
+    let interval_for_msg = setInterval(() => {
+      instant_msg[0].style.display = "none";
+      clearInterval(interval_for_msg);
+    }, 5000);
+    
     let Interval2 = setInterval(() => {
       let dz = 0;
       let interval2 = setInterval(() => {
@@ -538,6 +568,13 @@ function mediumLevel(color){
   
     if (eval(color + 'PointPerTurn')[i] > 0){
       
+      instant_msg[1].style.display = "block";
+
+      let interval_for_msg = setInterval(() => {
+        instant_msg[1].style.display = "none";
+        clearInterval(interval_for_msg);
+      }, 8000);
+
       let interval6 = setInterval(() => {
       
         eval(color + 'PointPerTurn')[i]--;
@@ -619,6 +656,14 @@ function mediumLevel(color){
 function hardLevel(color){
   for (let i=0; i<4; i++){
     if (position[color + i] < total_cell){
+
+      instant_msg[2].style.display = "block";
+
+      let interval_for_msg = setInterval(() => {
+        instant_msg[2].style.display = "none";
+        clearInterval(interval_for_msg);
+      }, 8000);
+
       inout_sound.play();
       eval(color + 'Token')[i].style.bottom = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_bottomPos')[i] + 'px';
       eval(color + 'Token')[i].style.left = eval(color.charAt(0).toUpperCase() + color.slice(1) + '_leftPos')[i] + 'px';

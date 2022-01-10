@@ -3,26 +3,32 @@ let path = 0;
 let dx = 0;
 let next = 0;
 
+// to check if the particular token is outside or not
 let redOutside = 0;
 let greenOutside = 0;
 let yellowOutside = 0;
 let blueOutside = 0;
 
+// increase the z-index per each turn
 let z_index = 0;
+
 let color;
 
+// use to activate each player
 let toggle = 0;
 let redToggle = 0;
 let greenToggle = 0;
 let yellowToggle = 0;
 let blueToggle = 0;
 
+// use to set and check for the interval
 let interval;
 let isIntervalCleared;
 let trigger;
 let createInterval;
 let triggerInterval;
 
+// use to store each player score
 let redScore = 0;
 let greenScore = 0;
 let blueScore = 0;
@@ -30,14 +36,15 @@ let yellowScore = 0;
 
 let timeInterval;
 
+let spaceAvailable;
+
+// token get pushed after they reached their home
 let red_winner_token = [];
 let blue_winner_token = [];
 let yellow_winner_token = [];
 let green_winner_token = [];
 
-// let winner_token = {
-//   'red':0, 'green':0, 'yellow':0, 'blue':0
-// };
+let forTheFirstTime = 1;
 
 //======================================================================
 // This will encounter if a token is outside its initial position or not
@@ -61,7 +68,7 @@ let position = {
 };
 
 
-// get highscore from our local storage
+// get highscore and player name from our local storage
 let highScore = localStorage.getItem("highScore") || 0;
 high_score_value.innerHTML = highScore; 
 
@@ -85,6 +92,8 @@ function rollDice(){
     trigger = 0;
     triggerInterval = 0;
     intervalOver = 0;
+
+    spaceAvailable = 0;
     
     response1 = 0;
     response2 = 0;
@@ -137,7 +146,7 @@ function rollDice(){
 function getMove(color, index){
 
   // move the token based on the random number of dice rolled
-  if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0){ 
+  if ((random_num === 1 || random_num === 6) && eval(color + 'Outside') === 0 && forTheFirstTime){ 
     if (eval(color + 'Toggle')){
       color, index = moveAtOnce(color, index);
       toggle = 0;
@@ -156,19 +165,19 @@ function getMove(color, index){
     else {
       eval(color + 'Token')[index].addEventListener("click", function(){
         call_16(color, index);
-      }, {once:true}); 
+      }, {once:true});
     }       
   }
   else if (eval(color + 'Outside') === 1){
     if (eval(color + 'Toggle')){
-      if (isOutside[color+index] === 1 && (total_cell - position[color+index]) >= random_num ){
+
+      if (isOutside[color+index] === 1){
         color, index = moveStepByStep(color, index);
         toggle = 0;
         eval(color + "Toggle = " + 0);
 
         color, index = checkCollision(color, index);
       }
-      else changeTheTurn(color);
     }
   }
   else if (eval(color + "Outside") >= 2){
@@ -178,11 +187,8 @@ function getMove(color, index){
     } 
     else {
       eval(color + 'Token')[index].addEventListener("click", function(){
-        if ((total_cell - position[color+index]) >= random_num){
-          call_2345(color, index); 
-        }
-        else changeTheTurn(color);
-      }, {once:true});  
+        call_2345(color, index); 
+      }, {once:true}); 
     }
   }
   else if (eval(color + 'Toggle')) changeTheTurn(color);
@@ -228,7 +234,7 @@ function call_16(color, index){
       response2 = 1;
       eval(color + "Toggle = " + 0);
     }
-    else if (random_num === 1 || random_num === 6 && (total_cell - position[color+index]) >= random_num){
+    else if (random_num === 1 || random_num === 6){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
@@ -248,7 +254,7 @@ function call_16(color, index){
  */
 function call_2345(color, index){
   if (eval(color + 'Toggle')){
-    if (isOutside[color+index] === 1 && ((total_cell - position[color + index]) >= random_num)){
+    if (isOutside[color+index] === 1){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
@@ -330,13 +336,23 @@ function moveStepByStep(color, index){
       if (position[color + index] >= total_cell){
         winner_sound.play();
         eval(color + '_winner_token').push(color+index);
-        eval(color + 'Token')[index].style.opacity = "0.25";
+
+        forTheFirstTime = 0;
+
+        eval(color + "Outside -= " + 1);
+        isOutside[color+index] = 0;
+
+        // Decrese the token opacity after reaching its home
+        eval(color + 'Token')[index].style.opacity = "0.5";
+
+        let removeToken = setInterval(() => {
+          eval(color + 'Token')[index].style.display = "none";
+          clearInterval(removeToken);
+        }, 3000);
+
         if (eval(color + '_winner_token').length === 4){
           winner_sound.play(); //play it again
           winner_color.innerHTML = color.charAt(0).toUpperCase() + color.slice(1) + ' Color Wins';
-          
-          eval(color + "Outside -= " + 1);
-          isOutside[color+index] = 0;
 
           container.style.opacity = "0.4";
           dice_container.style.visibility = "hidden";
@@ -359,36 +375,33 @@ function moveStepByStep(color, index){
 function moveAtOnce(color, index){
   inout_sound.play();
   
-  
-  if (isOutside[color + index] === 0 && !(eval(color + '_winner_token').includes(color+index))){
+  eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
+  eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
+  eval(color + 'Token')[index].style.transition = '0.5s';
 
-    eval(color + 'Token')[index].style.bottom = eval(color + 'BottomPath')[0] + "px";
-    eval(color + 'Token')[index].style.left = eval(color + 'LeftPath')[0] + "px";
-    eval(color + 'Token')[index].style.transition = '0.5s';
+  eval(color + 'Score +=' + 5);
+  eval(color + "_score").innerHTML = eval(color + 'Score');
 
-    eval(color + 'Score +=' + 5);
-    eval(color + "_score").innerHTML = eval(color + 'Score');
+  if (eval(color + 'Score')>highScore) {
+    highScore = eval(color + 'Score');
+    localStorage.setItem("highScore", highScore);
+    high_score_value.innerHTML = highScore; 
 
-    if (eval(color + 'Score')>highScore) {
-      highScore = eval(color + 'Score');
-      localStorage.setItem("highScore", highScore);
-      high_score_value.innerHTML = highScore; 
-
-      highScore_player = eval(color + 'PlayerName');
-      localStorage.setItem("player-name", highScore_player);
-      high_score_name.innerHTML = highScore_player;
-    }
-
-    eval(color + "Outside += " + 1);
-    isOutside[color+index] = 1;
-
-    index = 3;
+    highScore_player = eval(color + 'PlayerName');
+    localStorage.setItem("player-name", highScore_player);
+    high_score_name.innerHTML = highScore_player;
   }
-  
+
+  eval(color + "Outside += " + 1);
+  isOutside[color+index] = 1;
+
+  index = 3;
+
   turn = PlayerId[next];
 
   return (color, index);
 }
+
 
 
 /**

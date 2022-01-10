@@ -118,13 +118,17 @@ const yellow_score = document.getElementById("yellow-score");
 
 
 // 14. To maintain high score
+const score_container = document.getElementById("score-container");
 const high_score = document.getElementById("high-score");
 const high_score_name = document.getElementById("high-score-name");
 const high_score_value = document.getElementById("high-score-value");
 const high_score_info = document.getElementById("high-score-info");
 
 
-// 15. To display end screen after game over
+// 15. To display message at required time
+const instant_msg = document.getElementsByClassName("instant-msg");
+
+// 16. To display end screen after game over
 const end_screen = document.getElementById("end-screen");
 const crown_image = document.getElementById("crown-image");
 const winner_color = document.getElementById("winner-color");

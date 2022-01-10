@@ -345,7 +345,7 @@ dice_title.style.color = "#fc2";
 player1.style.color = "ivory";
 player1.style.width = "350px";
 player1.style.textAlign = "right";
-player1.style.fontSize = "40px";
+player1.style.fontSize = "20px";
 player1.style.position = "absolute";
 player1.style.marginRight = "600px";
 player1.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
@@ -353,7 +353,7 @@ player1.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 player2.style.color = "ivory";
 player2.style.width = "350px";
 player2.style.textAlign = "right";
-player2.style.fontSize = "40px";
+player2.style.fontSize = "20px";
 player2.style.position = "absolute";
 player2.style.marginRight = "600px";
 player2.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
@@ -361,7 +361,7 @@ player2.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 player3.style.color = "ivory";
 player3.style.width = "350px";
 player3.style.textAlign = "left";
-player3.style.fontSize = "40px";
+player3.style.fontSize = "20px";
 player3.style.position = "absolute";
 player3.style.marginLeft = "600px";
 player3.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
@@ -369,7 +369,7 @@ player3.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 player4.style.color = "ivory";
 player4.style.width = "350px";
 player4.style.textAlign = "left";
-player4.style.fontSize = "40px";
+player4.style.fontSize = "20px";
 player4.style.position = "absolute";
 player4.style.marginLeft = "600px";
 player4.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
@@ -403,27 +403,43 @@ blue_score.style.color = "blue";
 
 
 // 23. For styling and placing high score of player
-high_score.style.position = "absolute";
-high_score.style.right = "0";
-high_score.style.top = "0";
 high_score.style.width = "250px";
 high_score.style.textAlign = "center";
-high_score.style.color = "ivory";
 high_score.style.fontSize = "30px";
 high_score.style.textDecoration = "underline";
 high_score.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
 
-high_score_info.style.position = "absolute";
-high_score_info.style.right = "0";
-high_score_info.style.top = "40px";
 high_score_info.style.width = "250px";
-high_score_info.style.textAlign = "left";
-high_score_info.style.color = "ivory";
+high_score_info.style.textAlign = "center";
 high_score_info.style.fontSize = "20px";
 high_score_info.style.fontFamily = "'Times New Roman', Times, serif, Georgia";
+high_score_info.style.marginTop = "10px";
+
+score_container.style.background = "rgb(247,247,247)";
+score_container.style.width = "250px";
+score_container.style.height = "100px";
+score_container.style.right = "0";
+score_container.style.top = "10px";
+score_container.style.position = "absolute";
+score_container.style.borderRadius = "10px";
 
 
-// 24. For styling end screen
+//24.  To display message at required time
+for (let i=0; i<instant_msg.length; i++){
+  instant_msg[i].style.position = "absolute";
+  instant_msg[i].style.background = "#5f1";
+  instant_msg[i].style.width = "250px";
+  instant_msg[i].style.right = "30px";
+  instant_msg[i].style.top = "160px";
+  instant_msg[i].style.borderRadius = "20px";
+  instant_msg[i].style.fontSize = "25px";
+  instant_msg[i].style.textAlign = "center";
+  instant_msg[i].style.fontWeight = "bold";
+  instant_msg[i].style.display = "none";
+}
+
+
+// 25. For styling end screen
 end_screen.style.width = "400px";
 end_screen.style.height = "340px";
 end_screen.style.background = "#E6E6FA";

@@ -4,12 +4,13 @@ let random_num;
 let showClass;
 let currentClass = '';
 
-let PlayerName = ['Ishwar', 'Computer'];
+let PlayerName = [];
 let PlayerId = ['red', 'yellow'];
 
 let total_cell = 56;
 let total_color;
 let total_player;
+let total_token = 4;
 
 let checkmate;
 let index = 0;
@@ -27,8 +28,8 @@ function getRandomInt(min, max) {
  * Get Random Value from array
  *
  * @param {quantity} - number of random array that we need (how much)
- * @param {arr} - take random from this array
- * @param {max} - maximum number of getRandomInt
+ * @param {arr} - take random value from this array
+ * @param {max} - maximum number of getRandomInt function
  */
 
  function getRandomFromArray(quantity, arr, max){

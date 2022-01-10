@@ -10,16 +10,19 @@
   <link rel="stylesheet" href="src/reset.css">
   <link rel="stylesheet" href="src/style.css">
 
+  <!-- Using Font Awesome Icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 </head>
 <body>
 
-  <!-- Start page where user input their name, select color and their oponent -->
+  <!-- Start page where user input their name, select color and their opponent -->
   <div id="start-page">
     <div id="fill-details">
       <div id="logo">
         <img src="./images/dice.png" class="dice_image" alt="Dice Image">
       </div>
+
+      <!-- Choose either human or computer -->
       <div class="radioBtn" id="radio-section">
         <input type="radio" id="computer" name="play_with" value="computer">
         <label for="computer">vs Computer</label>&emsp;
@@ -30,6 +33,8 @@
         (Minimum two players)
       </div>
       <div id="loading"></div>
+
+      <!-- Write the player name -->
       <div id="playerName">
         <input type="text" id="red-input" placeholder="Red player name...">
         <input type="text" id="green-input" placeholder="Green player name...">
@@ -37,6 +42,7 @@
         <input type="text" id="blue-input" placeholder="Blue player name...">
       </div>
 
+      <!-- Choose your favorite color -->
       <div id="which-color">Which color belongs to you?</div>
       <div class="radioBtn2" id="radio-section2">
         <input type="radio" id="red-color" name="choose-color" value="red">
@@ -50,6 +56,7 @@
       </div>
       <br>
 
+      <!-- In which mode, you want to play the game? -->
       <div id="game-modes">Choose Game Mode:</div>
       <div class="radioBtn3" id="radio-section3">
         <input type="radio" id="easy" name="game-mode" value="easy">
@@ -295,11 +302,23 @@
     <!-- For encountering whether the player has played or not -->
     <div id="isPlayed">Please move your token (gotti) first</div>
 
+    <!-- For displaying message when player is in coin -->
+    <div class="instant-msg">Coin increases your token by 12 cell</div>
+
+    <!-- For displaying what new in medium level -->
+    <div class="instant-msg">Your changes are reversed on getting 1 or 6 continuously for three times in medium level</div>
+
+    <!-- For displaying what new in hard level -->
+    <div class="instant-msg">Your all tokens that have not reached its home come back to initial position on getting 1 or 6 continuosly for three times in hard level</div>
+
+
     <!-- For maintaining highscore -->
-    <div id = "high-score">HighScore</div>
-    <div class="info" id="high-score-info">
-      <h4>Name: <span id="high-score-name"></span></h4>
-      <h4>Score Obtained: <span id="high-score-value"></span></h4>
+    <div id="score-container">
+      <div id = "high-score">HighScore</div>
+      <div class="info" id="high-score-info">
+        <h4>Name: <span id="high-score-name"></span></h4>
+        <h4>Score Obtained: <span id="high-score-value"></span></h4>
+      </div>
     </div>
 
     <!-- Let's create end screen -->

@@ -1,5 +1,8 @@
 body{
-  background: #212329;
+  /* background: #212329; */
+  background: url('../images/background.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .green-yellow-path .icon i{
