@@ -101,6 +101,8 @@ function rollDice(){
     isIntervalCleared = 0;
     intervalCleared = 0;
 
+    waitForReset = 0;
+
     isPlayed.style.display = "none";
 
     random_num = getRandomInt(1,7);
@@ -237,8 +239,6 @@ function call_16(color, index){
       toggle = 0;
       eval(color + "Toggle = " + 0);
       firstTurn++;
-      response1 = 1;
-      response2 = 1;
       color, index = checkCollision(color, index);
     }
   }

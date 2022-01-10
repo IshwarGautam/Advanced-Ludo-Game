@@ -189,7 +189,7 @@ function resetToken(color, index){
         
         //check for their position and reset if the condition met
         if (Cell[color + 'Cell' + index] === Cell[other_color[i] + 'Cell' + j]){
-          
+          waitForReset = 1;
           let Interval1 = setInterval(() => {
             killed_sound.play();
 
@@ -251,7 +251,7 @@ function resetToken(color, index){
           });
         }
       }
-      if ( i === other_color.length - 1) response2 = 1;
+      if ( i === other_color.length - 1 && waitForReset === 0) response2 = 1;
     }
   }
   else response2 = 1;
@@ -581,7 +581,7 @@ function mediumLevel(color){
   interval_for_msg = setInterval(() => {
     instant_msg[1].style.display = "none";
     clearInterval(interval_for_msg);
-  }, 8000);
+  }, 9000);
 
   for (let i=0; i<4; i++){
   
@@ -618,6 +618,8 @@ function mediumLevel(color){
   let interval8 = setInterval(() => {
     if (intervalCleared){
       index2 = 0;
+      response1 = 1;
+      response2 = 1;
 
       for (let j=0; j<firstTurn; j++){
         isAgain = 1;
@@ -676,7 +678,7 @@ function hardLevel(color){
   interval_for_msg = setInterval(() => {
     instant_msg[2].style.display = "none";
     clearInterval(interval_for_msg);
-  }, 8000);
+  }, 10000);
 
   for (let i=0; i<4; i++){
     if (position[color + i] < total_cell){
@@ -691,8 +693,11 @@ function hardLevel(color){
       eval(color + "Outside -= " + 1);
     }
   }
-  eval(color + 'Score +=' + (total_cell * winner_token[color]));
+  eval(color + 'Score =' + 0); //reset score to zero
   eval(color + "_score").innerHTML = eval(color + 'Score');
+
+  response1 = 1;
+  response2 = 1;
 
   next += 1;
   if (next > total_player-1) {

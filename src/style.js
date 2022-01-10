@@ -386,22 +386,26 @@ isPlayed.style.display = "none";
 red_score.style.fontSize = "25px";
 red_score.style.position = "absolute";
 red_score.style.marginTop = "200px";
-red_score.style.color = "maroon";
+red_score.style.background = "yellow";
+red_score.style.fontWeight = "bold";
 
 green_score.style.fontSize = "25px";
 green_score.style.position = "absolute";
 green_score.style.marginTop = "-200px";
-green_score.style.color = "green";
+green_score.style.background = "yellow";
+green_score.style.fontWeight = "bold";
 
 yellow_score.style.fontSize = "25px";
 yellow_score.style.position = "absolute";
 yellow_score.style.marginTop = "-200px";
-yellow_score.style.color = "yellow";
+yellow_score.style.background = "yellow";
+yellow_score.style.fontWeight = "bold";
 
 blue_score.style.fontSize = "25px";
 blue_score.style.position = "absolute";
 blue_score.style.marginTop = "200px";
-blue_score.style.color = "blue";
+blue_score.style.background = "yellow";
+blue_score.style.fontWeight = "bold";
 
 
 // 23. For styling and placing high score of player
@@ -450,15 +454,16 @@ ai_msg.style.background = "#212329";
 ai_msg.style.display = "none";
 
 turn_msg.style.position = "absolute";
-turn_msg.style.marginTop = "-240px";
-turn_msg.style.marginLeft = "150px";
+turn_msg.style.top = "35px";
+turn_msg.style.marginLeft = "160px";
 turn_msg.style.fontSize = "20px";
 turn_msg.style.fontWeight = "bold";
 turn_msg.style.color = "#fff";
 turn_msg.style.background = "black";
 
 color_msg.style.position = "absolute";
-color_msg.style.marginTop = "-180px";
+color_msg.style.top = "110px";
+color_msg.style.marginLeft = "20px";
 color_msg.style.fontSize = "20px";
 color_msg.style.fontWeight = "bold";
 color_msg.style.color = "#fff";

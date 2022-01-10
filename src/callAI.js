@@ -2,9 +2,9 @@
 // Implementing AI (roll dice automatically)
 // =========================================
 
-// setting time-interval for computer
-
 function invokeAI(){
+
+  // setting time-interval for computer
   if (opponent === 'computer') timeInterval = 2500;
   else timeInterval = 1;
 
@@ -44,21 +44,22 @@ function callAI(color, index){
   let other_color = PlayerId.filter(function(value){ 
     return value != color;
   });
+
   
   //============================================================================
   // First priority: Move the token that can reset other player's token position
   //============================================================================
-  for (let i=0; i<other_color.length; i++){
-    for (let p = 0; p<total_token; p++){
+  for (let p = 0; p<total_token; p++){
+    for (let i=0; i<other_color.length; i++){
       for (let j=0; j<total_token; j++){
         if (isOutside[color + p] === 1 && Cell[color + 'Cell' + p] + random_num === Cell[other_color[i] + 'Cell' + j]){
+          console.log("First priority executed....");
           eval(color + 'Token')[p].click();
           return (color, p);
-        }
+        }  
       }
     }
-  
-    if (i === total_player - 2) moveFirst = 0;
+    if (p === total_token - 1) moveFirst = 0;
   }
 
   //======================================================
@@ -67,6 +68,7 @@ function callAI(color, index){
   if (!moveFirst){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6)){
+        console.log("Second priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -80,6 +82,7 @@ function callAI(color, index){
   if (!moveSecond){
     for (let j=0; j<total_token; j++){
       if (ladderStartPos.includes(Cell[color + 'Cell' + j] + random_num) || random_location1.includes(Cell[color + 'Cell' + j] + random_num)){
+        console.log("Third priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -94,6 +97,7 @@ function callAI(color, index){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 1 && !safeCell.includes(Cell[color + 'Cell' + j]) && 
       (total_cell - position[color + j])>=random_num && (!snakeMouthPos.includes(Cell[color + 'Cell' + j] + random_num))){
+        console.log("Forth priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -113,6 +117,7 @@ function callAI(color, index){
 
     for (let i=0; i<total_token; i++){
       if (position[color + i] === getPosition[0]) {
+        console.log("Fifth priority executed....");
         eval(color+'Token')[i].click();
         return (color, i);
       }
