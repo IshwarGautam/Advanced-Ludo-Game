@@ -462,8 +462,7 @@ turn_msg.style.color = "#fff";
 turn_msg.style.background = "black";
 
 color_msg.style.position = "absolute";
-color_msg.style.top = "110px";
-color_msg.style.marginLeft = "20px";
+color_msg.style.top = "115px";
 color_msg.style.fontSize = "20px";
 color_msg.style.fontWeight = "bold";
 color_msg.style.color = "#fff";

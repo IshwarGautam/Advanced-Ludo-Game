@@ -79,9 +79,16 @@ function callAI(color, index){
   //========================================================================
   // Third Priority: If AI can use ladder or coin, the priority is also high
   //========================================================================
+
+  // For this, let get ladder position
+  let ladderPos = [];
+  for (let i = 0; i< random_location2.length; i++){
+    ladderPos.push(ladderStartPos[random_location2[i]]);
+  }
+
   if (!moveSecond){
     for (let j=0; j<total_token; j++){
-      if (ladderStartPos.includes(Cell[color + 'Cell' + j] + random_num) || random_location1.includes(Cell[color + 'Cell' + j] + random_num)){
+      if ((ladderPos.includes(Cell[color + 'Cell' + j] + random_num) || random_location1.includes(Cell[color + 'Cell' + j] + random_num) && isOutside[color+j])){
         console.log("Third priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
@@ -93,10 +100,17 @@ function callAI(color, index){
   //====================================================================================================================
   // Forth Priority: Move the token that are not in safe cell but also keep eye on snake (try to be far from snake area)
   //====================================================================================================================
+
+  // First, get the snake position
+  let snakePos = [];
+  for (let i = 0; i< random_location3.length; i++){
+    snakePos.push(snakeMouthPos[random_location3[i]]);
+  }
+
   if (!moveThird){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 1 && !safeCell.includes(Cell[color + 'Cell' + j]) && 
-      (total_cell - position[color + j])>=random_num && (!snakeMouthPos.includes(Cell[color + 'Cell' + j] + random_num))){
+      (total_cell - position[color + j])>=random_num && (!snakePos.includes(Cell[color + 'Cell' + j] + random_num))){
         console.log("Forth priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
@@ -116,7 +130,7 @@ function callAI(color, index){
     getPosition.sort(function(a, b){return a-b});
 
     for (let i=0; i<total_token; i++){
-      if (position[color + i] === getPosition[0]) {
+      if (position[color + i] === getPosition[0] && isOutside[color + i] === 1) {
         console.log("Fifth priority executed....");
         eval(color+'Token')[i].click();
         return (color, i);

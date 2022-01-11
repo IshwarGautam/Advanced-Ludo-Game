@@ -228,7 +228,6 @@ function resetToken(color, index){
 
           let interval7 = setInterval(() => {
             if (checkmate){
-              response2 = 1;
 
               eval(other_color[i] + 'Token')[j].style.bottom = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_bottomPos')[j] + 'px';
               eval(other_color[i] + 'Token')[j].style.left = eval(other_color[i].charAt(0).toUpperCase() + other_color[i].slice(1) + '_leftPos')[j] + 'px';
@@ -253,6 +252,12 @@ function resetToken(color, index){
               if (random_num === 1 || random_num === 6){
                 eval(other_color[i] + 'PointPerTurn')[j] = 0;
               }
+
+              let delayInterval = setInterval(() => {
+                response2 = 1;
+                clearInterval(delayInterval);
+              }, 2000);
+
               clearInterval(interval7);
             } 
           });
@@ -316,6 +321,8 @@ function createCoin(mode){
 function withCoin(color, index){
   if (random_location1.includes(Cell[color + 'Cell' + index])){
 
+    response2 = 0;
+
     instant_msg[0].style.display = "block";
 
     interval_for_msg = setInterval(() => {
@@ -359,6 +366,7 @@ function withCoin(color, index){
         }
 
         if (triggerInterval) {
+          response2 = 0;
           response1 = 1;
           color, index = resetToken(color, index);
 
@@ -432,6 +440,9 @@ function createLadder(mode){
 function withLadder(color, index){
   for (let i=0; i<random_location2.length; i++){
     if (Cell[color + 'Cell' + index] === ladderStartPos[random_location2[i]]){
+      
+      response2 = 0;
+
       let Interval3 = setInterval(() => {
         inout_sound.play();
         eval(color + 'Token')[index].style.bottom = redBottomPath[ladderEndPos[random_location2[i]]] + 'px';
@@ -538,6 +549,9 @@ function createSnake(mode){
 function withSnake(color, index){
   for (let i=0; i<random_location3.length; i++){
     if (Cell[color + 'Cell' + index] === snakeMouthPos[random_location3[i]]){
+
+      response2 = 0;
+      
       let Interval4 = setInterval(() => {
         inout_sound.play();
         eval(color + 'Token')[index].style.bottom = redBottomPath[snakeTailPos[random_location3[i]]] + 'px';
