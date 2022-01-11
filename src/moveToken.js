@@ -396,8 +396,6 @@ function moveAtOnce(color, index){
   eval(color + "Outside += " + 1);
   isOutside[color+index] = 1;
 
-  index = 3;
-
   turn = PlayerId[next];
 
   return (color, index);

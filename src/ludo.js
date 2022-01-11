@@ -59,10 +59,12 @@ let radioBtn3Checked;
 
 let start = 0;
 
+let snakeInSafeCell = 0;
+
 //Add background music while filling form
 document.body.addEventListener("click", function () {
   background_sound.play();
-  background_sound.volume = 0.2;
+  background_sound.volume = 0.3;
   background_sound.loop = true;
 }, {once:true});
 
@@ -261,6 +263,7 @@ function resetToken(color, index){
               clearInterval(interval7);
             } 
           });
+          return (color, index);
         }
       }
       if ( i === other_color.length - 1 && waitForReset === 0) response2 = 1;
@@ -551,7 +554,7 @@ function withSnake(color, index){
     if (Cell[color + 'Cell' + index] === snakeMouthPos[random_location3[i]]){
 
       response2 = 0;
-      
+
       let Interval4 = setInterval(() => {
         inout_sound.play();
         eval(color + 'Token')[index].style.bottom = redBottomPath[snakeTailPos[random_location3[i]]] + 'px';
@@ -701,7 +704,7 @@ function hardLevel(color){
     clearInterval(interval_for_msg);
   }, 10000);
 
-  for (let i=0; i<4; i++){
+  for (let i=0; i<total_token; i++){
     if (position[color + i] < total_cell){
 
       inout_sound.play();
@@ -711,9 +714,10 @@ function hardLevel(color){
       position[color + i] = 0;
       Cell[color + 'Cell' + i] = Cell_copy[color + 'Cell' + i];
       isOutside[color + i] = 0;
-      eval(color + "Outside -= " + 1);
     }
   }
+  eval(color + "Outside = " + 0);
+
   eval(color + 'Score =' + 0); //reset score to zero
   eval(color + "_score").innerHTML = eval(color + 'Score');
 

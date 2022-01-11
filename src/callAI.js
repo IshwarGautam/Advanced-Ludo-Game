@@ -39,6 +39,8 @@ function callAI(color, index){
   let moveThird = 1;
   let moveForth = 1;
   let moveFifth = 1;
+  let moveSixth = 1;
+  let moveSeventh = 1;
 
 
   let other_color = PlayerId.filter(function(value){ 
@@ -52,7 +54,7 @@ function callAI(color, index){
   for (let p = 0; p<total_token; p++){
     for (let i=0; i<other_color.length; i++){
       for (let j=0; j<total_token; j++){
-        if (isOutside[color + p] === 1 && Cell[color + 'Cell' + p] + random_num === Cell[other_color[i] + 'Cell' + j]){
+        if (isOutside[color + p] === 1 && Cell[color + 'Cell' + p] + random_num === Cell[other_color[i] + 'Cell' + j] && isOutside[other_color[i]+j]){
           console.log("First priority executed....");
           eval(color + 'Token')[p].click();
           return (color, p);
@@ -72,7 +74,7 @@ function callAI(color, index){
         eval(color + 'Token')[j].click();
         return (color, j);
       }
-      if (j === 3) moveSecond = 0;
+      if (j === total_token - 1) moveSecond = 0;
     }
   }
 
@@ -93,37 +95,78 @@ function callAI(color, index){
         eval(color + 'Token')[j].click();
         return (color, j);
       }
-      if (j === 3) moveThird = 0;
+      if (j === total_token - 1) moveThird = 0;
     }
   }
 
-  //====================================================================================================================
-  // Forth Priority: Move the token that are not in safe cell but also keep eye on snake (try to be far from snake area)
-  //====================================================================================================================
+  //=========================================================================================================================
+  // Forth Priority: If one can stay in safe cell, the priority is high
+  // But exceptional, in safe cell (No. 8), sometime there can be snake, so first make sure, there is no snake in cell no. 8
+  //=========================================================================================================================
 
-  // First, get the snake position
+  // First, get all snake position
   let snakePos = [];
   for (let i = 0; i< random_location3.length; i++){
     snakePos.push(snakeMouthPos[random_location3[i]]);
   }
 
+  if (snakePos.includes(8)) snakeInSafeCell = 1;
+
   if (!moveThird){
+    for (let j=0; j<total_token; j++){
+
+      if (snakeInSafeCell){
+        if (safeCell.includes(Cell[color + 'Cell' + j] + random_num) && isOutside[color + j] && Cell[color + 'Cell' + j] + random_num !== 8){
+          console.log("Forth-1 priority executed....");
+          eval(color + 'Token')[j].click();
+          return (color, j);
+        }
+      }
+      else{
+        if (safeCell.includes(Cell[color + 'Cell' + j] + random_num) && isOutside[color + j]){
+          console.log("Forth-2 priority executed....");
+          eval(color + 'Token')[j].click();
+          return (color, j);
+        }
+      }
+      if (j === total_token - 1) moveForth = 0;
+    }
+  }
+
+  //====================================================================================================================
+  // Fifth Priority: Move the token that are not in safe cell but also keep eye on snake (try to be far from snake area)
+  //====================================================================================================================
+
+  if (!moveForth){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 1 && !safeCell.includes(Cell[color + 'Cell' + j]) && 
       (total_cell - position[color + j])>=random_num && (!snakePos.includes(Cell[color + 'Cell' + j] + random_num))){
-        console.log("Forth priority executed....");
+        console.log("Fifth priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
-      if (j === 3) moveForth = 0;
+      if (j === total_token - 1) moveFifth = 0;
+    }
+  }
+
+
+  //Sixth Priority: If not above, just move any token but there should not be snake
+  if (!moveFifth){
+    for (let j=0; j<total_token; j++){
+      if (!snakePos.includes(Cell[color + 'Cell' + j] + random_num) && (total_cell - position[color + j]) >= random_num && isOutside[color + j]){
+        console.log("Sixth priority executed....");
+        eval(color + 'Token')[j].click();
+        return (color, j);
+      }
+      if (j === total_token - 1) moveSixth = 0;
     }
   }
 
   //=======================================================================
-  // Fifth Priority: If not above, move the token that is far from its home
+  // Seventh Priority: If not above, move the token that is far from its home
   //=======================================================================
   let getPosition = []
-  if(!moveForth){
+  if(!moveSixth){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 1) getPosition.push(position[color + j]);
     }
@@ -131,14 +174,14 @@ function callAI(color, index){
 
     for (let i=0; i<total_token; i++){
       if (position[color + i] === getPosition[0] && isOutside[color + i] === 1) {
-        console.log("Fifth priority executed....");
+        console.log("Seventh priority executed....");
         eval(color+'Token')[i].click();
         return (color, i);
       }
-      if (i === 3) moveFifth = 0;
+      if (i === total_token - 1) moveSeventh = 0;
     }
   }
 
-  if (!moveFifth) changeTheTurn(color);
+  if (!moveSeventh) changeTheTurn(color);
   
 }
