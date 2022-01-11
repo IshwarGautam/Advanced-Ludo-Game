@@ -59,6 +59,13 @@ let radioBtn3Checked;
 
 let start = 0;
 
+//Add background music while filling form
+document.body.addEventListener("click", function () {
+  background_sound.play();
+  background_sound.volume = 0.2;
+  background_sound.loop = true;
+}, {once:true});
+
 
 /**
  * Create our main function to create tokens
@@ -813,6 +820,12 @@ function onSubmit(){
       loading.style.display = "none";
       start_page.style.display = "none";
       main_wrapper.style.display = "block";
+
+      // stop the music when play button is clicked
+      background_sound.loop = false;
+      background_sound.pause();
+      background_sound.currentTime = 0;
+  
 
       //Displaying message
       if (opponent === 'computer'){

@@ -57,6 +57,8 @@ let step_sound = new Audio('./audio/step.mp3');
 let inout_sound = new Audio('./audio/whoosh.mp3');
 let winner_sound = new Audio('./audio/winner.mp3');
 let killed_sound = new Audio('./audio/killed.mp3');
+let background_sound = new Audio('./audio/background.mp3');
+
 
 
 // Let track the path of each token
