@@ -31,6 +31,8 @@ const blue_input = document.getElementById("blue-input");
 const which_color = document.getElementById('which-color');
 const game_modes = document.getElementById('game-modes');
 
+const adding_img = document.getElementById("adding-img");
+
 // 3. Top, middle and bottom container
 const top_part = document.getElementById('top-part');
 const middle_part = document.getElementById('middle-part');

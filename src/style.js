@@ -65,6 +65,13 @@ playBtn.onclick = function(){
   playBtn.style.background = "#0f0";
 };
 
+adding_img.style.background = `url('./images/playing.png')`;
+adding_img.style.width = "600px";
+adding_img.style.height = "400px";
+adding_img.style.position = "absolute";
+adding_img.style.bottom = "0";
+adding_img.style.left = "-80px";
+
 // 3. Let create loading after user press play button
 loading.style.background = `url(./images/loading.gif)`;
 loading.style.width = "332px";

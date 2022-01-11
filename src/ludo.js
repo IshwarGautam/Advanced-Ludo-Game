@@ -836,6 +836,7 @@ function onSubmit(){
       createGame();
 
       loading.style.display = "none";
+      adding_img.style.display = "none";
       start_page.style.display = "none";
       main_wrapper.style.display = "block";
 

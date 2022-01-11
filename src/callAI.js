@@ -149,8 +149,9 @@ function callAI(color, index){
     }
   }
 
-
+  //================================================================================
   //Sixth Priority: If not above, just move any token but there should not be snake
+  //================================================================================
   if (!moveFifth){
     for (let j=0; j<total_token; j++){
       if (!snakePos.includes(Cell[color + 'Cell' + j] + random_num) && (total_cell - position[color + j]) >= random_num && isOutside[color + j]){
