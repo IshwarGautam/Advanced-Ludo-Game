@@ -41,6 +41,7 @@ let yellow_winner_token = [];
 let green_winner_token = [];
 
 let forTheFirstTime = 1;
+let goToTheFunc = 0;
 
 //======================================================================
 // This will encounter if a token is outside its initial position or not
@@ -88,6 +89,7 @@ function rollDice(){
     trigger = 0;
     triggerInterval = 0;
     intervalOver = 0;
+    goToTheFunc = 0;
     
     response1 = 0;
     response2 = 0;
@@ -123,7 +125,13 @@ function rollDice(){
       else if (level === 'hard') turn = hardLevel(color);
     }
     else{
-     for (let i=0; i<4; i++) getMove(color, i);
+      for (let i=0; i < total_token; i++){
+        if (total_cell - position[color + i] >= random_num) {
+          getMove(color, i);
+          goToTheFunc = 1;
+        }
+        if (i === total_token - 1 && !goToTheFunc) changeTheTurn(color);
+      }
     }
 
   }
