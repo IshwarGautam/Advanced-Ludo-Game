@@ -34,6 +34,7 @@ function invokeAI(){
  */
 function callAI(color, index){
 
+  // Seven moves for AI
   let moveFirst = 1;
   let moveSecond = 1;
   let moveThird = 1;

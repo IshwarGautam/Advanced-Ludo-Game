@@ -51,7 +51,7 @@ function getRandomInt(min, max) {
 }
 
 
-// Get the sound during dice rolled, and when moving tokens
+// Get the sound during dice rolled, and when token gets moved
 let dice_sound = new Audio('./audio/dice.mp3');
 let step_sound = new Audio('./audio/step.mp3');
 let inout_sound = new Audio('./audio/whoosh.mp3');

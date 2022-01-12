@@ -86,20 +86,27 @@ function rollDice(){
     // clear the interval (named createInterval) if any
     clearInterval(createInterval);
 
+    // initialize some required variables
+    // this variables is just like switch (0/1)
+    // so, it is placed inside this function
     trigger = 0;
     triggerInterval = 0;
     intervalOver = 0;
     goToTheFunc = 0;
     
+    // make AI wait
     response1 = 0;
     response2 = 0;
 
+    // change the color turn by turn
     color = turn;
     eval(color + "Toggle = " + 1);
 
+    // increase the zIndex value per each turn
     z_index++;
     for (let i=0; i<4; i++) eval(color + 'Token')[i].style.zIndex = String(z_index);
 
+    // check if the interval has been cleared or not
     isIntervalCleared = 0;
     intervalCleared = 0;
 
@@ -107,10 +114,13 @@ function rollDice(){
 
     isPlayed.style.display = "none";
 
+    // get random value from 1 to 6
     random_num = getRandomInt(1,7);
     
+    // show random_num in dice
     showClass = 'show-' + random_num;
 
+    // update current class
     if (currentClass) {
       cube.classList.remove(currentClass);
     }
@@ -118,6 +128,8 @@ function rollDice(){
     cube.classList.add(showClass);
     currentClass = showClass;
     
+    // update the numberPerTurn if player gets 1 or 6
+    // mostly use in medium and hard mode
     if (random_num === 1 || random_num === 6) numberPerTurn++;
 
     if (numberPerTurn === 3 && level !== 'easy'){
@@ -127,6 +139,8 @@ function rollDice(){
     else if(!(random_num === 1 || random_num === 6)){
       for (let i=0; i < total_token; i++){
         
+        // check the space
+        // mostly useful when token in near to its home
         if (total_cell - position[color + i] >= random_num && isOutside[color + i] === 1) {
           getMove(color, i);
           goToTheFunc = 1;
@@ -137,7 +151,10 @@ function rollDice(){
     else{
       for (let i=0; i < total_token; i++){
         
+        // move the token if there is space/cell
         if (total_cell - position[color + i] >= random_num) {
+
+          //calling the main function
           getMove(color, i);
           goToTheFunc = 1;
         }
@@ -173,10 +190,13 @@ function getMove(color, index){
   }
 
   else if (random_num === 1 || random_num === 6){ 
+    // Human vs AI
     if (turn !== user && opponent === 'computer') {
       color, index = callAI(color, index);
       call_16(color, index);
     } 
+
+    // Human vs Human
     else {
       eval(color + 'Token')[index].addEventListener("click", function(){
         call_16(color, index);
@@ -377,6 +397,9 @@ function moveStepByStep(color, index){
           container.style.opacity = "0.4";
           dice_container.style.visibility = "hidden";
           end_screen.style.display = "block";
+
+          response1 = 0;
+          response2 = 0;
         }
       }
     }

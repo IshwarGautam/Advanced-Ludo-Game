@@ -351,37 +351,37 @@ dice_title.style.textDecoration = "underline";
 dice_title.style.color = "#fc2";
 
 // 21. Styling player name
-player1.style.color = "ivory";
+player1.style.color = "tomato";
 player1.style.width = "350px";
 player1.style.textAlign = "right";
 player1.style.fontSize = "20px";
 player1.style.position = "absolute";
 player1.style.marginRight = "600px";
-player1.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+player1.style.fontFamily = "Monospace, Georgia, 'Times New Roman', Times, serif";
 
-player2.style.color = "ivory";
+player2.style.color = "lime";
 player2.style.width = "350px";
 player2.style.textAlign = "right";
 player2.style.fontSize = "20px";
 player2.style.position = "absolute";
 player2.style.marginRight = "600px";
-player2.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+player2.style.fontFamily = "Monospace, Georgia, 'Times New Roman', Times, serif";
 
-player3.style.color = "ivory";
+player3.style.color = "yellow";
 player3.style.width = "350px";
 player3.style.textAlign = "left";
 player3.style.fontSize = "20px";
 player3.style.position = "absolute";
 player3.style.marginLeft = "600px";
-player3.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+player3.style.fontFamily = "Monospace, Georgia, 'Times New Roman', Times, serif";
 
-player4.style.color = "ivory";
+player4.style.color = "#f2f";
 player4.style.width = "350px";
 player4.style.textAlign = "left";
 player4.style.fontSize = "20px";
 player4.style.position = "absolute";
 player4.style.marginLeft = "600px";
-player4.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+player4.style.fontFamily = "Monospace, Georgia, 'Times New Roman', Times, serif";
 
 isPlayed.style.fontSize = "20px";
 isPlayed.style.color = "#991";
@@ -420,12 +420,12 @@ high_score.style.width = "250px";
 high_score.style.textAlign = "center";
 high_score.style.fontSize = "30px";
 high_score.style.textDecoration = "underline";
-high_score.style.fontFamily = "Georgia, 'Times New Roman', Times, serif";
+high_score.style.fontFamily = "Fantasy, Georgia, 'Times New Roman', Times, serif";
 
 high_score_info.style.width = "250px";
 high_score_info.style.textAlign = "center";
 high_score_info.style.fontSize = "20px";
-high_score_info.style.fontFamily = "'Times New Roman', Times, serif, Georgia";
+high_score_info.style.fontFamily = "Tahoma, 'Times New Roman', Times, serif, Georgia";
 high_score_info.style.marginTop = "10px";
 
 score_container.style.background = "rgb(247,247,247)";
@@ -461,19 +461,33 @@ ai_msg.style.background = "#212329";
 ai_msg.style.display = "none";
 
 turn_msg.style.position = "absolute";
-turn_msg.style.top = "35px";
-turn_msg.style.marginLeft = "160px";
-turn_msg.style.fontSize = "20px";
+turn_msg.style.top = "115px";
+turn_msg.style.marginLeft = "-20px";
+turn_msg.style.fontSize = "22px";
 turn_msg.style.fontWeight = "bold";
 turn_msg.style.color = "#fff";
-turn_msg.style.background = "black";
+turn_msg.style.background = "rgb(110,103,11)";
+turn_msg.style.borderRadius = "5px";
+turn_msg.style.fontFamily = "Helvetica, Fantasy, Times, Verdana, Arial";
 
 color_msg.style.position = "absolute";
-color_msg.style.top = "115px";
-color_msg.style.fontSize = "20px";
+color_msg.style.top = "155px";
+color_msg.style.fontSize = "22px";
+color_msg.style.marginLeft = "-20px";
 color_msg.style.fontWeight = "bold";
 color_msg.style.color = "#fff";
-color_msg.style.background = "black";
+color_msg.style.background = "rgb(110,103,11)";
+color_msg.style.borderRadius = "5px";
+color_msg.style.fontFamily = "Helvetica, Fantasy, Times, Verdana, Arial";
+
+active_turn.style.background = "black";
+active_turn.style.fontSize = "25px";
+active_turn.style.fontFamily = "Helvetica, Fantasy, Times, Verdana, Arial"
+
+your_color.style.background = "black";
+your_color.style.fontSize = "25px";
+your_color.style.fontFamily = "Helvetica, Fantasy, Times, Verdana, Arial"
+
 
 // 25. For styling end screen
 end_screen.style.width = "400px";
