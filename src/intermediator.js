@@ -91,6 +91,7 @@ const text = document.getElementById("text");
 
 // 11. For 3d dice
 const dice_container = document.getElementById("dice-container");
+const block_dice = document.getElementById("block-dice");
 
 const dice = document.getElementsByClassName('dice');
 const dice_1 = document.getElementById('dice-1');

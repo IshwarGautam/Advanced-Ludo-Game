@@ -1,3 +1,5 @@
+let aiTurn = 0;
+
 // =========================================
 // Implementing AI (roll dice automatically)
 // =========================================
@@ -10,10 +12,16 @@ function invokeAI(){
 
   setInterval(() => {
     if (turn !== user && opponent === 'computer' && response1 === 1 && response2 === 1 && start === 1){
+      // block dice because its AI turn and human should not be able to roll the dice
+      block_dice.style.display = "block";
+
       cube.click();
       cube.addEventListener("click", rollDice, {once:true});
     }
     else{
+      // human turn... so they should be able to roll the dice this time
+      block_dice.style.display = "none";
+
       cube.addEventListener("click", rollDice, {once:true});
     }
   }, timeInterval);

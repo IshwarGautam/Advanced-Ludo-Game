@@ -350,6 +350,11 @@ dice_title.style.fontSize = "30px";
 dice_title.style.textDecoration = "underline";
 dice_title.style.color = "#fc2";
 
+block_dice.style.width = "250px";
+block_dice.style.height = "250px";
+block_dice.style.marginTop = "-100px";
+block_dice.style.position = "absolute";
+
 // 21. Styling player name
 player1.style.color = "tomato";
 player1.style.width = "350px";
