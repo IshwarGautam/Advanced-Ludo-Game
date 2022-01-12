@@ -69,7 +69,7 @@ function callAI(color, index){
   //======================================================
   if (!moveFirst){
     for (let j=0; j<total_token; j++){
-      if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6)){
+      if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6) && position[color + j] < total_cell){
         console.log("Second priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
@@ -90,7 +90,7 @@ function callAI(color, index){
 
   if (!moveSecond){
     for (let j=0; j<total_token; j++){
-      if ((ladderPos.includes(Cell[color + 'Cell' + j] + random_num) || random_location1.includes(Cell[color + 'Cell' + j] + random_num) && isOutside[color+j])){
+      if ((ladderPos.includes(Cell[color + 'Cell' + j] + random_num) || random_location1.includes(Cell[color + 'Cell' + j] + random_num)) && isOutside[color+j]){
         console.log("Third priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);

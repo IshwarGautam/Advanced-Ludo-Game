@@ -609,7 +609,7 @@ function mediumLevel(color){
 
   for (let i=0; i<4; i++){
   
-    if (eval(color + 'PointPerTurn')[i] > 0){
+    if (eval(color + 'PointPerTurn')[i] > 0 && position[color+i] < total_cell){
 
       let interval6 = setInterval(() => {
       

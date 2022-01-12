@@ -124,8 +124,19 @@ function rollDice(){
       if (level === 'medium') turn = mediumLevel(color);
       else if (level === 'hard') turn = hardLevel(color);
     }
+    else if(!(random_num === 1 || random_num === 6)){
+      for (let i=0; i < total_token; i++){
+        
+        if (total_cell - position[color + i] >= random_num && isOutside[color + i] === 1) {
+          getMove(color, i);
+          goToTheFunc = 1;
+        }
+        if (i === total_token - 1 && !goToTheFunc) changeTheTurn(color);
+      }     
+    }
     else{
       for (let i=0; i < total_token; i++){
+        
         if (total_cell - position[color + i] >= random_num) {
           getMove(color, i);
           goToTheFunc = 1;
