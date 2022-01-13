@@ -686,7 +686,7 @@ function mediumLevel(color){
     clearInterval(interval_for_msg);
   }, 9000);
 
-  for (let i=0; i<4; i++){
+  for (let i=0; i < total_token; i++){
   
     // if player gets 1 or 6 continuously for 3 times, the current moves for that turn has to be reset
     if (eval(color + 'PointPerTurn')[i] > 0 && position[color+i] < total_cell){
@@ -755,7 +755,7 @@ function mediumLevel(color){
           }
 
           index2++;
-          if (index2 >= 4) break;
+          if (index2 >= total_token) break;
         }while(isAgain);
         clearInterval(interval8);
       }

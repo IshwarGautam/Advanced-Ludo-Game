@@ -104,7 +104,7 @@ function rollDice(){
 
     // increase the zIndex value per each turn
     z_index++;
-    for (let i=0; i<4; i++) eval(color + 'Token')[i].style.zIndex = String(z_index);
+    for (let i=0; i < total_token; i++) eval(color + 'Token')[i].style.zIndex = String(z_index);
 
     // check if the interval has been cleared or not
     isIntervalCleared = 0;

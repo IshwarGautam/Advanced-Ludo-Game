@@ -40,3 +40,14 @@ body{
 .ThreeD-dice.show-5  { transform: translateZ(-100px) rotateX( -90deg); }
 .ThreeD-dice.show-6  { transform: translateZ(-100px) rotateX(  90deg); }
 
+
+/* Make somewhat responsive */
+@media(max-width: 500px){
+  #adding-img{
+    display: none;
+  }
+
+  body{
+    background: #212329;
+  }
+}
