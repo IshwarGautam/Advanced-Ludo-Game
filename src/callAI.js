@@ -64,7 +64,6 @@ function callAI(color, index){
     for (let i=0; i<other_color.length; i++){
       for (let j=0; j<total_token; j++){
         if (isOutside[color + p] === 1 && Cell[color + 'Cell' + p] + random_num === Cell[other_color[i] + 'Cell' + j] && isOutside[other_color[i]+j]){
-          console.log("First priority executed....");
           eval(color + 'Token')[p].click();
           return (color, p);
         }  
@@ -79,7 +78,6 @@ function callAI(color, index){
   if (!moveFirst){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 0 && (random_num === 1 || random_num === 6) && position[color + j] < total_cell){
-        console.log("Second priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -100,7 +98,6 @@ function callAI(color, index){
   if (!moveSecond){
     for (let j=0; j<total_token; j++){
       if ((ladderPos.includes(Cell[color + 'Cell' + j] + random_num) || random_location1.includes(Cell[color + 'Cell' + j] + random_num)) && isOutside[color+j]){
-        console.log("Third priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -126,14 +123,12 @@ function callAI(color, index){
 
       if (snakeInSafeCell){
         if (safeCell.includes(Cell[color + 'Cell' + j] + random_num) && isOutside[color + j] && Cell[color + 'Cell' + j] + random_num !== 8){
-          console.log("Forth-1 priority executed....");
           eval(color + 'Token')[j].click();
           return (color, j);
         }
       }
       else{
         if (safeCell.includes(Cell[color + 'Cell' + j] + random_num) && isOutside[color + j]){
-          console.log("Forth-2 priority executed....");
           eval(color + 'Token')[j].click();
           return (color, j);
         }
@@ -150,7 +145,6 @@ function callAI(color, index){
     for (let j=0; j<total_token; j++){
       if (isOutside[color + j] === 1 && !safeCell.includes(Cell[color + 'Cell' + j]) && 
       (total_cell - position[color + j])>=random_num && (!snakePos.includes(Cell[color + 'Cell' + j] + random_num))){
-        console.log("Fifth priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -164,7 +158,6 @@ function callAI(color, index){
   if (!moveFifth){
     for (let j=0; j<total_token; j++){
       if (!snakePos.includes(Cell[color + 'Cell' + j] + random_num) && (total_cell - position[color + j]) >= random_num && isOutside[color + j]){
-        console.log("Sixth priority executed....");
         eval(color + 'Token')[j].click();
         return (color, j);
       }
@@ -184,7 +177,6 @@ function callAI(color, index){
 
     for (let i=0; i<total_token; i++){
       if (position[color + i] === getPosition[0] && isOutside[color + i] === 1) {
-        console.log("Seventh priority executed....");
         eval(color+'Token')[i].click();
         return (color, i);
       }

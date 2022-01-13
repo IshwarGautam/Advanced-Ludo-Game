@@ -43,7 +43,7 @@ body{
 
 /* Make somewhat responsive */
 @media(max-width: 500px){
-  #adding-img{
+  #adding-img, #turn-msg, #color-msg, #score-container{
     display: none;
   }
 
