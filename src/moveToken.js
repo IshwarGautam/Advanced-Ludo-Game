@@ -277,7 +277,6 @@ function call_16(color, index){
       color, index = moveStepByStep(color, index);
       toggle = 0;
       eval(color + "Toggle = " + 0);
-      firstTurn++;
       color, index = checkCollision(color, index);
     }
   }
