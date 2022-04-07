@@ -7,3 +7,6 @@ The project is hosted in github: <a href="https://ishwargautam.github.io/Advance
 Note: This project is only for learning purpose.
 <li>Copy and paste is not allowed.</li>
 <li>Not for Commercial Use.</li>
+<br>
+Warning: I have used eval function here. Try replacing eval if you are working on this project.<br><br>
+#EVAL_is_EVIL
